@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wili/item.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +32,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<WishlistItem> items = [
+    WishlistItem(name: "Computer", category: "Tech", price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
+    WishlistItem(name: "Camera", category: "Tech"),
+    WishlistItem(name: "Mouse", category: "Tech"),
+    WishlistItem(name: "Lens", category: "Tech"),
+  ];
 
   void _incrementCounter() {
     setState(() {
