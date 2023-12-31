@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           children: const <Widget>[
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Card(
                 child: ListTile(
                   leading: Icon(Icons.computer),
@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Card(
                 child: ListTile(
                   leading: Icon(Icons.local_laundry_service),
@@ -72,13 +72,24 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Card(
                 child: ListTile(
                   leading: Icon(Icons.lock),
                   title: Text("Lockpicking set"),
                   subtitle: Text("Hobby (category)"),
                   trailing: Text("30€"),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              child: Card(
+                child: ListTile(
+                  leading: Image(image: AssetImage("assets/4060ti.jpg")),
+                  title: Text("NVIDIA 4060 Ti"),
+                  subtitle: Text("Tech (category)"),
+                  trailing: Text("400€"),
                 ),
               ),
             ),
