@@ -54,53 +54,21 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
       ),
       body: Center(
-        child: ListView(
-          children: const <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+        child: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Card(
                 child: ListTile(
-                  leading: Icon(Icons.computer),
-                  title: Text("Computer"),
-                  subtitle: Text("Tech (category)"),
-                  trailing: Text("1500€"),
+                  leading: Image.asset(items[index].image != "" ? items[index].image : "assets/4060ti.jpg"),
+                  title: Text(items[index].name),
+                  subtitle: Text(items[index].category),
+                  trailing: Text('${items[index].price}€'),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              child: Card(
-                child: ListTile(
-                  leading: Icon(Icons.local_laundry_service),
-                  title: Text("Washing machine"),
-                  subtitle: Text("Home (category)"),
-                  trailing: Text("250€"),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              child: Card(
-                child: ListTile(
-                  leading: Icon(Icons.lock),
-                  title: Text("Lockpicking set"),
-                  subtitle: Text("Hobby (category)"),
-                  trailing: Text("30€"),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              child: Card(
-                child: ListTile(
-                  leading: Image(image: AssetImage("assets/4060ti.jpg")),
-                  title: Text("NVIDIA 4060 Ti"),
-                  subtitle: Text("Tech (category)"),
-                  trailing: Text("400€"),
-                ),
-              ),
-            ),
-          ],
+            );
+          }
         ),
       ),
       floatingActionButton: FloatingActionButton(
