@@ -1,7 +1,7 @@
 class WishlistItem {
   String name;
-  double price;
   String category; // Will become some kind of enum
+  double price;
   bool purchased;
   String note;
   int quantity;
