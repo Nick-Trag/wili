@@ -32,12 +32,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  // Next TODO: Dummy data (enought to fill the screen). Will do the UI of the home page first and then move on to the other pages
+  // Next TODO: All the possible values and errors (no items, no pics, no prices, etc.). Then make it look nice. Will do the UI of the home page first and then move on to the other pages.
   List<WishlistItem> items = [
     WishlistItem(name: "Computer", category: "Tech", price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
     WishlistItem(name: "Camera", category: "Tech", price: 400),
     WishlistItem(name: "Mouse", category: "Tech"),
     WishlistItem(name: "Lens", category: "Tech"),
+    WishlistItem(name: "Microwave", category: "Home"),
+    WishlistItem(name: "Phone", category: "Tech"),
+    WishlistItem(name: "Watch", category: "Misc."),
+    WishlistItem(name: "Basketball", category: "Hobby"),
+    WishlistItem(name: "Couch", category: "Home"),
+    WishlistItem(name: "Pokemon Plush", category: "Misc."),
+    WishlistItem(name: "Hoodie", category: "Clothes"),
+    WishlistItem(name: "Shoes", category: "Clothes"),
   ];
 
   void _incrementCounter() {
