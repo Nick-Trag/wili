@@ -70,7 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Card(
                 child: ListTile(
-                  leading: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
+                  leading: Container(
+                    width: 100,
+                    height: 100,
+                    child: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
+                  ),
                   title: Text(items[index].name),
                   subtitle: Text(items[index].category),
                   trailing: Text('${items[index].price}€'),
