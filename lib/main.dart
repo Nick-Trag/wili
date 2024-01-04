@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wili/item.dart';
+import 'package:intl/intl.dart' as intl;
 
 void main() {
   runApp(const MyApp());
@@ -77,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   title: Text(items[index].name),
                   subtitle: Text(items[index].category),
-                  trailing: Text('${items[index].price}€'),
+                  trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}€'),
                 ),
               ),
             );
