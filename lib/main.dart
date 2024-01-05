@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wili/item.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:wili/list_widget.dart';
 
 void main() {
