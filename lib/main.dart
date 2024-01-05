@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  // Next TODO: All the possible values and errors (no items, no pics, no prices, etc.). Then make it look nice (TEXT FORMATTING TOO (eg the prices). Will do the UI of the home page first and then move on to the other pages.
+  // Next TODO: All the possible values and errors (no items, no pics, no prices, etc.). Then make it look nice (TEXT FORMATTING TOO (eg the prices)). Will do the UI of the home page first and then move on to the other pages.
   List<WishlistItem> items = [
     WishlistItem(name: "Computer", category: "Tech", price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
     WishlistItem(name: "Camera", category: "Tech", price: 400),
