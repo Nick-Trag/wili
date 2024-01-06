@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wili/item.dart';
+import 'package:wili/classes/item.dart';
 import 'package:intl/intl.dart' as intl;
 
 class ListWidget extends StatelessWidget {
@@ -35,7 +35,7 @@ class ListWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Card(
                 child: ListTile(
-                  leading: Container(
+                  leading: SizedBox(
                     width: 100,
                     height: 100,
                     child: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
