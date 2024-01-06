@@ -13,11 +13,17 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return const Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.not_interested),
-          Text("No items wished for yet. Use the button to add an item."),
+          const Icon(Icons.not_interested),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 100),
+            child: const Text(
+              "No items wished for yet. Use the plus button to add an item.",
+              textAlign: TextAlign.center,
+            ),
+          ),
         ],
       );
     }
