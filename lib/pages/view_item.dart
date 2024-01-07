@@ -20,7 +20,9 @@ class ViewItemWidget extends StatelessWidget {
         width: double.infinity, // Basically width: 100%, just 50 times less intuitive
         child: Column(
           children: [
-            item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark)
+            item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark),
+            Text(item.name),
+            Text(item.category),
           ]
         ),
       ),
