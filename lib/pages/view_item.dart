@@ -23,7 +23,7 @@ class ViewItemWidget extends StatelessWidget {
           children: [
             Center(child: item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark)),
             const Padding(
-              padding: EdgeInsets.fromLTRB(12, 8, 0, 0),
+              padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
               child: Text(textAlign: TextAlign.start, "Name:"),
             ),
             Padding(
@@ -31,7 +31,7 @@ class ViewItemWidget extends StatelessWidget {
               child: TextFormField(initialValue: item.name),
             ),
             const Padding(
-              padding: EdgeInsets.fromLTRB(12, 8, 0, 0),
+              padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
               child: Text("Category:"),
             ),
             Padding( // TODO: Will become a select with values = the categories
