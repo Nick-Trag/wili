@@ -19,10 +19,25 @@ class ViewItemWidget extends StatelessWidget {
       body: SizedBox(
         width: double.infinity, // Basically width: 100%, just 50 times less intuitive
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark),
-            Text(item.name),
-            Text(item.category),
+            Center(child: item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark)),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12, 8, 0, 0),
+              child: Text(textAlign: TextAlign.start, "Name:"),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextFormField(initialValue: item.name),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12, 8, 0, 0),
+              child: Text("Category:"),
+            ),
+            Padding( // TODO: Will become a select with values = the categories
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextFormField(initialValue: item.category),
+            ),
           ]
         ),
       ),

@@ -44,10 +44,8 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: Center(
-        child: ListWidget(
-          items: items,
-        ),
+      body: ListWidget(
+        items: items,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
