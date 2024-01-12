@@ -7,6 +7,8 @@ class ViewItemWidget extends StatelessWidget {
   ViewItemWidget({super.key, required this.title, required this.item});
 
   final WishlistItem item;
+  // In the future, the item will probably be nullable. This is how this is done:
+  // final WishlistItem? item;
   final String title;
 
   @override
