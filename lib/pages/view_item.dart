@@ -60,6 +60,28 @@ class ViewItemWidget extends StatelessWidget {
                 ],
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+              child: Text("Note:"),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextFormField(initialValue: item.note),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+              child: Text("Quantity:"),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                initialValue: item.quantity.toString(),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
+                ],
+              ),
+            ),
           ]
         ),
       ),
