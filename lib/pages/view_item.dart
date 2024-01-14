@@ -82,6 +82,16 @@ class ViewItemWidget extends StatelessWidget {
                 ],
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+              child: Text("URL:"),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextFormField( // TODO: Make this a clickable URL
+                initialValue: item.link,
+              ),
+            ),
           ]
         ),
       ),
