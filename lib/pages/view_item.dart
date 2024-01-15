@@ -6,7 +6,7 @@ class ViewItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   ViewItemWidget({super.key, required this.title, required this.item});
 
-  final WishlistItem item;
+  final WishlistItem item; // Note: Final variables can have their fields changed. Const variables cannot
   // In the future, the item will probably be nullable. This is how this is done:
   // final WishlistItem? item;
   final String title;
