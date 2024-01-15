@@ -93,6 +93,19 @@ class ViewItemWidget extends StatelessWidget {
                   initialValue: item.link,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                child: CheckboxListTile(
+                  title: const Text("Purchased"),
+                  value: item.purchased,
+                  onChanged: (newValue) {
+                    // setState(() {
+                    //   item.purchased = newValue!;
+                    // });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,  // leading Checkbox
+                )
+              ),
             ]
           ),
         ),
