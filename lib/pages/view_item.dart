@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wili/classes/item.dart';
 
-class ViewItemWidget extends StatelessWidget {
+class ViewItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   ViewItemWidget({super.key, required this.title, required this.item});
 
@@ -12,11 +12,16 @@ class ViewItemWidget extends StatelessWidget {
   final String title;
 
   @override
+  State<ViewItemWidget> createState() => _ViewItemWidgetState();
+}
+
+class _ViewItemWidgetState extends State<ViewItemWidget> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( // Might delete the app bar and the title on this page, will see
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
+        title: Text(widget.title),
         centerTitle: true,
       ),
       body: SizedBox(
@@ -25,14 +30,14 @@ class ViewItemWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark)),
+              Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)),
               const Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
                 child: Text(textAlign: TextAlign.start, "Name:"),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextFormField(initialValue: item.name),
+                child: TextFormField(initialValue: widget.item.name),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
@@ -40,7 +45,7 @@ class ViewItemWidget extends StatelessWidget {
               ),
               Padding( // TODO: Will become a select with values = the categories
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextFormField(initialValue: item.category),
+                child: TextFormField(initialValue: widget.item.category),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
@@ -50,7 +55,7 @@ class ViewItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
                   keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
-                  initialValue: item.price.toString(),
+                  initialValue: widget.item.price.toString(),
                   inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
                     TextInputFormatter.withFunction(
@@ -67,7 +72,7 @@ class ViewItemWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(initialValue: item.note),
+                child: TextFormField(initialValue: widget.item.note),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
@@ -77,7 +82,7 @@ class ViewItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  initialValue: item.quantity.toString(),
+                  initialValue: widget.item.quantity.toString(),
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
                   ],
@@ -90,18 +95,18 @@ class ViewItemWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField( // TODO: Make this a clickable URL
-                  initialValue: item.link,
+                  initialValue: widget.item.link,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                 child: CheckboxListTile(
                   title: const Text("Purchased"),
-                  value: item.purchased,
+                  value: widget.item.purchased,
                   onChanged: (newValue) {
-                    // setState(() {
-                    //   item.purchased = newValue!;
-                    // });
+                    setState(() {
+                      widget.item.purchased = newValue!;
+                    });
                   },
                   controlAffinity: ListTileControlAffinity.leading,  // leading Checkbox
                 )
