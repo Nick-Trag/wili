@@ -108,7 +108,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget> {
                       widget.item.purchased = newValue!;
                     });
                   },
-                  controlAffinity: ListTileControlAffinity.leading, // leading Checkbox
+                  controlAffinity: ListTileControlAffinity.leading, // leading checkbox
                 ),
               ),
             ]
