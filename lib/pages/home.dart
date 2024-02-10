@@ -13,8 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
-  // Next TODO: other pages (Detail view first)
-  // Next TODO: Categories as selects (start with defined enums, then let user create and delete categories)
+  // Next TODO: SQLite
   List<WishlistItem> items = [
     WishlistItem(name: "Computer", category: "Tech", price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
     WishlistItem(name: "Camera", category: "Tech", price: 400),

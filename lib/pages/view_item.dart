@@ -10,6 +10,14 @@ class ViewItemWidget extends StatefulWidget {
   // In the future, the item will probably be nullable. This is how this is done:
   // final WishlistItem? item;
   final String title;
+  // TODO: Temporarily here
+  final Set<String> categories = {
+    "Home",
+    "Tech",
+    "Misc.",
+    "Hobby",
+    "Clothes",
+  };
 
   @override
   State<ViewItemWidget> createState() => _ViewItemWidgetState();
@@ -43,9 +51,22 @@ class _ViewItemWidgetState extends State<ViewItemWidget> {
                 padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
                 child: Text("Category:"),
               ),
-              Padding( // TODO: Will become a select with values = the categories
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextFormField(initialValue: widget.item.category),
+                child: DropdownButton(
+                  value: widget.item.category,
+                  items: widget.categories.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      widget.item.category = value!;
+                    });
+                  },
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
