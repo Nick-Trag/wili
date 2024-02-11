@@ -4,12 +4,10 @@ import 'package:wili/classes/item.dart';
 
 class SQLiteService {
 
-  late final Database database;
-
-  Future<void> initializeDB() async {
+  Future<Database> initializeDB() async {
     String path = await getDatabasesPath();
 
-    database = await openDatabase(
+    return openDatabase(
       join(path, 'database.db'),
       onCreate: (database, version) async {
         await database.execute("CREATE TABLE Categories("
@@ -36,7 +34,29 @@ class SQLiteService {
   }
 
   Future<void> addItem(WishlistItem item) async {
-    await database.insert('Items', item.toMap());
+    // I don't like using this method every time, but this is how literally everyone does it, so I suppose this is the intended use
+    final Database db = await initializeDB();
+
+    await db.insert('Items', item.toMap());
+  }
+
+  Future<List<WishlistItem>> getAllItems() async {
+    final Database db = await initializeDB();
+
+    final List<Map<String, dynamic>> itemMaps = await db.query('Items');
+
+    //Convert to list of items
+    return List.generate(itemMaps.length, (i) => WishlistItem(
+      name: itemMaps[i]['name'] as String,
+      category: itemMaps[i]['category'] as String, // TODO: Int
+      price: itemMaps[i]['price'] as double,
+      purchased: itemMaps[i]['purchased'] as bool,
+      note: itemMaps[i]['note'] as String,
+      quantity: itemMaps[i]['quantity'] as int,
+      link: itemMaps[i]['link'] as String,
+      image: itemMaps[i]['image'] as String,
+      )
+    );
   }
 }
 
