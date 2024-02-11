@@ -12,12 +12,12 @@ class SQLiteService {
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           "name TEXT NOT NULL,"
           "category TEXT NOT NULL,"
-          "price REAL,"
-          "purchased INTEGER," // Actually a bool
-          "note TEXT,"
-          "quantity INTEGER,"
-          "link TEXT,"
-          "image TEXT"
+          "price REAL NOT NULL DEFAULT 0,"
+          "purchased INTEGER NOT NULL DEFAULT 0," // Actually a bool
+          "note TEXT NOT NULL DEFAULT '',"
+          "quantity INTEGER NOT NULL DEFAULT 1,"
+          "link TEXT NOT NULL DEFAULT '',"
+          "image TEXT NOT NULL DEFAULT ''"
         ")"); // TODO: Full schema + categories table + categories as foreign key
       },
       version: 0,
