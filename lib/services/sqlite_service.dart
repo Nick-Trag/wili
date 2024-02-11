@@ -1,11 +1,15 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:wili/classes/item.dart';
 
 class SQLiteService {
-  Future<Database> initializeDB() async {
+
+  late final Database database;
+
+  Future<void> initializeDB() async {
     String path = await getDatabasesPath();
 
-    return openDatabase(
+    database = await openDatabase(
       join(path, 'database.db'),
       onCreate: (database, version) async {
         await database.execute("CREATE TABLE Categories("
@@ -29,6 +33,10 @@ class SQLiteService {
       },
       version: 0,
     );
+  }
+
+  Future<void> addItem(WishlistItem item) async {
+    await database.insert('Items', item.toMap());
   }
 }
 
