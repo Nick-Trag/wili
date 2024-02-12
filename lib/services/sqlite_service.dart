@@ -6,7 +6,6 @@ class SQLiteService {
 
   Future<Database> initializeDB() async {
     String path = await getDatabasesPath();
-
     return openDatabase(
       join(path, 'database.db'),
       onCreate: (database, version) async {
@@ -29,7 +28,7 @@ class SQLiteService {
             "ON DELETE SET DEFAULT" // Currently there is no default, so this should not even work
         ")");
       },
-      version: 0,
+      version: 1,
     );
   }
 
@@ -48,9 +47,9 @@ class SQLiteService {
     //Convert to list of items
     return List.generate(itemMaps.length, (i) => WishlistItem(
       name: itemMaps[i]['name'] as String,
-      category: itemMaps[i]['category'] as String, // TODO: Int
+      category: itemMaps[i]['category_id'].toString(), // TODO: Int
       price: itemMaps[i]['price'] as double,
-      purchased: itemMaps[i]['purchased'] as bool,
+      purchased: itemMaps[i]['purchased'] == 0 ? false : true,
       note: itemMaps[i]['note'] as String,
       quantity: itemMaps[i]['quantity'] as int,
       link: itemMaps[i]['link'] as String,
