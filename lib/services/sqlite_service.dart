@@ -27,7 +27,7 @@ class SQLiteService {
           "FOREIGN KEY (category_id)"
             "REFERENCES Categories (id)"
             "ON DELETE SET DEFAULT" // Currently there is no default, so this should not even work
-        ")"); // TODO: Full schema + categories table + categories as foreign key
+        ")");
       },
       version: 0,
     );
