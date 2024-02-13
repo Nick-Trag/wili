@@ -47,7 +47,7 @@ class SQLiteService {
     //Convert to list of items
     return List.generate(itemMaps.length, (i) => WishlistItem(
       name: itemMaps[i]['name'] as String,
-      category: itemMaps[i]['category_id'].toString(), // TODO: Int
+      category: itemMaps[i]['category_id'], // TODO: Int
       price: itemMaps[i]['price'] as double,
       purchased: itemMaps[i]['purchased'] == 0 ? false : true,
       note: itemMaps[i]['note'] as String,
@@ -65,6 +65,17 @@ class SQLiteService {
 
     return {
       for (var mapItem in categoryMaps) mapItem['id'] : mapItem['name']
+    };
+  }
+
+  // Returns all the categories, but mapped from the name to the id instead of the opposite
+  Future<Map<String, int>> getCategoriesReversed() async {
+    final Database db = await initializeDB();
+
+    final List<Map<String, dynamic>> categoryMaps = await db.query('Categories');
+
+    return {
+      for (var mapItem in categoryMaps) mapItem['name'] : mapItem['id']
     };
   }
 }

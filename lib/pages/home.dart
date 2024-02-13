@@ -16,18 +16,18 @@ class _HomePageState extends State<HomePage> {
   int _counter = 0;
   SQLiteService sqlite = SQLiteService();
   List<WishlistItem> items = [
-    WishlistItem(name: "Computer", category: "Tech", price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
-    WishlistItem(name: "Camera", category: "Tech", price: 400),
-    WishlistItem(name: "Mouse", category: "Tech"),
-    WishlistItem(name: "Lens", category: "Tech"),
-    WishlistItem(name: "Microwave", category: "Home"),
-    WishlistItem(name: "Phone", category: "Tech"),
-    WishlistItem(name: "Watch", category: "Misc."),
-    WishlistItem(name: "Basketball", category: "Hobby"),
-    WishlistItem(name: "Couch", category: "Home"),
-    WishlistItem(name: "Pokemon Plush", category: "Misc."),
-    WishlistItem(name: "Hoodie", category: "Clothes"),
-    WishlistItem(name: "Shoes", category: "Clothes"),
+    WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
+    WishlistItem(name: "Camera", category: 1, price: 400),
+    WishlistItem(name: "Mouse", category: 1),
+    WishlistItem(name: "Lens", category: 1),
+    WishlistItem(name: "Microwave", category: 2),
+    WishlistItem(name: "Phone", category: 1),
+    WishlistItem(name: "Watch", category: 4),
+    WishlistItem(name: "Basketball", category: 3),
+    WishlistItem(name: "Couch", category: 2),
+    WishlistItem(name: "Pokemon Plush", category: 4),
+    WishlistItem(name: "Hoodie", category: 3),
+    WishlistItem(name: "Shoes", category: 3),
   ];
   // List<WishlistItem> items = [];
   List<WishlistItem> newItems = [];

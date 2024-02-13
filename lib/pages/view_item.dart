@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wili/classes/item.dart';
+import 'package:wili/services/sqlite_service.dart';
 
 class ViewItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -11,21 +12,32 @@ class ViewItemWidget extends StatefulWidget {
   // final WishlistItem? item;
   final String title;
   // TODO: Temporarily here
-  final Set<String> categories = {
-    "Home",
-    "Tech",
-    "Misc.",
-    "Hobby",
-    "Clothes",
-  };
+  // final Set<String> categories = {
+  //   "Home",
+  //   "Tech",
+  //   "Misc.",
+  //   "Hobby",
+  //   "Clothes",
+  // };
 
   @override
   State<ViewItemWidget> createState() => _ViewItemWidgetState();
 }
 
 class _ViewItemWidgetState extends State<ViewItemWidget> {
+  SQLiteService sqlite = SQLiteService(); // TODO: This is a duplicate from home, will probably change it to inherit it from main or something
+  Map<String, int> categories = {};
+
+  void _getCategories() async {
+    Map<String, int> tempCategories = await sqlite.getCategoriesReversed();
+    setState(() {
+      categories = tempCategories;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _getCategories(); // TODO: Move it into an onCreate or something
     return Scaffold(
       appBar: AppBar( // Might delete the app bar and the title on this page, will see
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -53,15 +65,18 @@ class _ViewItemWidgetState extends State<ViewItemWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: DropdownButton(
+                child: DropdownButton<int>(
                   value: widget.item.category,
-                  items: widget.categories.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
+                  items: categories.map((String name, int id) {
+                    return MapEntry<String, DropdownMenuItem<int>>(
+                      name,
+                      DropdownMenuItem<int>(
+                        value: id,
+                        child: Text(name),
+                      )
                     );
-                  }).toList(),
-                  onChanged: (String? value) {
+                  }).values.toList(),
+                  onChanged: (int? value) {
                     setState(() {
                       widget.item.category = value!;
                     });

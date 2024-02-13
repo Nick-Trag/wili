@@ -43,7 +43,7 @@ class ListWidget extends StatelessWidget {
                     child: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
                   ),
                   title: Text(items[index].name),
-                  subtitle: Text(categories[int.parse(items[index].category)]!),
+                  subtitle: Text(categories[items[index].category]!),
                   trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}€'),
                 ),
               ),
