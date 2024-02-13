@@ -47,7 +47,7 @@ class SQLiteService {
     //Convert to list of items
     return List.generate(itemMaps.length, (i) => WishlistItem(
       name: itemMaps[i]['name'] as String,
-      category: itemMaps[i]['category_id'], // TODO: Int
+      category: itemMaps[i]['category_id'],
       price: itemMaps[i]['price'] as double,
       purchased: itemMaps[i]['purchased'] == 0 ? false : true,
       note: itemMaps[i]['note'] as String,

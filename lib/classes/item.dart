@@ -20,7 +20,6 @@ class WishlistItem {
   );
 
   // TODO: + id (?) Actually probably not, since it is auto-increment
-  // But TODO: int category
   Map<String, dynamic> toMap() {
     return {
       'name': name,

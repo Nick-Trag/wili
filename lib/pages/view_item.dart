@@ -11,14 +11,6 @@ class ViewItemWidget extends StatefulWidget {
   // In the future, the item will probably be nullable. This is how this is done:
   // final WishlistItem? item;
   final String title;
-  // TODO: Temporarily here
-  // final Set<String> categories = {
-  //   "Home",
-  //   "Tech",
-  //   "Misc.",
-  //   "Hobby",
-  //   "Clothes",
-  // };
 
   @override
   State<ViewItemWidget> createState() => _ViewItemWidgetState();
