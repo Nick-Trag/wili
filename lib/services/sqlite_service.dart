@@ -57,5 +57,14 @@ class SQLiteService {
       )
     );
   }
+
+  Future<Map<int, String>> getCategories() async {
+    final Database db = await initializeDB();
+
+    final List<Map<String, dynamic>> categoryMaps = await db.query('Categories');
+
+    // TODO: Convert categoryMaps into a map: category_id => category_name
+    return <int, String>{};
+  }
 }
 
