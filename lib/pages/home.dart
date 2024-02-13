@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   ];
   // List<WishlistItem> items = [];
   List<WishlistItem> newItems = [];
+  Map<int, String> categories = {};
 
   void _incrementCounter() {
     setState(() {
@@ -45,9 +46,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _getCategories() async {
+    Map<int, String> tempCategories = await sqlite.getCategories();
+    setState(() {
+      categories = tempCategories;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // TODO: Right now, this does a billion updates (and SQL queries). This will be moved into an initializing method or something
     _getItems();
+    _getCategories();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -56,6 +66,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListWidget(
         items: newItems,
+        categories: categories,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

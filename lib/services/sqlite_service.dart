@@ -63,8 +63,9 @@ class SQLiteService {
 
     final List<Map<String, dynamic>> categoryMaps = await db.query('Categories');
 
-    // TODO: Convert categoryMaps into a map: category_id => category_name
-    return <int, String>{};
+    return {
+      for (var mapItem in categoryMaps) mapItem['id'] : mapItem['name']
+    };
   }
 }
 
