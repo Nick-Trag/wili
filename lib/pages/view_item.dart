@@ -57,7 +57,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: DropdownButton<int>(
+                child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
                   value: widget.item.category,
                   items: categories.map((String name, int id) {
                     return MapEntry<String, DropdownMenuItem<int>>(
