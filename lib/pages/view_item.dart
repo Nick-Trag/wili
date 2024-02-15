@@ -24,7 +24,13 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
         centerTitle: true,
         actions: [
           GestureDetector(
-            child: const Icon(Icons.edit),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.edit,
+                semanticLabel: "Edit item",
+              ),
+            ),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => EditItemWidget(title: widget.title, item: widget.item))

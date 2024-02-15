@@ -43,7 +43,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
         centerTitle: true,
         actions: [
           GestureDetector(
-            child: const Icon(Icons.check),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.check,
+                semanticLabel: "Save item",
+              ),
+            ),
             onTap: () {
               // TODO: Submit form data and navigate to ViewItemWidget for this item (so just go back a page)
             },
