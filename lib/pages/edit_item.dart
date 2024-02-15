@@ -57,6 +57,8 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Processing Data')),
                 );
+
+                Navigator.of(context).pop();
               }
             },
           )

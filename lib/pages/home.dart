@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         items: newItems,
         categories: categories,
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton( // TODO: Add item
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
