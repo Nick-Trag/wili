@@ -34,7 +34,6 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     _getCategories();
   }
 
-  // Important TODO: Split viewing and editing/adding into separate pages
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +136,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField( // TODO: Make this a clickable URL
+                child: TextFormField(
                   initialValue: widget.item.link,
                 ),
               ),
