@@ -19,6 +19,7 @@ class EditItemWidget extends StatefulWidget {
 class _EditItemWidgetState extends State<EditItemWidget> {
   SQLiteService sqlite = SQLiteService(); // TODO: This is a duplicate from home, will probably change it to inherit it from main or something
   Map<String, int> categories = {};
+  final _formKey = GlobalKey<FormState>();
 
   void _getCategories() async {
     Map<String, int> tempCategories = await sqlite.getCategoriesReversed();
@@ -51,115 +52,131 @@ class _EditItemWidgetState extends State<EditItemWidget> {
               ),
             ),
             onTap: () {
-              // TODO: Submit form data and navigate to ViewItemWidget for this item (so just go back a page)
+              if (_formKey.currentState!.validate()) {
+                // TODO: Submit form data and navigate to ViewItemWidget for this item (so just go back a page)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Processing Data')),
+                );
+              }
             },
           )
         ],
       ),
       body: SizedBox(
         width: double.infinity, // Basically width: 100%, just 50 times less intuitive
-        child: SingleChildScrollView( // Allows the column to be scrollable. Reference: https://stackoverflow.com/a/61541293/7400287
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: Text(textAlign: TextAlign.start, "Name:"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextFormField(initialValue: widget.item.name),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: Text("Category:"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
-                  value: widget.item.category,
-                  items: categories.map((String name, int id) {
-                    return MapEntry<String, DropdownMenuItem<int>>(
-                      name,
-                      DropdownMenuItem<int>(
-                        value: id,
-                        child: Text(name),
-                      )
-                    );
-                  }).values.toList(),
-                  onChanged: (int? value) {
-                    setState(() {
-                      widget.item.category = value!;
-                    });
-                  },
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView( // Allows the column to be scrollable. Reference: https://stackoverflow.com/a/61541293/7400287
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: Text(textAlign: TextAlign.start, "Name:"),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: Text("Price:"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
-                  initialValue: widget.item.price.toStringAsFixed(2),
-                  inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
-                    TextInputFormatter.withFunction(
-                        (oldValue, newValue) => newValue.copyWith(
-                          text: newValue.text.replaceAll(',', '.'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    initialValue: widget.item.name,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: Text("Category:"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
+                    value: widget.item.category,
+                    items: categories.map((String name, int id) {
+                      return MapEntry<String, DropdownMenuItem<int>>(
+                        name,
+                        DropdownMenuItem<int>(
+                          value: id,
+                          child: Text(name),
+                        )
+                      );
+                    }).values.toList(),
+                    onChanged: (int? value) {
+                      setState(() {
+                        widget.item.category = value!;
+                      });
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: Text("Price:"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextFormField(
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
+                    initialValue: widget.item.price.toStringAsFixed(2),
+                    inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
+                      TextInputFormatter.withFunction(
+                          (oldValue, newValue) => newValue.copyWith(
+                            text: newValue.text.replaceAll(',', '.'),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: Text("Note:"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(initialValue: widget.item.note),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: Text("Quantity:"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  initialValue: widget.item.quantity.toString(),
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
-                  ],
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: Text("Note:"),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: Text("URL:"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(
-                  initialValue: widget.item.link,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextFormField(initialValue: widget.item.note),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
-                child: CheckboxListTile(
-                  title: const Text("Purchased"),
-                  value: widget.item.purchased,
-                  onChanged: (newValue) {
-                    setState(() {
-                      widget.item.purchased = newValue!;
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading, // leading checkbox
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: Text("Quantity:"),
                 ),
-              ),
-            ]
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    initialValue: widget.item.quantity.toString(),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: Text("URL:"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextFormField(
+                    initialValue: widget.item.link,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                  child: CheckboxListTile(
+                    title: const Text("Purchased"),
+                    value: widget.item.purchased,
+                    onChanged: (newValue) {
+                      setState(() {
+                        widget.item.purchased = newValue!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading, // leading checkbox
+                  ),
+                ),
+              ]
+            ),
           ),
         ),
       ),
