@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wili/classes/item.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:wili/pages/view_item.dart';
 
 class ListWidget extends StatelessWidget {
   const ListWidget({
@@ -35,17 +36,24 @@ class ListWidget extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              child: Card(
-                child: ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
+              child: GestureDetector(
+                child: Card(
+                  child: ListTile(
+                    leading: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
+                    ),
+                    title: Text(items[index].name),
+                    subtitle: Text(categories[items[index].category]!),
+                    trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}€'),
                   ),
-                  title: Text(items[index].name),
-                  subtitle: Text(categories[items[index].category]!),
-                  trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}€'),
                 ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ViewItemWidget(title: "TODO", item: items[index])) // TODO: Title (Might not even keep it in that screen)
+                  );
+                },
               ),
             );
           }

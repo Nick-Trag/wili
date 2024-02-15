@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: const HomePage(title: 'Wili Wishlist'), // Next TODO: Actual navigation (select an item and view it, or add new item with the button)
-      home: ViewItemWidget(title: 'Wili Wishlist', item: WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg")),
+      home: const HomePage(title: 'Wili Wishlist'), // Next TODO: Actual navigation (select an item and view it, or add new item with the button)
+      // home: ViewItemWidget(title: 'Wili Wishlist', item: WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg")),
     );
   }
 }
