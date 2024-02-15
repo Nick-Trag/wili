@@ -53,11 +53,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // TODO: When I eventually add the functionality to change the database, this will probably not be sufficient, as navigating to another widget and back does not call initState() again
   @override
-  Widget build(BuildContext context) {
-    // TODO: Right now, this does a billion updates (and SQL queries). This will be moved into an initializing method or something
+  void initState() {
+    super.initState();
     _getItems();
     _getCategories();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

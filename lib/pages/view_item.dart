@@ -27,9 +27,15 @@ class _ViewItemWidgetState extends State<ViewItemWidget> {
     });
   }
 
+  // TODO: When I eventually add the functionality to change the database, this will probably not be sufficient, as navigating to another widget and back does not call initState() again
+  @override
+  void initState() {
+    super.initState();
+    _getCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _getCategories(); // TODO: Move it into an onCreate or something
     return Scaffold(
       appBar: AppBar( // Might delete the app bar and the title on this page, will see
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
