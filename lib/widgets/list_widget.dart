@@ -52,7 +52,7 @@ class ListWidget extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ViewItemWidget(title: "TODO", item: items[index])) // TODO: Title (Might not even keep it in that screen)
+                    MaterialPageRoute(builder: (context) => ViewItemWidget(item: items[index])) // TODO: Title (Might not even keep it in that screen)
                   );
                 },
               ),

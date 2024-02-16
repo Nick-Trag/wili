@@ -5,12 +5,11 @@ import 'package:wili/services/sqlite_service.dart';
 
 class EditItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  EditItemWidget({super.key, required this.title, required this.item});
+  EditItemWidget({super.key, required this.item});
 
   final WishlistItem item; // Note: Final variables can have their fields changed. Const variables cannot
   // In the future, the item will probably be nullable. This is how this is done:
   // final WishlistItem? item;
-  final String title;
 
   @override
   State<EditItemWidget> createState() => _EditItemWidgetState();
@@ -40,7 +39,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     return Scaffold(
       appBar: AppBar( // Might delete the app bar and the title on this page, will see
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(widget.item.name),
         centerTitle: true,
         actions: [
           GestureDetector(

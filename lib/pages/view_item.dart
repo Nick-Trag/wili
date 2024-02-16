@@ -5,10 +5,9 @@ import 'package:wili/pages/edit_item.dart';
 
 class ViewItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  ViewItemWidget({super.key, required this.title, required this.item});
+  ViewItemWidget({super.key, required this.item});
 
   final WishlistItem item; // Note: Final variables can have their fields changed. Const variables cannot
-  final String title;
 
   @override
   State<ViewItemWidget> createState() => _ViewItemWidgetState();
@@ -20,7 +19,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(widget.item.name),
         centerTitle: true,
         actions: [
           GestureDetector(
@@ -33,7 +32,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
             ),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => EditItemWidget(title: widget.title, item: widget.item))
+                MaterialPageRoute(builder: (context) => EditItemWidget(item: widget.item))
               );
             },
           )
