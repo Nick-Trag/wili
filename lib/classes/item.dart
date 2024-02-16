@@ -19,7 +19,8 @@ class WishlistItem {
     this.image = ""}
   );
 
-  // TODO: + id (?) Actually probably not, since it is auto-increment
+  // TODO: + id (?) Actually probably not, since it is auto-increment.
+  // Actually, probably yes (to facilitate updates and deletions). But make the ID -1 if it has not been assigned
   Map<String, dynamic> toMap() {
     return {
       'name': name,
