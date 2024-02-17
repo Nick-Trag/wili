@@ -34,7 +34,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     _getCategories();
   }
 
-  // TODO: Going back after an edit keeps the editing values, even though they have not been saved in the database
+  // TODO: Going back after an edit keeps the edited values, even though they have not been saved in the database
   @override
   Widget build(BuildContext context) {
     return Scaffold(
