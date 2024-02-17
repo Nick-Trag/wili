@@ -34,12 +34,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     _getCategories();
   }
 
+  // TODO: Going back after an edit keeps the editing values, even though they have not been saved in the database
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( // Might delete the app bar and the title on this page, will see
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.item.name),
+        title: Text(widget.item.name != "" ? widget.item.name : "Add a new item"),
         centerTitle: true,
         actions: [
           GestureDetector(
@@ -52,7 +53,12 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             ),
             onTap: () async {
               if (_formKey.currentState!.validate()) {
-                await sqlite.updateItem(widget.item);
+                if (widget.item.id != -1) {
+                  await sqlite.updateItem(widget.item);
+                }
+                else {
+                  await sqlite.addItem(widget.item);
+                }
 
                 if (context.mounted) { // Not actually needed, but Flutter does not normally want me accessing context in async functions
                   Navigator.of(context).pop();

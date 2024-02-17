@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wili/classes/item.dart';
+import 'package:wili/pages/edit_item.dart';
 import 'package:wili/services/sqlite_service.dart';
 import 'package:wili/widgets/list_widget.dart';
 
@@ -13,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
   SQLiteService sqlite = SQLiteService();
   List<WishlistItem> items = [
     WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
@@ -32,12 +32,6 @@ class _HomePageState extends State<HomePage> {
   // List<WishlistItem> items = [];
   List<WishlistItem> newItems = [];
   Map<int, String> categories = {};
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   void _getItems() async {
     List<WishlistItem> tempItems = await sqlite.getAllItems();
@@ -73,8 +67,12 @@ class _HomePageState extends State<HomePage> {
         items: newItems,
         categories: categories,
       ),
-      floatingActionButton: FloatingActionButton( // TODO: Add item
-        onPressed: _incrementCounter,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => EditItemWidget(item: WishlistItem(name: "", category: categories.keys.first)))
+          );
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
