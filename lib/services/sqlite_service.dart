@@ -39,6 +39,17 @@ class SQLiteService {
     await db.insert('Items', item.toMap());
   }
 
+  Future<void> updateItem(WishlistItem item) async {
+    final Database db = await initializeDB();
+
+    await db.update(
+      'Items',
+      item.toMap(),
+      where: 'id = ?',
+      whereArgs: [item.id],
+    );
+  }
+
   Future<List<WishlistItem>> getAllItems() async {
     final Database db = await initializeDB();
 
@@ -46,6 +57,7 @@ class SQLiteService {
 
     //Convert to list of items
     return List.generate(itemMaps.length, (i) => WishlistItem(
+      id: itemMaps[i]['id'] as int,
       name: itemMaps[i]['name'] as String,
       category: itemMaps[i]['category_id'],
       price: itemMaps[i]['price'] as double,

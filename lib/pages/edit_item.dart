@@ -50,14 +50,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 semanticLabel: "Save item",
               ),
             ),
-            onTap: () {
+            onTap: () async {
               if (_formKey.currentState!.validate()) {
-                // TODO: Submit form data and navigate to ViewItemWidget for this item (so just go back a page)
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Processing Data')),
-                );
+                await sqlite.updateItem(widget.item);
 
-                Navigator.of(context).pop();
+                if (context.mounted) { // Not actually needed, but Flutter does not normally want me accessing context in async functions
+                  Navigator.of(context).pop();
+                }
               }
             },
           )
@@ -85,6 +84,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         return 'Please enter a name';
                       }
                       return null;
+                    },
+                    onChanged: (value) {
+                      widget.item.name = value;
                     },
                   ),
                 ),
@@ -129,6 +131,14 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         ),
                       ),
                     ],
+                    onChanged: (value) {
+                      if (value == "") {
+                        widget.item.price = 0;
+                      }
+                      else {
+                        widget.item.price = double.parse(value);
+                      }
+                    },
                   ),
                 ),
                 const Padding(
@@ -137,7 +147,12 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(initialValue: widget.item.note),
+                  child: TextFormField(
+                    initialValue: widget.item.note,
+                    onChanged: (value) {
+                      widget.item.note = value;
+                    },
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
@@ -151,6 +166,14 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
                     ],
+                    onChanged: (value) {
+                      if (value == "") {
+                        widget.item.quantity = 1;
+                      }
+                      else {
+                        widget.item.quantity = int.parse(value);
+                      }
+                    },
                   ),
                 ),
                 const Padding(
@@ -161,6 +184,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
                     initialValue: widget.item.link,
+                    onChanged: (value) {
+                      widget.item.link = value;
+                    },
                   ),
                 ),
                 Padding(
