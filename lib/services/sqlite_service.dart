@@ -27,6 +27,31 @@ class SQLiteService {
             "REFERENCES Categories (id)"
             "ON DELETE SET DEFAULT" // Currently there is no default, so this should not even work
         ")");
+        // Insert some default categories
+        await database.insert(
+          'Categories',
+          {
+            'name': 'Tech',
+          }
+        );
+        await database.insert(
+          'Categories',
+          {
+            'name': 'Clothes',
+          }
+        );
+        await database.insert(
+          'Categories',
+          {
+            'name': 'Hobby',
+          }
+        );
+        await database.insert(
+          'Categories',
+          {
+            'name': 'Misc.',
+          }
+        );
       },
       version: 1,
     );
