@@ -30,29 +30,29 @@ class _HomePageState extends State<HomePage> {
   //   WishlistItem(name: "Shoes", category: 3),
   // ];
   // List<WishlistItem> items = [];
-  List<WishlistItem> items = [];
-  Map<int, String> categories = {};
-
-  void _getItems() async {
-    List<WishlistItem> tempItems = await sqlite.getAllItems();
-    setState(() {
-      items = tempItems;
-    });
-  }
-
-  void _getCategories() async {
-    Map<int, String> tempCategories = await sqlite.getCategories();
-    setState(() {
-      categories = tempCategories;
-    });
-  }
+  // List<WishlistItem> items = [];
+  // Map<int, String> categories = {};
+  //
+  // void _getItems() async {
+  //   List<WishlistItem> tempItems = await sqlite.getAllItems();
+  //   setState(() {
+  //     items = tempItems;
+  //   });
+  // }
+  //
+  // void _getCategories() async {
+  //   Map<int, String> tempCategories = await sqlite.getCategories();
+  //   setState(() {
+  //     categories = tempCategories;
+  //   });
+  // }
 
   // TODO: When I eventually add the functionality to change the database, this will probably not be sufficient, as navigating to another widget and back does not call initState() again
   @override
   void initState() {
     super.initState();
-    _getItems();
-    _getCategories();
+    // _getItems();
+    // _getCategories();
   }
 
   @override
@@ -63,18 +63,53 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: ListWidget(
-        items: items,
-        categories: categories,
+      body: FutureBuilder<List<dynamic>>(
+        future: Future.wait([sqlite.getAllItems(), sqlite.getCategories()]), // TODO: Standard provider
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshots) {
+          if (snapshots.hasData) {
+            return ListWidget(
+              items: snapshots.data![0],
+              categories: snapshots.data![1],
+            );
+          }
+          else if (snapshots.hasError) {
+            return Center(
+              child: Text("Error: ${snapshots.error}")
+            );
+          }
+          else {
+            return const Center(
+              child: SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        }
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => EditItemWidget(item: WishlistItem(name: "", category: categories.keys.first)))
-          );
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: FutureBuilder<Map<int, String>>(
+        future: sqlite.getCategories(),
+        builder: (BuildContext context, AsyncSnapshot<Map<int, String>> snapshot) {
+          if (snapshot.hasData) {
+            return FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => EditItemWidget(item: WishlistItem(name: "", category: snapshot.data!.keys.first)))
+                );
+              },
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            );
+          }
+          else {
+            return FloatingActionButton(
+              onPressed: () {},
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            );
+          }
+        }
       ),
     );
   }
