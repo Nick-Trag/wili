@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
-import 'package:wili/services/sqlite_service.dart';
+import 'package:wili/providers/item_provider.dart';
 import 'package:wili/widgets/list_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  SQLiteService sqlite = SQLiteService();
+  // SQLiteService sqlite = SQLiteService();
   // List<WishlistItem> items = [
   //   WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
   //   WishlistItem(name: "Camera", category: 1, price: 400),
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: FutureBuilder<List<dynamic>>(
-        future: Future.wait([sqlite.getAllItems(), sqlite.getCategories()]), // TODO: Standard provider
+        future: Future.wait([Provider.of<ItemProvider>(context).getAllItems(), Provider.of<ItemProvider>(context).getCategories()]), // TODO: Standard provider
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshots) {
           if (snapshots.hasData) {
             return ListWidget(
@@ -82,14 +83,14 @@ class _HomePageState extends State<HomePage> {
               child: SizedBox(
                 width: 60,
                 height: 60,
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(), // TODO: Doesn't actually show a progress indicator
               ),
             );
           }
         }
       ),
       floatingActionButton: FutureBuilder<Map<int, String>>(
-        future: sqlite.getCategories(),
+        future: Provider.of<ItemProvider>(context).getCategories(),
         builder: (BuildContext context, AsyncSnapshot<Map<int, String>> snapshot) {
           if (snapshot.hasData) {
             return FloatingActionButton(

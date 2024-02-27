@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wili/classes/item.dart';
+import 'package:provider/provider.dart';
 import 'package:wili/pages/home.dart';
-import 'package:wili/pages/edit_item.dart';
+import 'package:wili/providers/item_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'Wili Wishlist'),
+      home: ChangeNotifierProvider(
+        create: (BuildContext context) => ItemProvider(),
+        child: const HomePage(title: 'Wili Wishlist'),
+      ),
       // home: ViewItemWidget(title: 'Wili Wishlist', item: WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg")),
     );
   }

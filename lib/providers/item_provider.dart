@@ -5,22 +5,15 @@ import 'package:wili/services/sqlite_service.dart';
 class ItemProvider extends ChangeNotifier {
   final SQLiteService _sqlite = SQLiteService();
 
-  List<WishlistItem> _items = [];
+  Future<List<WishlistItem>> getAllItems() async {
+    return _sqlite.getAllItems();
 
-  List<WishlistItem> get items => _items;
-
-  Map<int, String> _categories = {};
-
-  Map<int, String> get categories => _categories;
-
-  Future<void> getAllItems() async {
-    _items = await _sqlite.getAllItems();
-    notifyListeners();
+    // notifyListeners();
   }
 
   Future<void> addItem(WishlistItem item) async {
     await _sqlite.addItem(item);
-    // _items.add(item); // TODO: Maybe add it, but only if we know it is a success for sure. And if I do that, then same for updates, deletes etc.
+
     notifyListeners();
   }
 
@@ -30,10 +23,16 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getCategories() async {
-    _categories = await _sqlite.getCategories();
+  Future<Map<int, String>> getCategories() async {
+    return _sqlite.getCategories();
 
-    notifyListeners();
+    // notifyListeners();
+  }
+
+  Future<Map<String, int>> getCategoriesReversed() async {
+    return _sqlite.getCategoriesReversed();
+
+    // notifyListeners();
   }
 
 }
