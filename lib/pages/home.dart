@@ -64,18 +64,20 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: Future.wait([Provider.of<ItemProvider>(context, listen: false).getAllItems(), Provider.of<ItemProvider>(context, listen: false).getCategories()]), // TODO: Standard provider
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshots) {
-          if (snapshots.hasData) {
-            return ListWidget(
-              items: snapshots.data![0],
-              categories: snapshots.data![1],
+      body: FutureBuilder<void>(
+        future: Future.wait([Provider.of<ItemProvider>(context).getAllItems(), Provider.of<ItemProvider>(context).getCategories()]),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          if (snapshot.hasData) { // TODO: Use connectionState
+            return Consumer<ItemProvider>(
+              builder: (context, provider, child) => ListWidget(
+                items: provider.items,
+                categories: provider.categories,
+              ),
             );
           }
-          else if (snapshots.hasError) {
+          else if (snapshot.hasError) {
             return Center(
-              child: Text("Error: ${snapshots.error}")
+              child: Text("Error: ${snapshot.error}")
             );
           }
           else {
@@ -89,24 +91,26 @@ class _HomePageState extends State<HomePage> {
           }
         }
       ),
-      floatingActionButton: FutureBuilder<Map<int, String>>(
-        future: Provider.of<ItemProvider>(context, listen: false).getCategories(),
-        builder: (BuildContext context, AsyncSnapshot<Map<int, String>> snapshot) {
-          if (snapshot.hasData) {
-            return FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => EditItemWidget(item: WishlistItem(name: "", category: snapshot.data!.keys.first)))
-                );
-              },
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
+      floatingActionButton: FutureBuilder<void>(
+        future: Provider.of<ItemProvider>(context).getCategories(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          if (snapshot.hasData) { // TODO: Use connectionState
+            return Consumer<ItemProvider>(
+              builder: (context, provider, child) => FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => EditItemWidget(item: WishlistItem(name: "", category: provider.categories.keys.first)))
+                  );
+                },
+                tooltip: 'Add new item',
+                child: const Icon(Icons.add),
+              )
             );
           }
           else {
             return FloatingActionButton(
               onPressed: () {},
-              tooltip: 'Increment',
+              tooltip: 'Add new item',
               child: const Icon(Icons.add),
             );
           }

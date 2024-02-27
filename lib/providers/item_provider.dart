@@ -5,8 +5,16 @@ import 'package:wili/services/sqlite_service.dart';
 class ItemProvider extends ChangeNotifier {
   final SQLiteService _sqlite = SQLiteService();
 
-  Future<List<WishlistItem>> getAllItems() async {
-    return _sqlite.getAllItems();
+  List<WishlistItem> _items = [];
+
+  List<WishlistItem> get items => _items;
+
+  Map<int, String> _categories = {};
+
+  Map<int, String> get categories => _categories;
+
+  Future<void> getAllItems() async {
+    _items = await _sqlite.getAllItems();
 
     // notifyListeners();
   }
@@ -23,16 +31,16 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<int, String>> getCategories() async {
-    return _sqlite.getCategories();
+  Future<void> getCategories() async {
+    _categories = await _sqlite.getCategories();
 
     // notifyListeners();
   }
 
-  Future<Map<String, int>> getCategoriesReversed() async {
-    return _sqlite.getCategoriesReversed();
-
-    // notifyListeners();
-  }
+  // Future<Map<String, int>> getCategoriesReversed() async {
+  //   return _sqlite.getCategoriesReversed();
+  //
+  //   // notifyListeners();
+  // }
 
 }
