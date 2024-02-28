@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
+import 'package:wili/providers/item_provider.dart';
 import 'package:wili/services/sqlite_service.dart';
 
 class EditItemWidget extends StatefulWidget {
@@ -20,7 +22,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
   Map<String, int> categories = {};
   final _formKey = GlobalKey<FormState>();
 
-  void _getCategories() async {
+  void _getCategories() async { // TODO: Remove this, use the provider instead
     Map<String, int> tempCategories = await sqlite.getCategoriesReversed();
     setState(() {
       categories = tempCategories;
@@ -51,18 +53,16 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 semanticLabel: "Save item",
               ),
             ),
-            onTap: () async {
+            onTap: () {
               if (_formKey.currentState!.validate()) {
                 if (widget.item.id != -1) {
-                  await sqlite.updateItem(widget.item);
+                  Provider.of<ItemProvider>(context, listen: false).updateItem(widget.item);
                 }
                 else {
-                  await sqlite.addItem(widget.item);
+                  Provider.of<ItemProvider>(context, listen: false).addItem(widget.item);
                 }
 
-                if (context.mounted) { // Not actually needed, but Flutter does not normally want me accessing context in async functions
-                  Navigator.of(context).pop();
-                }
+                Navigator.of(context).pop();
               }
             },
           )
