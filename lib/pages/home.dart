@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
@@ -61,11 +62,11 @@ class _HomePageState extends State<HomePage> {
             );
           }
           else {
-            return const Center(
+            return Center(
               child: SizedBox(
                 width: 60,
                 height: 60,
-                child: CircularProgressIndicator(), // TODO: Doesn't actually show a progress indicator
+                child: SpinKitFadingCircle(color: Theme.of(context).colorScheme.secondary,), // TODO: Doesn't actually show a progress indicator
               ),
             );
           }
