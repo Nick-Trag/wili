@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // SQLiteService sqlite = SQLiteService();
   // List<WishlistItem> items = [
   //   WishlistItem(name: "Computer", category: 1, price: 250, link: "https://www.example.com/", image: "assets/4060ti.jpg"),
   //   WishlistItem(name: "Camera", category: 1, price: 400),
@@ -31,29 +30,10 @@ class _HomePageState extends State<HomePage> {
   //   WishlistItem(name: "Shoes", category: 3),
   // ];
   // List<WishlistItem> items = [];
-  // List<WishlistItem> items = [];
-  // Map<int, String> categories = {};
-  //
-  // void _getItems() async {
-  //   List<WishlistItem> tempItems = await sqlite.getAllItems();
-  //   setState(() {
-  //     items = tempItems;
-  //   });
-  // }
-  //
-  // void _getCategories() async {
-  //   Map<int, String> tempCategories = await sqlite.getCategories();
-  //   setState(() {
-  //     categories = tempCategories;
-  //   });
-  // }
 
-  // TODO: When I eventually add the functionality to change the database, this will probably not be sufficient, as navigating to another widget and back does not call initState() again
   @override
   void initState() {
     super.initState();
-    // _getItems();
-    // _getCategories();
   }
 
   @override
@@ -67,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder<void>(
         future: Future.wait([Provider.of<ItemProvider>(context, listen: false).getAllItems(), Provider.of<ItemProvider>(context, listen: false).getCategories()]),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState != ConnectionState.waiting) { // TODO: Use connectionState correctly or hasData
+          if (snapshot.hasData) { // Could also use snapshot.connectionState, but this also seems to work, even though the data is void
             return Consumer<ItemProvider>(
               builder: (context, provider, child) => ListWidget(
                 items: provider.items,
@@ -94,7 +74,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FutureBuilder<void>(
         future: Provider.of<ItemProvider>(context, listen: false).getCategories(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState != ConnectionState.waiting) { // TODO: Use connectionState correctly or hasData
+          if (snapshot.hasData) {
             return Consumer<ItemProvider>(
               builder: (context, provider, child) => FloatingActionButton(
                 onPressed: () {

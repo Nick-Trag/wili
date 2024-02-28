@@ -10,15 +10,13 @@ class EditItemWidget extends StatefulWidget {
   EditItemWidget({super.key, required this.item});
 
   final WishlistItem item; // Note: Final variables can have their fields changed. Const variables cannot
-  // In the future, the item will probably be nullable. This is how this is done:
-  // final WishlistItem? item;
 
   @override
   State<EditItemWidget> createState() => _EditItemWidgetState();
 }
 
 class _EditItemWidgetState extends State<EditItemWidget> {
-  SQLiteService sqlite = SQLiteService(); // TODO: This is a duplicate from home, will probably change it to inherit it from main or something
+  SQLiteService sqlite = SQLiteService();
   Map<String, int> categories = {};
   final _formKey = GlobalKey<FormState>();
 
@@ -29,7 +27,6 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     });
   }
 
-  // TODO: When I eventually add the functionality to change the database, this will probably not be sufficient, as navigating to another widget and back does not call initState() again
   @override
   void initState() {
     super.initState();

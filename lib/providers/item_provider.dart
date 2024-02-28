@@ -32,8 +32,6 @@ class ItemProvider extends ChangeNotifier {
     await getAllItems();
     await getCategories();
 
-    // TODO TODO TODO TODO TODO: Whenever I call a method like one of these, I should call it FROM THE PROVIDER, NOT FROM THE SERVICE
-
     notifyListeners();
   }
 
