@@ -15,8 +15,6 @@ class ItemProvider extends ChangeNotifier {
 
   Future<void> getAllItems() async {
     _items = await _sqlite.getAllItems();
-
-    notifyListeners();
   }
 
   Future<void> addItem(WishlistItem item) async {
@@ -34,9 +32,6 @@ class ItemProvider extends ChangeNotifier {
     await getAllItems();
     await getCategories();
 
-    print("GOT HERE");
-    print(items);
-
     // TODO TODO TODO TODO TODO: Whenever I call a method like one of these, I should call it FROM THE PROVIDER, NOT FROM THE SERVICE
 
     notifyListeners();
@@ -44,8 +39,6 @@ class ItemProvider extends ChangeNotifier {
 
   Future<void> getCategories() async {
     _categories = await _sqlite.getCategories();
-
-    notifyListeners();
   }
 
   // Future<Map<String, int>> getCategoriesReversed() async {

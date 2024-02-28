@@ -19,7 +19,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.item.name),
+        title: Text(widget.item.name), // TODO: After editing it, this needs to change
         centerTitle: true,
         actions: [
           GestureDetector(

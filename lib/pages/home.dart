@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder<void>(
         future: Future.wait([Provider.of<ItemProvider>(context, listen: false).getAllItems(), Provider.of<ItemProvider>(context, listen: false).getCategories()]),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState != ConnectionState.waiting) { // TODO: Use connectionState
+          if (snapshot.connectionState != ConnectionState.waiting) { // TODO: Use connectionState correctly or hasData
             return Consumer<ItemProvider>(
               builder: (context, provider, child) => ListWidget(
                 items: provider.items,
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FutureBuilder<void>(
         future: Provider.of<ItemProvider>(context, listen: false).getCategories(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState != ConnectionState.waiting) { // TODO: Use connectionState
+          if (snapshot.connectionState != ConnectionState.waiting) { // TODO: Use connectionState correctly or hasData
             return Consumer<ItemProvider>(
               builder: (context, provider, child) => FloatingActionButton(
                 onPressed: () {
