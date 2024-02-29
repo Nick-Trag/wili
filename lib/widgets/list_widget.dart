@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wili/classes/item.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:wili/pages/edit_item.dart';
 import 'package:wili/pages/view_item.dart';
 
 class ListWidget extends StatelessWidget {

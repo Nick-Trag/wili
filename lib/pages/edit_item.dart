@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/providers/item_provider.dart';
-import 'package:wili/services/sqlite_service.dart';
 
 class EditItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -16,21 +15,11 @@ class EditItemWidget extends StatefulWidget {
 }
 
 class _EditItemWidgetState extends State<EditItemWidget> {
-  SQLiteService sqlite = SQLiteService();
-  Map<int, String> categories = {};
   final _formKey = GlobalKey<FormState>();
-
-  void _getCategories() async { // TODO: Remove this, use the provider instead
-    Map<int, String> tempCategories = await sqlite.getCategories();
-    setState(() {
-      categories = tempCategories;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _getCategories();
   }
 
   // TODO: Going back after an edit keeps the edited values, even though they have not been saved in the database
@@ -99,22 +88,24 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
-                    value: widget.item.category,
-                    items: categories.map((int id, String name) {
-                      return MapEntry<String, DropdownMenuItem<int>>(
-                        name,
-                        DropdownMenuItem<int>(
-                          value: id,
-                          child: Text(name),
-                        )
-                      );
-                    }).values.toList(),
-                    onChanged: (int? value) {
-                      setState(() {
-                        widget.item.category = value!;
-                      });
-                    },
+                  child: Consumer<ItemProvider>(
+                    builder: (context, provider, child) => DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
+                      value: widget.item.category,
+                      items: provider.categories.map((int id, String name) {
+                        return MapEntry<String, DropdownMenuItem<int>>(
+                          name,
+                          DropdownMenuItem<int>(
+                            value: id,
+                            child: Text(name),
+                          )
+                        );
+                      }).values.toList(),
+                      onChanged: (int? value) {
+                        setState(() {
+                          widget.item.category = value!;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const Padding(
