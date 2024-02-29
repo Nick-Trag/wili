@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder<void>(
         future: Future.wait([Provider.of<ItemProvider>(context, listen: false).getAllItems(), Provider.of<ItemProvider>(context, listen: false).getCategories()]),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.hasData) { // Could also use snapshot.connectionState, but this also seems to work, even though the data is void
+          if (snapshot.connectionState == ConnectionState.done) {
             return Consumer<ItemProvider>(
               builder: (context, provider, child) => ListWidget(
                 items: provider.items,
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          else if (snapshot.hasError) {
+          else if (snapshot.hasError) { // Should never happen
             return Center(
               child: Text("Error: ${snapshot.error}")
             );
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FutureBuilder<void>(
         future: Provider.of<ItemProvider>(context, listen: false).getCategories(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done) {
             return Consumer<ItemProvider>(
               builder: (context, provider, child) => FloatingActionButton(
                 onPressed: () {
