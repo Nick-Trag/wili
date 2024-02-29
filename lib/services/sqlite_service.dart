@@ -105,6 +105,32 @@ class SQLiteService {
     );
   }
 
+  Future<WishlistItem?> getItemById(int id) async {
+    final Database db = await initializeDB();
+
+    final List<Map<String, dynamic>> itemMaps = await db.query(
+      'Items',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (itemMaps.isEmpty) {
+      return null;
+    }
+
+    return WishlistItem(
+      id: itemMaps[0]['id'] as int,
+      name: itemMaps[0]['name'] as String,
+      category: itemMaps[0]['category_id'],
+      price: itemMaps[0]['price'] as double,
+      purchased: itemMaps[0]['purchased'] == 0 ? false : true,
+      note: itemMaps[0]['note'] as String,
+      quantity: itemMaps[0]['quantity'] as int,
+      link: itemMaps[0]['link'] as String,
+      image: itemMaps[0]['image'] as String,
+    );
+  }
+
   Future<Map<int, String>> getCategories() async {
     final Database db = await initializeDB();
 

@@ -36,15 +36,15 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text("Delete this item?"), // TODO: Better UI
-                  content: Text("Are you sure you want to delete this item? ${widget.item.name}"),
+                  content: Text("Are you sure you want to delete ${widget.item.name}?"),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text("No"),
+                      child: const Text("Cancel"),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text("Yes"),
+                      child: const Text("Delete"),
                     ),
                   ],
                 ),
