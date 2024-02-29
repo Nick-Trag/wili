@@ -104,16 +104,5 @@ class SQLiteService {
       for (var mapItem in categoryMaps) mapItem['id'] : mapItem['name']
     };
   }
-
-  // Returns all the categories, but mapped from the name to the id instead of the opposite
-  Future<Map<String, int>> getCategoriesReversed() async {
-    final Database db = await initializeDB();
-
-    final List<Map<String, dynamic>> categoryMaps = await db.query('Categories');
-
-    return {
-      for (var mapItem in categoryMaps) mapItem['name'] : mapItem['id']
-    };
-  }
 }
 

@@ -17,11 +17,11 @@ class EditItemWidget extends StatefulWidget {
 
 class _EditItemWidgetState extends State<EditItemWidget> {
   SQLiteService sqlite = SQLiteService();
-  Map<String, int> categories = {};
+  Map<int, String> categories = {};
   final _formKey = GlobalKey<FormState>();
 
   void _getCategories() async { // TODO: Remove this, use the provider instead
-    Map<String, int> tempCategories = await sqlite.getCategoriesReversed();
+    Map<int, String> tempCategories = await sqlite.getCategories();
     setState(() {
       categories = tempCategories;
     });
@@ -101,7 +101,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
                     value: widget.item.category,
-                    items: categories.map((String name, int id) {
+                    items: categories.map((int id, String name) {
                       return MapEntry<String, DropdownMenuItem<int>>(
                         name,
                         DropdownMenuItem<int>(

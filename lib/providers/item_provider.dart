@@ -13,6 +13,11 @@ class ItemProvider extends ChangeNotifier {
 
   Map<int, String> get categories => _categories;
 
+  ItemProvider() {
+    getAllItems();
+    getCategories();
+  }
+
   Future<void> getAllItems() async {
     _items = await _sqlite.getAllItems();
   }
@@ -38,11 +43,5 @@ class ItemProvider extends ChangeNotifier {
   Future<void> getCategories() async {
     _categories = await _sqlite.getCategories();
   }
-
-  // Future<Map<String, int>> getCategoriesReversed() async {
-  //   return _sqlite.getCategoriesReversed();
-  //
-  //   // notifyListeners();
-  // }
 
 }
