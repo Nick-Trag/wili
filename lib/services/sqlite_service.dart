@@ -75,6 +75,16 @@ class SQLiteService {
     );
   }
 
+  Future<void> deleteItem(int id) async {
+    final Database db = await initializeDB();
+
+    await db.delete(
+      'Items',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future<List<WishlistItem>> getAllItems() async {
     final Database db = await initializeDB();
 

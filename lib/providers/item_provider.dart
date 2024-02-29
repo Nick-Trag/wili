@@ -40,6 +40,15 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteItem(int id) async {
+    await _sqlite.deleteItem(id);
+
+    await getAllItems();
+    await getCategories();
+
+    notifyListeners();
+  }
+
   Future<void> getCategories() async {
     _categories = await _sqlite.getCategories();
   }
