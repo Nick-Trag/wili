@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               child: SizedBox(
                 width: 60,
                 height: 60,
-                child: SpinKitFadingCircle(color: Theme.of(context).colorScheme.secondary,), // TODO: Doesn't actually show a progress indicator
+                child: SpinKitFadingCircle(color: Theme.of(context).colorScheme.secondary,),
               ),
             );
           }
