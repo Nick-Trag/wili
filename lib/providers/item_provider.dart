@@ -21,7 +21,7 @@ class ItemProvider extends ChangeNotifier {
     await _sqlite.addItem(item);
 
     await getAllItems();
-    await getCategories();
+    await getCategories(); // TODO: I don't think there is a need to update categories at this stage. But might keep it just to be sure
 
     notifyListeners();
   }
