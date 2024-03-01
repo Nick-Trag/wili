@@ -32,7 +32,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               ),
             ),
             onTap: () async {
-              final result = await showDialog<bool>(
+              final bool? result = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text("Delete this item?"), // TODO: Better UI
