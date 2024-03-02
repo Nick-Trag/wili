@@ -111,7 +111,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                               child: Text(item.name),
                             ),
                             const Divider(),
-                            Text(item.category.toString()), // TODO: Named category
+                            Text(provider.categories[item.category]!),
                           ],
                         ),
                       ),
