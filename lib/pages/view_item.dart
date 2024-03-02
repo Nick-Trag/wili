@@ -99,7 +99,25 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(child: item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark)),
-                ],  // TODO: Rest of the item attributes
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(item.name),
+                            ),
+                            const Divider(),
+                            Text(item.category.toString()), // TODO: Named category
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ], // TODO: Rest of the item attributes
               );
             }
           ),
