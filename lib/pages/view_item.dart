@@ -89,7 +89,22 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
           )
         ],
       ),
-      body: const Placeholder(), // TODO: Body
+      body: SizedBox(
+        width: double.infinity,
+        child: SingleChildScrollView(
+          child: Consumer<ItemProvider>(
+            builder: (context, provider, child) {
+              WishlistItem item = provider.currentItem ?? widget.item;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(child: item.image != "" ? Image.asset(item.image) : const Icon(Icons.question_mark)),
+                ],  // TODO: Rest of the item attributes
+              );
+            }
+          ),
+        ),
+      ),
     );
   }
 }
