@@ -13,6 +13,10 @@ class ItemProvider extends ChangeNotifier {
 
   Map<int, String> get categories => _categories;
 
+  WishlistItem? _currentItem;
+
+  WishlistItem? get currentItem => _currentItem;
+
   ItemProvider() {
     getAllItems();
     getCategories();
@@ -20,6 +24,7 @@ class ItemProvider extends ChangeNotifier {
 
   Future<void> getAllItems() async {
     _items = await _sqlite.getAllItems();
+    _currentItem = null;
   }
 
   Future<void> addItem(WishlistItem item) async {
@@ -37,6 +42,8 @@ class ItemProvider extends ChangeNotifier {
     await getAllItems();
     await getCategories();
 
+    _currentItem = item;
+
     notifyListeners();
   }
 
@@ -51,6 +58,12 @@ class ItemProvider extends ChangeNotifier {
 
   Future<void> getCategories() async {
     _categories = await _sqlite.getCategories();
+  }
+
+  Future<void> getItemById(int id) async {
+    _currentItem = await _sqlite.getItemById(id);
+
+    notifyListeners();
   }
 
 }

@@ -16,11 +16,21 @@ class ViewItemWidget extends StatefulWidget {
 
 class _ViewItemWidgetState extends State<ViewItemWidget>{
   @override
+  void initState() {
+    super.initState();
+
+    Provider.of<ItemProvider>(context, listen: false).getItemById(widget.item.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.item.name), // TODO: After editing it, this needs to change
+        title:
+          Consumer<ItemProvider>(
+            builder: (context, provider, child) => provider.currentItem != null ? Text(provider.currentItem!.name) : Text(widget.item.name)
+          ),
         centerTitle: true,
         actions: [
           GestureDetector(
@@ -36,7 +46,12 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text("Delete this item?"), // TODO: Better UI
-                  content: Text("Are you sure you want to delete ${widget.item.name}?"),
+                  content: Consumer<ItemProvider>(
+                    builder: (context, provider, child) {
+                      String name = provider.currentItem?.name ?? widget.item.name;
+                      return Text("Are you sure you want to delete $name?");
+                    }
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
@@ -66,8 +81,9 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               ),
             ),
             onTap: () {
+              WishlistItem item = Provider.of<ItemProvider>(context, listen: false).currentItem ?? widget.item;
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => EditItemWidget(item: widget.item))
+                MaterialPageRoute(builder: (context) => EditItemWidget(item: item))
               );
             },
           )
