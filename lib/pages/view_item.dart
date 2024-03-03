@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
 import 'package:wili/providers/item_provider.dart';
+import 'package:intl/intl.dart' as intl;
+
 
 class ViewItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -112,6 +114,8 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             ),
                             const Divider(),
                             Text(provider.categories[item.category]!),
+                            const Divider(),
+                            Text('${intl.NumberFormat('0.00').format(item.price)}€'),
                           ],
                         ),
                       ),
