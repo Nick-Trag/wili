@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsWidget()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsWidget()));
             },
           )
         ],

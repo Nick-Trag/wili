@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
-class SettingsWidget extends StatelessWidget {
-  const SettingsWidget({super.key});
+class SettingsWidget extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
+  SettingsWidget({super.key});
+
+  @override
+  State<SettingsWidget> createState() => _SettingsWidgetState();
+}
+
+class _SettingsWidgetState extends State<SettingsWidget> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +29,36 @@ class SettingsWidget extends StatelessWidget {
                   title: Text("Currency"),
                   subtitle: Text("€"),
                 ),
-                onTap: () {
-                  // TODO: Show modal with a TextFormField that makes lets users type in their currency symbol or name
+                onTap: () async {
+                  final String? currency = await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Please type in the symbol or name of your currency"),
+                      content: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          initialValue: "", // TODO: Currently saved currency
+                          validator: (value) {
+                            if (value == null || value.isEmpty ||value.length > 5) {
+                              return "Please enter up to five characters";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // TODO: Save currency to preferences
+                              Navigator.of(context).pop();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
               const Divider(height: 0),
@@ -46,5 +82,4 @@ class SettingsWidget extends StatelessWidget {
       ),
     );
   }
-
 }
