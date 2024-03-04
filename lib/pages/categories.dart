@@ -11,7 +11,7 @@ class CategoriesWidget extends StatelessWidget {
         title: const Text('Categories'),
         centerTitle: true,
       ),
-      body: const Placeholder(), // TODO: All categories, with an edit button (opens modal for new name) and delete button (opens modal for confirmation)
+      body: const Placeholder(), // TODO: All categories, in cards, with an edit button (opens modal for new name) and delete button (opens modal for confirmation)
     );
   }
 }

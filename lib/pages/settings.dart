@@ -13,11 +13,12 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _currency = "";
+  String _currency = "€";
 
   @override
   void initState() {
     super.initState();
+    _currency = Provider.of<SettingsProvider>(context, listen: false).currency;
   }
 
   @override
