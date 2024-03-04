@@ -129,7 +129,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                       ),
                     ),
                   )
-                ], // TODO: Rest of the item attributes
+                ], // TODO: Make it look good
               );
             }
           ),
