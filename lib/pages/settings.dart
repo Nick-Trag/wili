@@ -30,7 +30,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   subtitle: Text("€"),
                 ),
                 onTap: () async {
-                  final String? currency = await showDialog(
+                  final String? currency = await showDialog<String>(
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text("Please type in the symbol or name of your currency"),
