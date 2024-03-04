@@ -10,6 +10,27 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _currency = "";
+
+  // Future<void> _getCurrency() async {
+  //   final settings = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _currency = settings.getString('currency') ?? "€";
+  //   });
+  // }
+  //
+  // Future<void> _setCurrency(String newCurrency) async {
+  //   final settings = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _currency = newCurrency;
+  //     settings.setString('currency', newCurrency);
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +46,19 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           ListView(
             children: <Widget>[
               InkWell(
-                child: const ListTile(
-                  title: Text("Currency"),
-                  subtitle: Text("€"),
+                child: ListTile(
+                  title: const Text("Currency"),
+                  subtitle: Text(_currency),
                 ),
                 onTap: () async {
-                  final String? currency = await showDialog<String>(
+                  final String? newCurrency = await showDialog<String>(
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text("Please type in the symbol or name of your currency"),
                       content: Form(
                         key: _formKey,
                         child: TextFormField(
-                          initialValue: "", // TODO: Currently saved currency
+                          initialValue: _currency,
                           validator: (value) {
                             if (value == null || value.isEmpty ||value.length > 5) {
                               return "Please enter up to five characters";

@@ -12,6 +12,7 @@ class ListWidget extends StatelessWidget {
 
   final List<WishlistItem> items;
   final Map<int, String> categories;
+  final String currency = '€'; // TODO: Not final. This will become a stateful widget probably
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class ListWidget extends StatelessWidget {
                     ),
                     title: Text(items[index].name),
                     subtitle: Text(categories[items[index].category]!),
-                    trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}€'),
+                    trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}$currency'),
                   ),
                 ),
                 onTap: () {
