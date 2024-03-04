@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider extends ChangeNotifier {
-  String _currency = "";
-
   SettingsProvider() {
     getCurrency();
   }
+
+  String _currency = "";
 
   String get currency => _currency;
 

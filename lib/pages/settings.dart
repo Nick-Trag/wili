@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wili/pages/categories.dart';
 import 'package:wili/providers/settings_provider.dart';
 
 class SettingsWidget extends StatefulWidget {
@@ -80,6 +81,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 ),
                 onTap: () {
                   // TODO: Show all categories and let users delete and rename them (always keeping one alive)
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CategoriesWidget())
+                  );
                 },
               ),
               const Divider(height: 0),
