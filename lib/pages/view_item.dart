@@ -123,12 +123,24 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             Text(item.quantity.toString()),
                             const Divider(),
                             InkWell(
-                              child: Text(item.link),
+                              child: Text(
+                                item.link, // TODO: Make it look like a URL
+                              ),
                               onTap: () {
-                                // final Uri url = Uri.parse(item.link);
-                                // launchUrl();
+                                Uri link;
+                                try {
+                                  link = Uri.parse(item.link);
+                                }
+                                on FormatException {
+                                  return;
+                                }
+                                if (link.isScheme('http') || link.isScheme('https')) {
+                                  // Could also use canLaunch(link), but it returns a future, and I don't think I want to make this function async and await the result for no reason
+                                  // Also, everything has already been checked when the link was added. So the check is superfluous as well
+                                  launchUrl(link);
+                                }
                               },
-                            ), // TODO: URL Launcher
+                            ),
                             const Divider(),
                             Text(item.purchased ? "Purchased" : "Not purchased"),
                           ],

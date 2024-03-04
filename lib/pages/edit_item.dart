@@ -181,6 +181,22 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     onChanged: (value) {
                       widget.item.link = value;
                     },
+                    validator: (value) {
+                      String error = "Please enter a valid full URL or leave this field blank";
+                      if (value != null && value.isNotEmpty) {
+                        Uri link;
+                        try {
+                          link = Uri.parse(value);
+                        }
+                        on FormatException {
+                          return error;
+                        }
+                        if (!link.isScheme('http') && !link.isScheme('https')) {
+                          return error;
+                        }
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 Padding(
