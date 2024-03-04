@@ -4,6 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsProvider extends ChangeNotifier {
   String _currency = "";
 
+  SettingsProvider() {
+    getCurrency();
+  }
+
   String get currency => _currency;
 
   Future<void> getCurrency() async {

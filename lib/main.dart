@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/pages/home.dart';
 import 'package:wili/providers/item_provider.dart';
+import 'package:wili/providers/settings_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,8 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ItemProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context) => ItemProvider()),
+        ChangeNotifierProvider(create: (BuildContext context) => SettingsProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
