@@ -4,6 +4,7 @@ import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
 import 'package:wili/providers/item_provider.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:url_launcher/url_launcher.dart';
 
 
 class ViewItemWidget extends StatefulWidget {
@@ -121,7 +122,13 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             const Divider(),
                             Text(item.quantity.toString()),
                             const Divider(),
-                            Text(item.link), // TODO: URL Launcher
+                            InkWell(
+                              child: Text(item.link),
+                              onTap: () {
+                                // final Uri url = Uri.parse(item.link);
+                                // launchUrl();
+                              },
+                            ), // TODO: URL Launcher
                             const Divider(),
                             Text(item.purchased ? "Purchased" : "Not purchased"),
                           ],
