@@ -62,7 +62,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)),
+                Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)), // TODO: Image picker
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
                   child: Text(textAlign: TextAlign.start, "Name:"),

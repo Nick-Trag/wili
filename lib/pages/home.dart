@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
+import 'package:wili/pages/settings.dart';
 import 'package:wili/providers/item_provider.dart';
 import 'package:wili/widgets/list_widget.dart';
 
@@ -44,6 +45,20 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.settings,
+                semanticLabel: "App Settings",
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsWidget()));
+            },
+          )
+        ],
       ),
       body: FutureBuilder<void>(
         future: Future.wait([Provider.of<ItemProvider>(context, listen: false).getAllItems(), Provider.of<ItemProvider>(context, listen: false).getCategories()]),

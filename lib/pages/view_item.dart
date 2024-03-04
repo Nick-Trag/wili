@@ -89,7 +89,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                 MaterialPageRoute(builder: (context) => EditItemWidget(item: item))
               );
             },
-          )
+          ),
         ],
       ),
       body: SizedBox(
@@ -147,10 +147,10 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ], // TODO: Make it look good
               );
-            }
+            },
           ),
         ),
       ),
