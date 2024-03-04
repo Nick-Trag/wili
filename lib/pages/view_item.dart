@@ -113,15 +113,15 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                               padding: const EdgeInsets.all(8.0),
                               child: Text(item.name),
                             ),
-                            const Divider(),
+                            const Divider(height: 0),
                             Text(provider.categories[item.category]!),
-                            const Divider(),
+                            const Divider(height: 0),
                             Text('${intl.NumberFormat('0.00').format(item.price)}€'),
-                            const Divider(),
+                            const Divider(height: 0),
                             Text(item.note),
-                            const Divider(),
+                            const Divider(height: 0),
                             Text(item.quantity.toString()),
-                            const Divider(),
+                            const Divider(height: 0),
                             InkWell(
                               child: Text(
                                 item.link, // TODO: Make it look like a URL
@@ -141,7 +141,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                                 }
                               },
                             ),
-                            const Divider(),
+                            const Divider(height: 0),
                             Text(item.purchased ? "Purchased" : "Not purchased"),
                           ],
                         ),
