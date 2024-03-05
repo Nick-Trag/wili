@@ -66,4 +66,16 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteCategory(int id) async {
+    // TODO: Implementation
+  }
+
+  Future<void> updateCategory(int id, String name) async {
+    // TODO: Implementation
+  }
+
+  Future<void> addCategory(String name) async {
+    // TODO: Implementation
+  }
+
 }

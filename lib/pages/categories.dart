@@ -45,12 +45,67 @@ class CategoriesWidget extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 4.0),
                           child: InkWell(
                             child: const Icon(Icons.edit),
-                            onTap: () {},
-                          )
+                            onTap: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text("Please type in the new name for this category"),
+                                  content: Form(
+                                    // TODO: Key
+                                    child: TextFormField(
+                                      initialValue: provider.categories[categoryId]!,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Please enter a name";
+                                        }
+                                        if (value.length > 25) {
+                                          return "Category names can be use to 25 characters";
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+
+                                      },
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("OK"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         InkWell(
                           child: const Icon(Icons.delete),
-                          onTap: () {},
+                          onTap: () async {
+                            final bool? result = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Delete this category?"),
+                                content: Text("Are you sure you want to delete ${provider.categories[categoryId]!}? "
+                                    "This will delete all items that use this category."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(true),
+                                    child: const Text("Delete"),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (result != null && result) {
+                              provider.deleteCategory(categoryId);
+                            }
+                          },
                         ),
                       ],
                     ),

@@ -40,7 +40,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     subtitle: Text(provider.currency),
                   ),
                   onTap: () async {
-                    await showDialog<String>(
+                    await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text("Please type in the symbol or name of your currency"),
@@ -49,7 +49,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           child: TextFormField(
                             initialValue: provider.currency,
                             validator: (value) {
-                              if (value == null || value.isEmpty ||value.length > 5) {
+                              if (value == null || value.isEmpty || value.length > 5) {
                                 return "Please enter up to five characters";
                               }
                               return null;
