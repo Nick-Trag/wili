@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:wili/providers/item_provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
-  const CategoriesWidget({super.key});
+  CategoriesWidget({super.key});
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,27 +46,31 @@ class CategoriesWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 4.0),
                           child: InkWell(
-                            child: const Icon(Icons.edit),
+                            child: const Icon(Icons.edit, semanticLabel: "Edit category"),
                             onTap: () async {
+                              String newName = "";
                               await showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text("Please type in the new name for this category"),
                                   content: Form(
-                                    // TODO: Key
+                                    key: _formKey,
                                     child: TextFormField(
-                                      initialValue: provider.categories[categoryId]!,
+                                      // initialValue: provider.categories[categoryId]!,
+                                      decoration: InputDecoration(
+                                        hintText: provider.categories[categoryId]!,
+                                      ),
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
+                                        if (value == null) {
                                           return "Please enter a name";
                                         }
                                         if (value.length > 25) {
-                                          return "Category names can be use to 25 characters";
+                                          return "Category names can be up to 25 characters";
                                         }
                                         return null;
                                       },
                                       onChanged: (value) {
-
+                                        newName = value;
                                       },
                                     ),
                                   ),
@@ -72,7 +78,12 @@ class CategoriesWidget extends StatelessWidget {
                                     TextButton(
                                       child: const Text("OK"),
                                       onPressed: () {
-
+                                        if (_formKey.currentState!.validate()) {
+                                          if (newName.isNotEmpty) {
+                                            provider.updateCategory(categoryId, newName);
+                                          }
+                                          Navigator.of(context).pop();
+                                        }
                                       },
                                     ),
                                   ],
@@ -81,8 +92,8 @@ class CategoriesWidget extends StatelessWidget {
                             },
                           ),
                         ),
-                        InkWell(
-                          child: const Icon(Icons.delete),
+                        InkWell( // TODO: Change inkwells into whatever floatingtextbutton and back button use
+                          child: const Icon(Icons.delete, semanticLabel: "Delete category"),
                           onTap: () async {
                             final bool? result = await showDialog<bool>(
                               context: context,
@@ -117,7 +128,45 @@ class CategoriesWidget extends StatelessWidget {
         },
       ), // TODO: All categories, in cards, with an edit button (opens modal for new name) and delete button (opens modal for confirmation)
       floatingActionButton: FloatingActionButton(
-        onPressed: () {}, // TODO: Open a modal to create a new category. Also, careful, might be hiding some action buttons
+        onPressed: () async {
+          String name = "";
+          await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text("Please enter a name for this category"),
+              content: Form(
+                key: _formKey,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter a name";
+                    }
+                    if (value.length > 25) {
+                      return "Category names can be up to 25 characters";
+                    }
+                    return null; // Possible TODO: Check if name already exists (both here and in edit_category)
+                  },
+                  onChanged: (value) {
+                    name = value;
+                  },
+                ),
+              ),
+              actions: [
+                Consumer<ItemProvider>(
+                  builder: (context, provider, child) => TextButton(
+                    child: const Text("OK"),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        provider.addCategory(name);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }, // TODO: Open a modal to create a new category. Also, careful, might be hiding some action buttons
         tooltip: 'Add a new category',
         child: const Icon(Icons.add),
       ),

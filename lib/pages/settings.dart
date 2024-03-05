@@ -13,7 +13,7 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _currency = "€";
+  String _currency = "";
 
   @override
   void initState() {
@@ -47,9 +47,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         content: Form(
                           key: _formKey,
                           child: TextFormField(
-                            initialValue: provider.currency,
+                            // initialValue: provider.currency,
+                            decoration: InputDecoration(
+                              hintText: provider.currency,
+                            ),
                             validator: (value) {
-                              if (value == null || value.isEmpty || value.length > 5) {
+                              if (value == null || value.length > 5) {
                                 return "Please enter up to five characters";
                               }
                               return null;
@@ -64,7 +67,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: const Text("OK"),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                provider.setCurrency(_currency);
+                                if (_currency.isNotEmpty) {
+                                  provider.setCurrency(_currency);
+                                }
                                 Navigator.of(context).pop();
                               }
                             },
