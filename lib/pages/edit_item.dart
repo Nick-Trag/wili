@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/providers/item_provider.dart';
@@ -60,6 +62,17 @@ class _EditItemWidgetState extends State<EditItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)), // TODO: Image picker
+                ElevatedButton(
+                  child: const Text("Choose image"),
+                  onPressed: () async {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+                    final String path = (await getApplicationDocumentsDirectory()).path;
+
+                    // TODO: Activate this when I'm ready: await image?.saveTo(path);
+                  },
+                ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
                   child: Text(textAlign: TextAlign.start, "Name:"),
