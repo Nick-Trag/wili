@@ -130,7 +130,7 @@ class CategoriesWidget extends StatelessWidget {
                                     onPressed: () => Navigator.of(context).pop(false),
                                     child: const Text("Cancel"),
                                   ),
-                                  TextButton(
+                                  TextButton( // TODO: This is super destructive. The UI should reflect that
                                     onPressed: () => Navigator.of(context).pop(true),
                                     child: const Text("Delete"),
                                   ),
@@ -150,7 +150,7 @@ class CategoriesWidget extends StatelessWidget {
             );
           }
         },
-      ), // TODO: All categories, in cards, with an edit button (opens modal for new name) and delete button (opens modal for confirmation)
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           String name = "";
