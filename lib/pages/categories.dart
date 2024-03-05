@@ -92,7 +92,7 @@ class CategoriesWidget extends StatelessWidget {
                             },
                           ),
                         ),
-                        InkWell( // TODO: Change inkwells into whatever floatingtextbutton and back button use
+                        InkWell( // TODO: Change inkwells into whatever floatingactionbutton and back button use
                           child: const Icon(Icons.delete, semanticLabel: "Delete category"),
                           onTap: () async {
                             final bool? result = await showDialog<bool>(
@@ -152,16 +152,14 @@ class CategoriesWidget extends StatelessWidget {
                 ),
               ),
               actions: [
-                Consumer<ItemProvider>(
-                  builder: (context, provider, child) => TextButton(
-                    child: const Text("OK"),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        provider.addCategory(name);
-                        Navigator.of(context).pop();
-                      }
-                    },
-                  ),
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Provider.of<ItemProvider>(context, listen: false).addCategory(name);
+                      Navigator.of(context).pop();
+                    }
+                  },
                 ),
               ],
             ),
