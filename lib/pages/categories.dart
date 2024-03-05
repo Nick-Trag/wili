@@ -34,17 +34,24 @@ class CategoriesWidget extends StatelessWidget {
             return ListView.builder(
               itemCount: provider.categories.length,
               itemBuilder: (context, index) {
+                int categoryId = provider.categories.keys.elementAt(index);
                 return Card(
                   child: ListTile(
-                    title: Text(provider.categories.values.elementAt(index)),
-                    trailing: const Row(
+                    title: Text(provider.categories[categoryId]!),
+                    trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(right: 4.0),
-                          child: Icon(Icons.edit),
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: InkWell(
+                            child: const Icon(Icons.edit),
+                            onTap: () {},
+                          )
                         ),
-                        Icon(Icons.delete),
+                        InkWell(
+                          child: const Icon(Icons.delete),
+                          onTap: () {},
+                        ),
                       ],
                     ),
                   ),

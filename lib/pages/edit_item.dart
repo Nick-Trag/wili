@@ -31,7 +31,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
         title: Text(widget.item.name != "" ? widget.item.name : "Add a new item"),
         centerTitle: true,
         actions: [
-          GestureDetector(
+          InkWell(
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(

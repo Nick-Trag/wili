@@ -37,7 +37,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
           ),
         centerTitle: true,
         actions: [
-          GestureDetector(
+          InkWell(
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
@@ -76,7 +76,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               }
             },
           ),
-          GestureDetector(
+          InkWell(
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(

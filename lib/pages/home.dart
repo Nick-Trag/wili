@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         centerTitle: true,
         actions: [
-          GestureDetector(
+          InkWell(
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
