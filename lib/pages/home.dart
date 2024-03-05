@@ -46,15 +46,13 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         centerTitle: true,
         actions: [
-          InkWell(
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.settings,
-                semanticLabel: "App Settings",
-              ),
+          IconButton(
+            padding: const EdgeInsets.all(8.0),
+            icon: const Icon(
+              Icons.settings,
             ),
-            onTap: () {
+            tooltip: "App Settings",
+            onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsWidget()));
             },
           ),

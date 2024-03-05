@@ -31,15 +31,12 @@ class _EditItemWidgetState extends State<EditItemWidget> {
         title: Text(widget.item.name != "" ? widget.item.name : "Add a new item"),
         centerTitle: true,
         actions: [
-          InkWell(
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.check,
-                semanticLabel: "Save item",
-              ),
+          IconButton(
+            icon: const Icon(
+              Icons.check,
             ),
-            onTap: () {
+            tooltip: "Save item",
+            onPressed: () {
               if (_formKey.currentState!.validate()) {
                 if (widget.item.id != -1) {
                   Provider.of<ItemProvider>(context, listen: false).updateItem(widget.item);

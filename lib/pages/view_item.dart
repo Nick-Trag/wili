@@ -37,15 +37,12 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
           ),
         centerTitle: true,
         actions: [
-          InkWell(
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.delete,
-                semanticLabel: "Delete item",
-              ),
+          IconButton(
+            icon: const Icon(
+              Icons.delete,
             ),
-            onTap: () async {
+            tooltip: "Delete item",
+            onPressed: () async {
               final bool? result = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -76,15 +73,12 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               }
             },
           ),
-          InkWell(
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.edit,
-                semanticLabel: "Edit item",
-              ),
+          IconButton(
+            icon: const Icon(
+              Icons.edit,
             ),
-            onTap: () {
+            tooltip: "Edit item",
+            onPressed: () {
               WishlistItem item = Provider.of<ItemProvider>(context, listen: false).currentItem ?? widget.item;
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => EditItemWidget(item: item))

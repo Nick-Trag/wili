@@ -31,7 +31,6 @@ class ItemProvider extends ChangeNotifier {
     await _sqlite.addItem(item);
 
     await getAllItems();
-    await getCategories(); // TODO: I don't think there is a need to update categories at this stage. But might keep it just to be sure
 
     notifyListeners();
   }
@@ -40,7 +39,6 @@ class ItemProvider extends ChangeNotifier {
     await _sqlite.updateItem(item);
 
     await getAllItems();
-    await getCategories();
 
     _currentItem = item;
 
@@ -51,7 +49,6 @@ class ItemProvider extends ChangeNotifier {
     await _sqlite.deleteItem(id);
 
     await getAllItems();
-    await getCategories();
 
     notifyListeners();
   }
@@ -67,18 +64,28 @@ class ItemProvider extends ChangeNotifier {
   }
 
   Future<void> deleteCategory(int id) async {
-    // TODO: Implementation
-    print("deleteCategory() called");
+    await _sqlite.deleteCategory(id);
+
+    await getCategories();
+    await getAllItems(); // Deleting a category might also delete an item, so we need to update them as well
+
+    notifyListeners();
   }
 
   Future<void> updateCategory(int id, String name) async {
-    // TODO: Implementation
-    print("updateCategory() called");
+    await _sqlite.updateCategory(id, name);
+
+    await getCategories();
+
+    notifyListeners();
   }
 
   Future<void> addCategory(String name) async {
-    // TODO: Implementation
-    print("addCategory() called");
+    await _sqlite.addCategory(name);
+
+    await getCategories();
+
+    notifyListeners();
   }
 
 }

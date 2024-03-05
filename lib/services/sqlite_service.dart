@@ -14,18 +14,19 @@ class SQLiteService {
           "name TEXT NOT NULL"
         ")");
         await database.execute("CREATE TABLE Items("
-          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          "name TEXT NOT NULL,"
-          "category_id INTEGER NOT NULL,"
-          "price REAL NOT NULL DEFAULT 0,"
-          "purchased INTEGER NOT NULL DEFAULT 0," // Actually a bool
-          "note TEXT NOT NULL DEFAULT '',"
-          "quantity INTEGER NOT NULL DEFAULT 1,"
-          "link TEXT NOT NULL DEFAULT '',"
-          "image TEXT NOT NULL DEFAULT '',"
-          "FOREIGN KEY (category_id)"
-            "REFERENCES Categories (id)"
-            "ON DELETE SET DEFAULT" // Currently there is no default, so this should not even work
+          "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+          "name TEXT NOT NULL, "
+          "category_id INTEGER NOT NULL, "
+          "price REAL NOT NULL DEFAULT 0, "
+          "purchased INTEGER NOT NULL DEFAULT 0, " // Actually a bool
+          "note TEXT NOT NULL DEFAULT '', "
+          "quantity INTEGER NOT NULL DEFAULT 1, "
+          "link TEXT NOT NULL DEFAULT '', "
+          "image TEXT NOT NULL DEFAULT '', "
+          "FOREIGN KEY (category_id) "
+            "REFERENCES Categories (id) "
+            "ON DELETE CASCADE "
+            "ON UPDATE CASCADE"
         ")");
         // Insert some default categories
         await database.insert(
@@ -54,6 +55,10 @@ class SQLiteService {
         );
       },
       version: 1,
+      onOpen: (database) async {
+        // By default, SQLite turns off foreign keys whenever it opens a database. Don't ask me why, it just does. This makes sure they are on
+        await database.execute('PRAGMA foreign_keys = ON');
+      }
     );
   }
 
@@ -139,6 +144,33 @@ class SQLiteService {
     return {
       for (var mapItem in categoryMaps) mapItem['id'] : mapItem['name']
     };
+  }
+
+  Future<void> addCategory(String name) async {
+    final Database db = await initializeDB();
+
+    await db.insert('Categories', {'name': name});
+  }
+
+  Future<void> updateCategory(int id, String name) async {
+    final Database db = await initializeDB();
+
+    await db.update(
+      'Categories',
+      {'name': name},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteCategory(int id) async {
+    final Database db = await initializeDB();
+
+    await db.delete(
+      'Categories',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }
 

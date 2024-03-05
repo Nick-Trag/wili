@@ -64,6 +64,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ),
                         actions: [
                           TextButton(
+                            child: const Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
                             child: const Text("OK"),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
@@ -86,7 +92,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   title: Text('Edit categories'),
                 ),
                 onTap: () {
-                  // TODO: Show all categories and let users delete and rename them (always keeping one alive)
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => CategoriesWidget())
                   );

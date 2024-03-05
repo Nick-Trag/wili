@@ -43,58 +43,82 @@ class CategoriesWidget extends StatelessWidget {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: InkWell(
-                            child: const Icon(Icons.edit, semanticLabel: "Edit category"),
-                            onTap: () async {
-                              String newName = "";
-                              await showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text("Please type in the new name for this category"),
-                                  content: Form(
-                                    key: _formKey,
-                                    child: TextFormField(
-                                      // initialValue: provider.categories[categoryId]!,
-                                      decoration: InputDecoration(
-                                        hintText: provider.categories[categoryId]!,
-                                      ),
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return "Please enter a name";
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          tooltip: "Edit category",
+                          onPressed: () async {
+                            String newName = "";
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Please type in the new name for this category"),
+                                content: Form(
+                                  key: _formKey,
+                                  child: TextFormField(
+                                    // initialValue: provider.categories[categoryId]!,
+                                    decoration: InputDecoration(
+                                      hintText: provider.categories[categoryId]!,
+                                    ),
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return "Please enter a name";
+                                      }
+                                      if (value.length > 25) {
+                                        return "Category names can be up to 25 characters";
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      newName = value;
+                                    },
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text("OK"),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (newName.isNotEmpty) {
+                                          provider.updateCategory(categoryId, newName);
                                         }
-                                        if (value.length > 25) {
-                                          return "Category names can be up to 25 characters";
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        newName = value;
-                                      },
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          tooltip: "Delete category",
+                          onPressed: () async {
+                            if (provider.categories.length == 1) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Center(
+                                    child: Text(
+                                      "Cannot delete category, as it is the only one left",
+                                      // style: TextStyle(fontSize: 15), // Possible TODO: Find appropriate text size
                                     ),
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text("OK"),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          if (newName.isNotEmpty) {
-                                            provider.updateCategory(categoryId, newName);
-                                          }
-                                          Navigator.of(context).pop();
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
+                                  duration: const Duration(seconds: 1),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  backgroundColor: Colors.black.withOpacity(0.5),
+                                )
                               );
-                            },
-                          ),
-                        ),
-                        InkWell( // TODO: Change inkwells into whatever floatingactionbutton and back button use
-                          child: const Icon(Icons.delete, semanticLabel: "Delete category"),
-                          onTap: () async {
+                              return;
+                            }
                             final bool? result = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
@@ -153,6 +177,12 @@ class CategoriesWidget extends StatelessWidget {
               ),
               actions: [
                 TextButton(
+                  child: const Text("Cancel"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
                   child: const Text("OK"),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -164,7 +194,7 @@ class CategoriesWidget extends StatelessWidget {
               ],
             ),
           );
-        }, // TODO: Open a modal to create a new category. Also, careful, might be hiding some action buttons
+        }, // TODO: Might be hiding some action buttons
         tooltip: 'Add a new category',
         child: const Icon(Icons.add),
       ),
