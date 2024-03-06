@@ -66,32 +66,41 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   child: Consumer<ItemProvider>(
                     builder: (context, provider, child) {
                       if (provider.currentItem != null && provider.currentItem!.image != "") {
-                        return Image.file(File(widget.item.image));
+                        return Image.file(File(provider.currentItem!.image));
                       }
                       return const Icon(Icons.question_mark);
                     },
                   ),
                 ), // TODO: Image picker
-                ElevatedButton(
-                  child: const Text("Choose image"),
-                  onPressed: () async {
-                    final ImagePicker picker = ImagePicker();
-                    final XFile? image = await picker.pickImage(
-                      source: ImageSource.gallery,
-                      maxHeight: 500,
-                      maxWidth: 500,
-                    );
+                Row(
+                  children: [
+                    ElevatedButton(
+                      child: const Text("Choose image"),
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? image = await picker.pickImage(
+                          source: ImageSource.gallery,
+                          maxHeight: 500,
+                          maxWidth: 500,
+                        );
 
-                    print(image?.name);
-                    print(image?.path);
+                        print(image?.name);
+                        print(image?.path);
 
-                    if (image != null) { // TODO: This will be placed elsewhere later. Will see where (it'll probably use a consumer, so no need for context)
-                      if (context.mounted) {
-                        Provider.of<ItemProvider>(context, listen: false).updateImage(widget.item.id, image);
-                      }
-                    }
-
-                  },
+                        if (image != null) { // TODO: This will be placed elsewhere later. Will see where (it'll probably use a consumer, so no need for context)
+                          if (context.mounted) {
+                            Provider.of<ItemProvider>(context, listen: false).updateImage(widget.item.id, image);
+                          }
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: const Text("Clear image"),
+                      onPressed: () {
+                        Provider.of<ItemProvider>(context, listen: false).clearImage(widget.item.id);
+                      },
+                    ),
+                  ],
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),

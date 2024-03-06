@@ -95,8 +95,8 @@ class ItemProvider extends ChangeNotifier {
 
   Future<void> updateImage(int id, XFile image) async {
     final String path = (await getApplicationDocumentsDirectory()).path;
-    String extension = image.name.split('.').last;
-    final File newImage = File(image.path).renameSync(join(path, '$id.$extension')); // Moving the image to a permanent app storage and renaming it to $id.$extension
+    // String extension = image.name.split('.').last;
+    final File newImage = File(image.path).renameSync(join(path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
     // print(newImage.path);
     // await newImage.delete();
 
@@ -104,12 +104,22 @@ class ItemProvider extends ChangeNotifier {
     await _sqlite.updateImage(id, newImage.path);
 
     await getAllItems();
+    await getItemById(id);
 
     notifyListeners();
   }
 
   Future<void> clearImage(int id) async {
     // TODO: Delete image and await _sqlite.clearImage(id);
+    if (currentItem != null) {
+      File(currentItem!.image).delete();
+      await _sqlite.clearImage(id);
+    }
+
+    await getAllItems();
+    await getItemById(id);
+
+    notifyListeners();
   }
 
 }
