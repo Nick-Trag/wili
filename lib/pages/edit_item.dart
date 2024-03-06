@@ -71,7 +71,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       return const Icon(Icons.question_mark);
                     },
                   ),
-                ), // TODO: Image picker
+                ),
                 Row(
                   children: [
                     ElevatedButton(
@@ -82,7 +82,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                           source: ImageSource.gallery,
                           maxHeight: 500,
                           maxWidth: 500,
-                        );
+                        ); // Later TODO: Cropping
 
                         print(image?.name);
                         print(image?.path);

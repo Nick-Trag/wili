@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/services/sqlite_service.dart';
 
+// Later version TODO: Use the SQLiteService WAY LESS. Do updates locally instead of pulling everything from the db always
 class ItemProvider extends ChangeNotifier {
   final SQLiteService _sqlite = SQLiteService();
 
@@ -97,10 +98,11 @@ class ItemProvider extends ChangeNotifier {
     final String path = (await getApplicationDocumentsDirectory()).path;
     // String extension = image.name.split('.').last;
     final File newImage = File(image.path).renameSync(join(path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
-    // print(newImage.path);
-    // await newImage.delete();
+    // If I do do it, cache kinda fucks me. Hmm...
+    print(newImage.path);
 
-    // TODO: When deleting an item OR A CASCADING CATEGORY, I need to delete saved images
+    // TODO: When deleting an item OR A CASCADING CATEGORY, I need to delete saved images.
+    // Perhaps, to save me the trouble of cache etc., I can mass clear unused images on open or on close. It will be async, so no impact on performance either
     await _sqlite.updateImage(id, newImage.path);
 
     await getAllItems();
@@ -110,9 +112,12 @@ class ItemProvider extends ChangeNotifier {
   }
 
   Future<void> clearImage(int id) async {
-    // TODO: Delete image and await _sqlite.clearImage(id);
+    if (currentItem == null) {
+      await getItemById(id);
+    }
     if (currentItem != null) {
-      File(currentItem!.image).delete();
+      // File(currentItem!.image).delete();
+      // We actually don't want to delete it. Another item might be using the same image
       await _sqlite.clearImage(id);
     }
 
