@@ -172,5 +172,27 @@ class SQLiteService {
       whereArgs: [id],
     );
   }
+
+  Future<void> updateImage(int id, String imagePath) async {
+    final Database db = await initializeDB();
+
+    await db.update(
+      'Items',
+      {'image': imagePath},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> clearImage(int id) async {
+    final Database db = await initializeDB();
+
+    await db.update(
+      'Items',
+      {'image' : ''},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }
 

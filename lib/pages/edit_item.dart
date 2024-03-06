@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/providers/item_provider.dart';
@@ -66,11 +65,16 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   child: const Text("Choose image"),
                   onPressed: () async {
                     final ImagePicker picker = ImagePicker();
-                    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                    final XFile? image = await picker.pickImage(
+                      source: ImageSource.gallery,
+                      maxHeight: 500,
+                      maxWidth: 500,
+                    );
 
-                    final String path = (await getApplicationDocumentsDirectory()).path;
+                    if (image != null) { // TODO: This will be placed elsewhere later. Will see where (it'll probably use a consumer, so no need for context)
+                      Provider.of<ItemProvider>(context, listen: false).updateImage(widget.item.id, image);
+                    }
 
-                    // TODO: Activate this when I'm ready: await image?.saveTo(path);
                   },
                 ),
                 const Padding(

@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/services/sqlite_service.dart';
 
@@ -86,6 +91,19 @@ class ItemProvider extends ChangeNotifier {
     await getCategories();
 
     notifyListeners();
+  }
+
+  Future<void> updateImage(int id, XFile image) async {
+    final String path = (await getApplicationDocumentsDirectory()).path;
+    String extension = image.name.split('.').last;
+    // File(image).renameSync(join(path, '$id.$extension'));
+
+    // Rename image to id.jpg or something. Also, when deleting an item OR A CASCADING CATEGORY, I need to delete saved images
+    // TODO: Activate this when I'm ready: await image.saveTo(path);
+  }
+
+  Future<void> clearImage(int id) async {
+    // TODO: Delete image and await _sqlite.clearImage(id);
   }
 
 }
