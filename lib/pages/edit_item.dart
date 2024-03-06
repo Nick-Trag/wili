@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -60,7 +62,16 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: widget.item.image != "" ? Image.asset(widget.item.image) : const Icon(Icons.question_mark)), // TODO: Image picker
+                Center(
+                  child: Consumer<ItemProvider>(
+                    builder: (context, provider, child) {
+                      if (provider.currentItem != null && provider.currentItem!.image != "") {
+                        return Image.file(File(widget.item.image));
+                      }
+                      return const Icon(Icons.question_mark);
+                    },
+                  ),
+                ), // TODO: Image picker
                 ElevatedButton(
                   child: const Text("Choose image"),
                   onPressed: () async {
@@ -71,8 +82,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       maxWidth: 500,
                     );
 
+                    print(image?.name);
+                    print(image?.path);
+
                     if (image != null) { // TODO: This will be placed elsewhere later. Will see where (it'll probably use a consumer, so no need for context)
-                      Provider.of<ItemProvider>(context, listen: false).updateImage(widget.item.id, image);
+                      if (context.mounted) {
+                        Provider.of<ItemProvider>(context, listen: false).updateImage(widget.item.id, image);
+                      }
                     }
 
                   },

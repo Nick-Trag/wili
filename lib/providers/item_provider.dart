@@ -96,10 +96,16 @@ class ItemProvider extends ChangeNotifier {
   Future<void> updateImage(int id, XFile image) async {
     final String path = (await getApplicationDocumentsDirectory()).path;
     String extension = image.name.split('.').last;
-    // File(image).renameSync(join(path, '$id.$extension'));
+    final File newImage = File(image.path).renameSync(join(path, '$id.$extension')); // Moving the image to a permanent app storage and renaming it to $id.$extension
+    // print(newImage.path);
+    // await newImage.delete();
 
-    // Rename image to id.jpg or something. Also, when deleting an item OR A CASCADING CATEGORY, I need to delete saved images
-    // TODO: Activate this when I'm ready: await image.saveTo(path);
+    // TODO: When deleting an item OR A CASCADING CATEGORY, I need to delete saved images
+    await _sqlite.updateImage(id, newImage.path);
+
+    await getAllItems();
+
+    notifyListeners();
   }
 
   Future<void> clearImage(int id) async {

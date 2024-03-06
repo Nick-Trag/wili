@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
@@ -44,7 +46,7 @@ class ListWidget extends StatelessWidget {
                     leading: SizedBox(
                       width: 100,
                       height: 100,
-                      child: items[index].image != "" ? Image.asset(items[index].image) : const Icon(Icons.question_mark),
+                      child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.question_mark),
                     ),
                     title: Text(items[index].name),
                     subtitle: Text(categories[items[index].category]!),
