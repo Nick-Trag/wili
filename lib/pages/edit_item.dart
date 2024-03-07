@@ -74,8 +74,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Row(
                   children: [
-                    ElevatedButton(
-                      child: const Text("Choose image"),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      tooltip: "Change image",
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
                         final XFile? image = await picker.pickImage(
@@ -94,8 +95,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         }
                       },
                     ),
-                    ElevatedButton(
-                      child: const Text("Clear image"),
+                    IconButton(
+                      icon: const Icon(Icons.hide_image_outlined),
+                      tooltip: "Clear image",
                       onPressed: () {
                         Provider.of<ItemProvider>(context, listen: false).clearImage(widget.item.id);
                       },
