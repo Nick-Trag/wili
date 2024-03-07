@@ -62,47 +62,45 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Consumer<ItemProvider>(
-                    builder: (context, provider, child) {
-                      if (provider.currentItem != null && provider.currentItem!.image != "") {
-                        return Image.file(File(provider.currentItem!.image));
-                      }
-                      return const Icon(Icons.question_mark);
-                    },
+                Consumer<ItemProvider>(
+                  builder: (context, provider, child) => Column(
+                    children: [
+                      Center(
+                        child: provider.currentItem != null && provider.currentItem!.image != "" ? Image.file(File(provider.currentItem!.image)) : const Icon(Icons.question_mark),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            tooltip: "Change image",
+                            onPressed: () async {
+                              final ImagePicker picker = ImagePicker();
+                              final XFile? image = await picker.pickImage(
+                                source: ImageSource.gallery,
+                                maxHeight: 500,
+                                maxWidth: 500,
+                              ); // Later TODO: Cropping
+
+                              print(image?.name);
+                              print(image?.path);
+
+                              if (image != null) {
+                                provider.updateImage(widget.item.id, image);
+                              }
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.hide_image_outlined),
+                            tooltip: "Clear image",
+                            onPressed: () {
+                              provider.clearImage(widget.item.id);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      tooltip: "Change image",
-                      onPressed: () async {
-                        final ImagePicker picker = ImagePicker();
-                        final XFile? image = await picker.pickImage(
-                          source: ImageSource.gallery,
-                          maxHeight: 500,
-                          maxWidth: 500,
-                        ); // Later TODO: Cropping
-
-                        print(image?.name);
-                        print(image?.path);
-
-                        if (image != null) { // TODO: This will be placed elsewhere later. Will see where (it'll probably use a consumer, so no need for context)
-                          if (context.mounted) {
-                            Provider.of<ItemProvider>(context, listen: false).updateImage(widget.item.id, image);
-                          }
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.hide_image_outlined),
-                      tooltip: "Clear image",
-                      onPressed: () {
-                        Provider.of<ItemProvider>(context, listen: false).clearImage(widget.item.id);
-                      },
-                    ),
-                  ],
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
