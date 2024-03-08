@@ -36,33 +36,34 @@ class ListWidget extends StatelessWidget {
     }
     else {
       return ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              child: GestureDetector(
-                child: Card(
-                  child: ListTile(
-                    leading: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.question_mark),
-                    ),
-                    title: Text(items[index].name),
-                    subtitle: Text(categories[items[index].category]!),
-                    trailing: Consumer<SettingsProvider>(
-                      builder: (context, provider, child) => Text('${intl.NumberFormat('0.00').format(items[index].price)}${provider.currency}'),
-                    ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            // The last item gets considerably more padding on the bottom, in order for the floating action button to not hide any item's price
+            padding: index == items.length - 1 ? const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 55.0): const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+            child: GestureDetector(
+              child: Card(
+                child: ListTile(
+                  leading: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.question_mark),
+                  ),
+                  title: Text(items[index].name),
+                  subtitle: Text(categories[items[index].category]!),
+                  trailing: Consumer<SettingsProvider>(
+                    builder: (context, provider, child) => Text('${intl.NumberFormat('0.00').format(items[index].price)}${provider.currency}'),
                   ),
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ViewItemWidget(item: items[index]))
-                  );
-                },
               ),
-            );
-          }
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ViewItemWidget(item: items[index]))
+                );
+              },
+            ),
+          );
+        }
       );
     }
   }

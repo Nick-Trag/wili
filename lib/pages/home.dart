@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           }
         }
       ),
-      floatingActionButton: FutureBuilder<void>( // TODO: This hides an item's price, should be fixed
+      floatingActionButton: FutureBuilder<void>(
         future: Provider.of<ItemProvider>(context, listen: false).getCategories(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
