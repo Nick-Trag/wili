@@ -35,115 +35,125 @@ class CategoriesWidget extends StatelessWidget {
           else {
             return ListView.builder(
               itemCount: provider.categories.length,
+              // separatorBuilder: (context, index) => const Divider(height: 0),
               itemBuilder: (context, index) {
                 int categoryId = provider.categories.keys.elementAt(index);
-                return Card(
-                  child: ListTile(
-                    title: Text(provider.categories[categoryId]!),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          tooltip: "Edit category",
-                          onPressed: () async {
-                            String newName = "";
-                            await showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text("Please type in the new name for this category"),
-                                content: Form(
-                                  key: _formKey,
-                                  child: TextFormField(
-                                    // initialValue: provider.categories[categoryId]!,
-                                    decoration: InputDecoration(
-                                      hintText: provider.categories[categoryId]!,
+                return Padding(
+                  padding: index == provider.categories.length - 1 ? const EdgeInsets.only(bottom: 65.0): const EdgeInsets.all(0.0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text(provider.categories[categoryId]!),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              tooltip: "Edit category",
+                              onPressed: () async {
+                                String newName = "";
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text("Please type in the new name for this category"),
+                                    content: Form(
+                                      key: _formKey,
+                                      child: TextFormField(
+                                        // initialValue: provider.categories[categoryId]!,
+                                        decoration: InputDecoration(
+                                          hintText: provider.categories[categoryId]!,
+                                        ),
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return "Please enter a name";
+                                          }
+                                          if (value.length > 25) {
+                                            return "Category names can be up to 25 characters";
+                                          }
+                                          if (provider.categories.containsValue(value)) {
+                                            return "Category already exists";
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          newName = value;
+                                        },
+                                      ),
                                     ),
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return "Please enter a name";
-                                      }
-                                      if (value.length > 25) {
-                                        return "Category names can be up to 25 characters";
-                                      }
-                                      return null;
-                                    },
-                                    onChanged: (value) {
-                                      newName = value;
-                                    },
+                                    actions: [
+                                      TextButton(
+                                        child: const Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: const Text("OK"),
+                                        onPressed: () {
+                                          if (_formKey.currentState!.validate()) {
+                                            if (newName.isNotEmpty) {
+                                              provider.updateCategory(categoryId, newName);
+                                            }
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text("Cancel"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              tooltip: "Delete category",
+                              onPressed: () async {
+                                if (provider.categories.length == 1) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Center(
+                                        child: Text(
+                                          "Cannot delete category, as it is the only one left",
+                                          // style: TextStyle(fontSize: 15), // Possible TODO: Find appropriate text size
+                                        ),
+                                      ),
+                                      duration: const Duration(seconds: 1),
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      backgroundColor: Colors.black.withOpacity(0.5),
+                                    )
+                                  );
+                                  return;
+                                }
+                                final bool? result = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text("Delete this category?"),
+                                    content: Text("Are you sure you want to delete ${provider.categories[categoryId]!}? "
+                                        "This will delete all items that use this category."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                        child: const Text("Cancel"),
+                                      ),
+                                      TextButton( // TODO: This is super destructive. The UI should reflect that
+                                        onPressed: () => Navigator.of(context).pop(true),
+                                        child: const Text("Delete"),
+                                      ),
+                                    ],
                                   ),
-                                  TextButton(
-                                    child: const Text("OK"),
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        if (newName.isNotEmpty) {
-                                          provider.updateCategory(categoryId, newName);
-                                        }
-                                        Navigator.of(context).pop();
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                );
+                                if (result != null && result) {
+                                  provider.deleteCategory(categoryId);
+                                }
+                              },
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          tooltip: "Delete category",
-                          onPressed: () async {
-                            if (provider.categories.length == 1) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Center(
-                                    child: Text(
-                                      "Cannot delete category, as it is the only one left",
-                                      // style: TextStyle(fontSize: 15), // Possible TODO: Find appropriate text size
-                                    ),
-                                  ),
-                                  duration: const Duration(seconds: 1),
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  backgroundColor: Colors.black.withOpacity(0.5),
-                                )
-                              );
-                              return;
-                            }
-                            final bool? result = await showDialog<bool>(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text("Delete this category?"),
-                                content: Text("Are you sure you want to delete ${provider.categories[categoryId]!}? "
-                                    "This will delete all items that use this category."),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
-                                    child: const Text("Cancel"),
-                                  ),
-                                  TextButton( // TODO: This is super destructive. The UI should reflect that
-                                    onPressed: () => Navigator.of(context).pop(true),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                              ),
-                            );
-                            if (result != null && result) {
-                              provider.deleteCategory(categoryId);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                      const Divider(height: 0),
+                    ],
                   ),
                 );
               },
@@ -168,7 +178,10 @@ class CategoriesWidget extends StatelessWidget {
                     if (value.length > 25) {
                       return "Category names can be up to 25 characters";
                     }
-                    return null; // Possible TODO: Check if name already exists (both here and in edit_category)
+                    if (Provider.of<ItemProvider>(context, listen: false).categories.containsValue(value)) {
+                      return "Category already exists";
+                    }
+                    return null;
                   },
                   onChanged: (value) {
                     name = value;
@@ -194,7 +207,7 @@ class CategoriesWidget extends StatelessWidget {
               ],
             ),
           );
-        }, // TODO: Might be hiding some action buttons
+        },
         tooltip: 'Add a new category',
         child: const Icon(Icons.add),
       ),
