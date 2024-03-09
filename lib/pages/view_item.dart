@@ -48,7 +48,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               final bool? result = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text("Delete this item?"), // TODO: Better UI
+                  title: const Text("Delete this item?"),
                   content: Consumer<ItemProvider>(
                     builder: (context, provider, child) {
                       String name = provider.currentItem?.name ?? widget.item.name;

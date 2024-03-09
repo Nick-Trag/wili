@@ -7,7 +7,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:wili/pages/view_item.dart';
 import 'package:wili/providers/settings_provider.dart';
 
-class ListWidget extends StatelessWidget {
+class ListWidget extends StatefulWidget {
   const ListWidget({
     super.key,
     required this.items,
@@ -18,8 +18,13 @@ class ListWidget extends StatelessWidget {
   final Map<int, String> categories;
 
   @override
+  State<ListWidget> createState() => _ListWidgetState();
+}
+
+class _ListWidgetState extends State<ListWidget> {
+  @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) {
+    if (widget.items.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -35,35 +40,69 @@ class ListWidget extends StatelessWidget {
       );
     }
     else {
-      return ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            // The last item gets considerably more padding on the bottom, in order for the floating action button to not hide any item's price
-            padding: index == items.length - 1 ? const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 55.0): const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-            child: GestureDetector(
-              child: Card(
-                child: ListTile(
-                  leading: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.question_mark),
-                  ),
-                  title: Text(items[index].name),
-                  subtitle: Text(categories[items[index].category]!),
-                  trailing: Consumer<SettingsProvider>(
-                    builder: (context, provider, child) => Text('${intl.NumberFormat('0.00').format(items[index].price)}${provider.currency}'),
-                  ),
+      return SingleChildScrollView(
+        physics: const ScrollPhysics(),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // DropdownButton(
+                //   items: [items],
+                //   onChanged: onChanged,
+                // ),
+                TextButton(
+                  child: const Text("filter"),
+                  onPressed: () {
+                    setState(() {
+                      // widget.items = widget.items.where((item) => item.category == 1).toList();
+                    });
+                  },
                 ),
-              ),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ViewItemWidget(item: items[index]))
-                );
-              },
+                TextButton(
+                  child: const Text("sort alphabetically"),
+                  onPressed: () { // TODO: Use the provider for sorting and filtering.
+                    setState(() {
+                      widget.items.sort((item1, item2) => item1.name.compareTo(item2.name));
+                    });
+                  },
+                ),
+              ],
             ),
-          );
-        }
+            ListView.builder(
+              itemCount: widget.items.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(), // Making sure to scroll the entire column, instead of only the listview. Reference: https://stackoverflow.com/a/58725480/7400287
+              itemBuilder: (context, index) {
+                return Padding(
+                  // The last item gets considerably more padding on the bottom, in order for the floating action button to not hide any item's price
+                  padding: index == widget.items.length - 1 ? const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 55.0): const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                  child: GestureDetector(
+                    child: Card(
+                      child: ListTile(
+                        leading: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: widget.items[index].image != "" ? Image.file(File(widget.items[index].image)) : const Icon(Icons.question_mark),
+                        ),
+                        title: Text(widget.items[index].name),
+                        subtitle: Text(widget.categories[widget.items[index].category]!),
+                        trailing: Consumer<SettingsProvider>(
+                          builder: (context, provider, child) => Text('${intl.NumberFormat('0.00').format(widget.items[index].price)}${provider.currency}'),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ViewItemWidget(item: widget.items[index]))
+                      );
+                    },
+                  ),
+                );
+              }
+            ),
+          ],
+        ),
       );
     }
   }
