@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:wili/providers/item_provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
-  CategoriesWidget({super.key});
+  CategoriesWidget({super.key, this.allowDelete = true});
+
+  final bool allowDelete; // I do not want to allow users to delete items when entering this menu from the edit item widget, as that causes a ton of problems
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -104,6 +106,7 @@ class CategoriesWidget extends StatelessWidget {
                                 );
                               },
                             ),
+                            allowDelete ?
                             IconButton(
                               icon: const Icon(Icons.delete),
                               tooltip: "Delete category",
@@ -131,9 +134,9 @@ class CategoriesWidget extends StatelessWidget {
                                   );
                                   return;
                                 }
-                                // if (provider.filterId == categoryId) {
+                                // if (provider.currentItem?.category == categoryId) {
                                 //   Fluttertoast.showToast(
-                                //     msg: "Cannot delete a category that is currently used as a filter. Please change the filter first",
+                                //     msg: "Cannot delete this category, as it is currently being used by this item",
                                 //     toastLength: Toast.LENGTH_SHORT,
                                 //   );
                                 //   return;
@@ -183,7 +186,8 @@ class CategoriesWidget extends StatelessWidget {
                                   provider.deleteCategory(categoryId);
                                 }
                               },
-                            ),
+                            )
+                            : Container(),
                           ],
                         ),
                       ),

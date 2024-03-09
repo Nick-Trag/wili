@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                           const Padding(
                             padding: EdgeInsets.only(right: 4.0),
                             child: Icon(
-                              Icons.filter_alt,
+                              Icons.filter_alt_outlined,
                               semanticLabel: "Filter items by category",
                             ),
                           ),

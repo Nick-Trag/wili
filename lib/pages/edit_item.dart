@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
+import 'package:wili/pages/categories.dart';
 import 'package:wili/providers/item_provider.dart';
 
 class EditItemWidget extends StatefulWidget {
@@ -145,15 +146,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                           },
                         ),
                       ),
-                      // Future TODO: Possibility to edit categories from here.
-                      //  Problem: What if the user deletes the current category? That proceeds to delete the item and going back to this page crashes the app
-                      // IconButton(
-                      //   icon: const Icon(Icons.settings_outlined, size: 22),
-                      //   tooltip: "Edit categories",
-                      //   onPressed: () {
-                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget()));
-                      //   },
-                      // )
+                      IconButton(
+                        icon: const Icon(Icons.settings_outlined, size: 22),
+                        tooltip: "Edit categories",
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget(allowDelete: false)));
+                        },
+                      ),
                     ],
                   ),
                 ),
