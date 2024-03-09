@@ -82,9 +82,6 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                                 maxWidth: 500,
                               ); // Later TODO: Cropping
 
-                              print(image?.name);
-                              print(image?.path);
-
                               if (image != null) {
                                 provider.updateImage(widget.item.id, image);
                               }
@@ -127,24 +124,37 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Consumer<ItemProvider>(
-                    builder: (context, provider, child) => DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
-                      value: widget.item.category,
-                      items: provider.categories.map((int id, String name) {
-                        return MapEntry<String, DropdownMenuItem<int>>(
-                          name,
-                          DropdownMenuItem<int>(
-                            value: id,
-                            child: Text(name),
-                          )
-                        );
-                      }).values.toList(),
-                      onChanged: (int? value) {
-                        setState(() {
-                          widget.item.category = value!;
-                        });
-                      },
-                    ),
+                  child: Row(
+                    children: [
+                      Consumer<ItemProvider>(
+                        builder: (context, provider, child) => DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
+                          value: widget.item.category,
+                          items: provider.categories.map((int id, String name) {
+                            return MapEntry<String, DropdownMenuItem<int>>(
+                              name,
+                              DropdownMenuItem<int>(
+                                value: id,
+                                child: Text(name),
+                              )
+                            );
+                          }).values.toList(),
+                          onChanged: (int? value) {
+                            setState(() {
+                              widget.item.category = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      // Future TODO: Possibility to edit categories from here.
+                      //  Problem: What if the user deletes the current category? That proceeds to delete the item and going back to this page crashes the app
+                      // IconButton(
+                      //   icon: const Icon(Icons.settings_outlined, size: 22),
+                      //   tooltip: "Edit categories",
+                      //   onPressed: () {
+                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget()));
+                      //   },
+                      // )
+                    ],
                   ),
                 ),
                 const Padding(

@@ -99,7 +99,6 @@ class ItemProvider extends ChangeNotifier {
     // String extension = image.name.split('.').last;
     final File newImage = File(image.path).renameSync(join(path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
     // If I do do it, cache kinda fucks me. Hmm...
-    print(newImage.path);
 
     // TODO: When deleting an item OR A CASCADING CATEGORY, I need to delete saved images.
     // Perhaps, to save me the trouble of cache etc., I can mass clear unused images on open or on close. It will be async, so no impact on performance either
