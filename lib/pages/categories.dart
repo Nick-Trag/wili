@@ -134,13 +134,6 @@ class CategoriesWidget extends StatelessWidget {
                                   );
                                   return;
                                 }
-                                // if (provider.currentItem?.category == categoryId) {
-                                //   Fluttertoast.showToast(
-                                //     msg: "Cannot delete this category, as it is currently being used by this item",
-                                //     toastLength: Toast.LENGTH_SHORT,
-                                //   );
-                                //   return;
-                                // }
                                 final bool? result = await showDialog<bool>(
                                   context: context,
                                   builder: (context) => AlertDialog(
