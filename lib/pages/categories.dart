@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/providers/item_provider.dart';
 
@@ -108,21 +109,25 @@ class CategoriesWidget extends StatelessWidget {
                               tooltip: "Delete category",
                               onPressed: () async {
                                 if (provider.categories.length == 1) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Center(
-                                        child: Text(
-                                          "Cannot delete category, as it is the only one left",
-                                          // style: TextStyle(fontSize: 15), // Possible TODO: Find appropriate text size
-                                        ),
-                                      ),
-                                      duration: const Duration(seconds: 1),
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      backgroundColor: Colors.black.withOpacity(0.5),
-                                    )
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //   SnackBar(
+                                  //     content: const Center(
+                                  //       child: Text(
+                                  //         "Cannot delete category, as it is the only one left",
+                                  //         style: TextStyle(fontSize: 15),
+                                  //       ),
+                                  //     ),
+                                  //     duration: const Duration(seconds: 1, milliseconds: 500),
+                                  //     behavior: SnackBarBehavior.floating,
+                                  //     shape: RoundedRectangleBorder(
+                                  //       borderRadius: BorderRadius.circular(50),
+                                  //     ),
+                                  //     backgroundColor: Colors.black.withOpacity(0.5),
+                                  //   )
+                                  // );
+                                  Fluttertoast.showToast(
+                                    msg: "Cannot delete category, as it is the only one left",
+                                    toastLength: Toast.LENGTH_SHORT,
                                   );
                                   return;
                                 }
