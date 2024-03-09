@@ -51,54 +51,74 @@ class _ListWidgetState extends State<ListWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // DropdownButton(
-                //   items: [items],
-                //   onChanged: onChanged,
-                // ),
-                DropdownButton<int>( // TODO: Add icon next to this
-                  value: filterCategory,
-                  items: const [
-                    DropdownMenuItem(
-                      value: -1,
-                      child: Text("All categories"),
-                    ), // TODO: Keep this and also add all other categories
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 4.0),
+                      child: Icon(
+                        Icons.filter_alt,
+                        semanticLabel: "Filter items by category",
+                      ),
+                    ),
+                    DropdownButton<int>(
+                      value: filterCategory,
+                      items: const [
+                        DropdownMenuItem(
+                          value: -1,
+                          child: Text("All categories"),
+                        ), // TODO: Keep this and also add all other categories
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          filterCategory = value;
+                        }
+                      },
+                    ),
                   ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      filterCategory = value;
-                    }
-                  },
                 ),
-                DropdownButton<Sort>( // TODO: Add icon next to this
-                  value: sort,
-                  items: [
-                    const DropdownMenuItem(
-                      value: Sort.id,
-                      child: Text("Default"),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 4.0),
+                      child: Icon(
+                        Icons.sort,
+                        semanticLabel: "Sort items",
+                      ),
                     ),
-                    const DropdownMenuItem(
-                      value: Sort.nameAscending,
-                      child: Text("A-Z"),
-                    ),
-                    const DropdownMenuItem(
-                      value: Sort.nameDescending,
-                      child: Text("Z-A"),
-                    ),
-                    DropdownMenuItem(
-                      value: Sort.priceAscending,
-                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
-                    ),
-                    DropdownMenuItem(
-                      value: Sort.priceDescending,
-                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
+                    DropdownButton<Sort>(
+                      value: sort,
+                      items: [
+                        const DropdownMenuItem(
+                          value: Sort.id,
+                          child: Text("Default"),
+                        ),
+                        const DropdownMenuItem(
+                          value: Sort.nameAscending,
+                          child: Text("A-Z"),
+                        ),
+                        const DropdownMenuItem(
+                          value: Sort.nameDescending,
+                          child: Text("Z-A"),
+                        ),
+                        DropdownMenuItem(
+                          value: Sort.priceAscending,
+                          child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
+                        ),
+                        DropdownMenuItem(
+                          value: Sort.priceDescending,
+                          child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          sort = value;
+                          Provider.of<ItemProvider>(context, listen: false).sortItems(sort);
+                        }
+                      },
                     ),
                   ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      sort = value;
-                      Provider.of<ItemProvider>(context, listen: false).sortItems(sort);
-                    }
-                  },
                 ),
               ],
             ),
