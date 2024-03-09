@@ -131,6 +131,13 @@ class CategoriesWidget extends StatelessWidget {
                                   );
                                   return;
                                 }
+                                // if (provider.filterId == categoryId) {
+                                //   Fluttertoast.showToast(
+                                //     msg: "Cannot delete a category that is currently used as a filter. Please change the filter first",
+                                //     toastLength: Toast.LENGTH_SHORT,
+                                //   );
+                                //   return;
+                                // }
                                 final bool? result = await showDialog<bool>(
                                   context: context,
                                   builder: (context) => AlertDialog(
@@ -170,6 +177,9 @@ class CategoriesWidget extends StatelessWidget {
                                   ),
                                 );
                                 if (result != null && result) {
+                                  if (provider.filterId == categoryId) { // If the deleted category is being used as a filter, we remove it as a filter before deleting it
+                                    provider.setFilter(-1);
+                                  }
                                   provider.deleteCategory(categoryId);
                                 }
                               },

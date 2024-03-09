@@ -48,7 +48,7 @@ class _ListWidgetState extends State<ListWidget> {
         physics: const ScrollPhysics(),
         child: Column(
           children: [
-            Row(
+            Row( // TODO: This entire row disappears when a category with no matching items get selected
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Wrap(
@@ -63,12 +63,12 @@ class _ListWidgetState extends State<ListWidget> {
                     ),
                     Consumer<ItemProvider>(
                       builder: (context, provider, child) => DropdownButton<int>(
-                        value: filterCategory,
+                        value: provider.filterId,
                         items: [
                           const DropdownMenuItem(
                             value: -1,
                             child: Text("All categories"),
-                          ) // TODO: Very important. What if the currently selected category gets deleted?
+                          )
                         ] + provider.categories.map(
                           (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
                             name,
@@ -80,9 +80,11 @@ class _ListWidgetState extends State<ListWidget> {
                         ).values.toList(),
                         onChanged: (value) {
                           if (value != null) {
-                            setState(() {
-                              filterCategory = value;
-                            });
+                            // setState(() {
+                            //   filterCategory = value;
+                            // });
+                            filterCategory = value;
+                            provider.setFilter(filterCategory);
                           }
                         },
                       ),

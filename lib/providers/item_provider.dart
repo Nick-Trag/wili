@@ -31,7 +31,13 @@ class ItemProvider extends ChangeNotifier {
 
   WishlistItem? get currentItem => _currentItem;
 
-  Sort sort = Sort.id;
+  Sort _sort = Sort.id;
+
+  Sort get sort => _sort;
+
+  int _filterId = -1;
+
+  int get filterId => _filterId;
 
   ItemProvider() {
     getAllItems();
@@ -42,7 +48,11 @@ class ItemProvider extends ChangeNotifier {
     _items = await _sqlite.getAllItems();
     _currentItem = null;
 
-    switch (sort) {
+    if (_filterId != -1) {
+      _items = _items.where((item) => item.category == _filterId).toList();
+    }
+
+    switch (_sort) {
       case Sort.priceAscending:
         sortItemsByPrice(ascending: true);
       case Sort.priceDescending:
@@ -151,10 +161,10 @@ class ItemProvider extends ChangeNotifier {
   void sortItemsByName({bool ascending = true}) {
     if (ascending) {
       items.sort((item1, item2) => item1.name.compareTo(item2.name));
-      sort = Sort.nameAscending;
+      _sort = Sort.nameAscending;
     }
     else {
-      sort = Sort.nameDescending;
+      _sort = Sort.nameDescending;
       items.sort((item1, item2) => item2.name.compareTo(item1.name));
     }
 
@@ -164,10 +174,10 @@ class ItemProvider extends ChangeNotifier {
   void sortItemsByPrice({bool ascending = true}) {
     if (ascending) {
       items.sort((item1, item2) => item1.price.compareTo(item2.price));
-      sort = Sort.priceAscending;
+      _sort = Sort.priceAscending;
     }
     else {
-      sort = Sort.priceDescending;
+      _sort = Sort.priceDescending;
       items.sort((item1, item2) => item2.price.compareTo(item1.price));
     }
 
@@ -175,7 +185,17 @@ class ItemProvider extends ChangeNotifier {
   }
 
   Future<void> sortItems(Sort sorting) async {
-    sort = sorting;
+    _sort = sorting;
+
+    await getAllItems();
+
+    notifyListeners();
+  }
+
+  Future<void> setFilter(int categoryId) async {
+    if (categoryId == -1 || _categories.containsKey(categoryId)) {
+      _filterId = categoryId;
+    }
 
     await getAllItems();
 
