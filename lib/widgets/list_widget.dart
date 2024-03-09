@@ -47,7 +47,7 @@ class ListWidget extends StatelessWidget {
                   leading: SizedBox(
                     width: 100,
                     height: 100,
-                    child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.question_mark),
+                    child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.image),
                   ),
                   title: Text(items[index].name),
                   subtitle: Text(categories[items[index].category]!),

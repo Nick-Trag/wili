@@ -66,7 +66,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   builder: (context, provider, child) => Column(
                     children: [
                       Center(
-                        child: provider.currentItem != null && provider.currentItem!.image != "" ? Image.file(File(provider.currentItem!.image)) : const Icon(Icons.question_mark),
+                        child: provider.currentItem != null && provider.currentItem!.image != "" ? Image.file(File(provider.currentItem!.image)) : const Icon(Icons.image),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

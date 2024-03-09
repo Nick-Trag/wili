@@ -103,7 +103,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: item.image != "" ? Image.file(File(item.image)) : const Icon(Icons.question_mark)),
+                  Center(child: item.image != "" ? Image.file(File(item.image)) : const Icon(Icons.image)),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
