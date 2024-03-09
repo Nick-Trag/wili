@@ -24,6 +24,7 @@ class ListWidget extends StatefulWidget {
 
 class _ListWidgetState extends State<ListWidget> {
   Sort sort = Sort.id;
+  int filterCategory = -1; // The id of the category currently used for filtering. -1 signifies showing all categories
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +55,18 @@ class _ListWidgetState extends State<ListWidget> {
                 //   items: [items],
                 //   onChanged: onChanged,
                 // ),
-                TextButton(
-                  child: const Text("filter"),
-                  onPressed: () {
-                    setState(() {
-                      // widget.items = widget.items.where((item) => item.category == 1).toList();
-                    });
+                DropdownButton<int>( // TODO: Add icon next to this
+                  value: filterCategory,
+                  items: const [
+                    DropdownMenuItem(
+                      value: -1,
+                      child: Text("All categories"),
+                    ), // TODO: Keep this and also add all other categories
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      filterCategory = value;
+                    }
                   },
                 ),
                 DropdownButton<Sort>( // TODO: Add icon next to this
