@@ -61,19 +61,31 @@ class _ListWidgetState extends State<ListWidget> {
                         semanticLabel: "Filter items by category",
                       ),
                     ),
-                    DropdownButton<int>(
-                      value: filterCategory,
-                      items: const [
-                        DropdownMenuItem(
-                          value: -1,
-                          child: Text("All categories"),
-                        ), // TODO: Keep this and also add all other categories
-                      ],
-                      onChanged: (value) {
-                        if (value != null) {
-                          filterCategory = value;
-                        }
-                      },
+                    Consumer<ItemProvider>(
+                      builder: (context, provider, child) => DropdownButton<int>(
+                        value: filterCategory,
+                        items: [
+                          const DropdownMenuItem(
+                            value: -1,
+                            child: Text("All categories"),
+                          ) // TODO: Very important. What if the currently selected category gets deleted?
+                        ] + provider.categories.map(
+                          (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
+                            name,
+                            DropdownMenuItem<int>(
+                              value: id,
+                              child: Text(name),
+                            )
+                          )
+                        ).values.toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() {
+                              filterCategory = value;
+                            });
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
