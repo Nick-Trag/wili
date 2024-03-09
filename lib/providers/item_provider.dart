@@ -126,4 +126,25 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void sortItemsByName({bool ascending = true}) {
+    if (ascending) {
+      items.sort((item1, item2) => item1.name.compareTo(item2.name));
+    }
+    else {
+      items.sort((item1, item2) => item2.name.compareTo(item1.name));
+    }
+
+    notifyListeners();
+  }
+
+  void sortItemsByPrice({bool ascending = true}) {
+    if (ascending) {
+      items.sort((item1, item2) => item1.price.compareTo(item2.price));
+    }
+    else {
+      items.sort((item1, item2) => item2.price.compareTo(item1.price));
+    }
+
+    notifyListeners();
+  }
 }

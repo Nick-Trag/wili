@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:wili/pages/view_item.dart';
+import 'package:wili/providers/item_provider.dart';
 import 'package:wili/providers/settings_provider.dart';
 
 class ListWidget extends StatefulWidget {
@@ -62,9 +63,10 @@ class _ListWidgetState extends State<ListWidget> {
                 TextButton(
                   child: const Text("sort alphabetically"),
                   onPressed: () { // TODO: Use the provider for sorting and filtering.
-                    setState(() {
-                      widget.items.sort((item1, item2) => item1.name.compareTo(item2.name));
-                    });
+                    Provider.of<ItemProvider>(context, listen: false).sortItemsByName();
+                    // setState(() {
+                    //   widget.items.sort((item1, item2) => item1.name.compareTo(item2.name));
+                    // });
                   },
                 ),
               ],
