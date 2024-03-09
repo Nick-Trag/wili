@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
 import 'package:wili/pages/settings.dart';
 import 'package:wili/providers/item_provider.dart';
+import 'package:wili/providers/settings_provider.dart';
 import 'package:wili/widgets/list_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,6 +33,8 @@ class _HomePageState extends State<HomePage> {
   //   WishlistItem(name: "Shoes", category: 3),
   // ];
   // List<WishlistItem> items = [];
+  Sort sort = Sort.id;
+  int filterCategory = -1; // The id of the category currently used for filtering. -1 signifies showing all categories
 
   @override
   void initState() {
@@ -64,9 +66,100 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Consumer<ItemProvider>(
-              builder: (context, provider, child) => ListWidget(
-                items: provider.items,
-                categories: provider.categories,
+              builder: (context, provider, child) => Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: 4.0),
+                            child: Icon(
+                              Icons.filter_alt,
+                              semanticLabel: "Filter items by category",
+                            ),
+                          ),
+                          Consumer<ItemProvider>(
+                            builder: (context, provider, child) => DropdownButton<int>(
+                              value: provider.filterId,
+                              items: [
+                                const DropdownMenuItem(
+                                  value: -1,
+                                  child: Text("All categories"),
+                                )
+                              ] + provider.categories.map(
+                                      (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
+                                      name,
+                                      DropdownMenuItem<int>(
+                                        value: id,
+                                        child: Text(name),
+                                      )
+                                  )
+                              ).values.toList(),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  filterCategory = value;
+                                  provider.setFilter(filterCategory);
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: 4.0),
+                            child: Icon(
+                              Icons.sort,
+                              semanticLabel: "Sort items",
+                            ),
+                          ),
+                          DropdownButton<Sort>(
+                            value: sort,
+                            items: [
+                              const DropdownMenuItem(
+                                value: Sort.id,
+                                child: Text("Default"),
+                              ),
+                              const DropdownMenuItem(
+                                value: Sort.nameAscending,
+                                child: Text("A-Z"),
+                              ),
+                              const DropdownMenuItem(
+                                value: Sort.nameDescending,
+                                child: Text("Z-A"),
+                              ),
+                              DropdownMenuItem(
+                                value: Sort.priceAscending,
+                                child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
+                              ),
+                              DropdownMenuItem(
+                                value: Sort.priceDescending,
+                                child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              if (value != null) {
+                                sort = value;
+                                Provider.of<ItemProvider>(context, listen: false).sortItems(sort);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: ListWidget(
+                      items: provider.items,
+                      categories: provider.categories,
+                    ),
+                  ),
+                ],
               ),
             );
           }
