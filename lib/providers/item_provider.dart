@@ -7,6 +7,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/services/sqlite_service.dart';
 
+enum Sort {
+  priceAscending,
+  priceDescending,
+  nameAscending,
+  nameDescending,
+  id,
+}
+
 // Later version TODO: Use the SQLiteService WAY LESS. Do updates locally instead of pulling everything from the db always
 class ItemProvider extends ChangeNotifier {
   final SQLiteService _sqlite = SQLiteService();
@@ -23,6 +31,8 @@ class ItemProvider extends ChangeNotifier {
 
   WishlistItem? get currentItem => _currentItem;
 
+  Sort sort = Sort.id;
+
   ItemProvider() {
     getAllItems();
     getCategories();
@@ -31,6 +41,18 @@ class ItemProvider extends ChangeNotifier {
   Future<void> getAllItems() async {
     _items = await _sqlite.getAllItems();
     _currentItem = null;
+
+    switch (sort) {
+      case Sort.priceAscending:
+        sortItemsByPrice(ascending: true);
+      case Sort.priceDescending:
+        sortItemsByPrice(ascending: false);
+      case Sort.nameAscending:
+        sortItemsByName(ascending: true);
+      case Sort.nameDescending:
+        sortItemsByName(ascending: false);
+      case Sort.id:
+    }
   }
 
   Future<void> addItem(WishlistItem item) async {
@@ -129,8 +151,10 @@ class ItemProvider extends ChangeNotifier {
   void sortItemsByName({bool ascending = true}) {
     if (ascending) {
       items.sort((item1, item2) => item1.name.compareTo(item2.name));
+      sort = Sort.nameAscending;
     }
     else {
+      sort = Sort.nameDescending;
       items.sort((item1, item2) => item2.name.compareTo(item1.name));
     }
 
@@ -140,10 +164,20 @@ class ItemProvider extends ChangeNotifier {
   void sortItemsByPrice({bool ascending = true}) {
     if (ascending) {
       items.sort((item1, item2) => item1.price.compareTo(item2.price));
+      sort = Sort.priceAscending;
     }
     else {
+      sort = Sort.priceDescending;
       items.sort((item1, item2) => item2.price.compareTo(item1.price));
     }
+
+    notifyListeners();
+  }
+
+  Future<void> sortItems(Sort sorting) async {
+    sort = sorting;
+
+    await getAllItems();
 
     notifyListeners();
   }

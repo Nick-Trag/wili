@@ -23,6 +23,8 @@ class ListWidget extends StatefulWidget {
 }
 
 class _ListWidgetState extends State<ListWidget> {
+  Sort sort = Sort.id;
+
   @override
   Widget build(BuildContext context) {
     if (widget.items.isEmpty) {
@@ -60,13 +62,35 @@ class _ListWidgetState extends State<ListWidget> {
                     });
                   },
                 ),
-                TextButton(
-                  child: const Text("sort alphabetically"),
-                  onPressed: () { // TODO: Use the provider for sorting and filtering.
-                    Provider.of<ItemProvider>(context, listen: false).sortItemsByName();
-                    // setState(() {
-                    //   widget.items.sort((item1, item2) => item1.name.compareTo(item2.name));
-                    // });
+                DropdownButton<Sort>( // TODO: Add icon next to this
+                  value: sort,
+                  items: [
+                    const DropdownMenuItem(
+                      value: Sort.id,
+                      child: Text("Default"),
+                    ),
+                    const DropdownMenuItem(
+                      value: Sort.nameAscending,
+                      child: Text("A-Z"),
+                    ),
+                    const DropdownMenuItem(
+                      value: Sort.nameDescending,
+                      child: Text("Z-A"),
+                    ),
+                    DropdownMenuItem(
+                      value: Sort.priceAscending,
+                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
+                    ),
+                    DropdownMenuItem(
+                      value: Sort.priceDescending,
+                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      sort = value;
+                      Provider.of<ItemProvider>(context, listen: false).sortItems(sort);
+                    }
                   },
                 ),
               ],
