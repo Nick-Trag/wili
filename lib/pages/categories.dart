@@ -130,16 +130,36 @@ class CategoriesWidget extends StatelessWidget {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title: const Text("Delete this category?"),
-                                    content: Text("Are you sure you want to delete ${provider.categories[categoryId]!}? "
-                                        "This will delete all items that use this category."),
+                                    content: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "Are you sure you want to delete ${provider.categories[categoryId]!}?",
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        const Text(
+                                          "This will delete all items that use this category.",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                          ),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ],
+                                    ),
                                     actions: [
                                       TextButton(
                                         onPressed: () => Navigator.of(context).pop(false),
                                         child: const Text("Cancel"),
                                       ),
-                                      TextButton( // TODO: This is super destructive. The UI should reflect that
+                                      TextButton(
                                         onPressed: () => Navigator.of(context).pop(true),
-                                        child: const Text("Delete"),
+                                        child: const Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

@@ -62,7 +62,12 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text("Delete"),
+                      child: const Text(
+                        "Delete",
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
                     ),
                   ],
                 ),
