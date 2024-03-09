@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
@@ -111,9 +112,19 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                       child: Card(
                         child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(item.name),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.abc),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(item.name),
+                                  ),
+                                ),
+                              ],
                             ),
                             const Divider(height: 0),
                             Text(provider.categories[item.category]!),
