@@ -65,9 +65,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
               children: [
                 Consumer<ItemProvider>(
                   builder: (context, provider, child) => Column(
-                    children: [
+                    children: [ // TODO TODO TODO: URGENT BUG. Image will need to be submitted along with everything else
                       Center(
-                        child: provider.currentItem != null && provider.currentItem!.image != "" ? Image.file(File(provider.currentItem!.image)) : const Padding(
+                        child: provider.currentItem != null && provider.currentItem!.image != "" && File(provider.currentItem!.image).existsSync() ? Image.file(File(provider.currentItem!.image)) : const Padding(
                           padding: EdgeInsets.only(top: 25.0),
                           child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
                         ),

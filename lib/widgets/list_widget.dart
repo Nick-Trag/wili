@@ -34,7 +34,7 @@ class ListWidget extends StatelessWidget {
         ],
       );
     }
-    else {
+    else { // TODO: Perhaps show purchased items differently
       return ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
@@ -47,7 +47,7 @@ class ListWidget extends StatelessWidget {
                   leading: SizedBox(
                     width: 80,
                     height: 100,
-                    child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.image),
+                    child: items[index].image != "" && File(items[index].image).existsSync() ? Image.file(File(items[index].image)) : const Icon(Icons.image),
                   ),
                   title: Text(items[index].name),
                   subtitle: Text(categories[items[index].category]!),

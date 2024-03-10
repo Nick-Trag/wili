@@ -32,26 +32,26 @@ class SQLiteService {
         await database.insert(
           'Categories',
           {
-            'name': 'Tech',
+            'name': '💻 Tech',
           }
         );
         await database.insert(
           'Categories',
           {
-            'name': 'Clothes',
+            'name': '👕 Clothes',
           }
         );
         await database.insert(
           'Categories',
           {
-            'name': 'Hobbies',
+            'name': '⚽ Hobbies',
           }
         );
         await database.insert(
           'Categories',
           {
             'name': 'Other',
-          } // TODO: Add emojis and select which categories I want as default
+          }
         );
       },
       version: 1,
