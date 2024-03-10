@@ -34,7 +34,7 @@ class ListWidget extends StatelessWidget {
         ],
       );
     }
-    else { // TODO: Perhaps show purchased items differently
+    else {
       return ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
@@ -42,17 +42,18 @@ class ListWidget extends StatelessWidget {
             // The last item gets considerably more padding on the bottom, in order for the floating action button to not hide any item's price
             padding: index == items.length - 1 ? const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 55.0): const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
             child: GestureDetector(
-              child: Card(
-                child: ListTile(
-                  leading: SizedBox(
-                    width: 80,
-                    height: 100,
-                    child: items[index].image != "" && File(items[index].image).existsSync() ? Image.file(File(items[index].image)) : const Icon(Icons.image),
-                  ),
-                  title: Text(items[index].name),
-                  subtitle: Text(categories[items[index].category]!),
-                  trailing: Consumer<SettingsProvider>(
-                    builder: (context, provider, child) => Text('${intl.NumberFormat('0.00').format(items[index].price)}${provider.currency}'),
+              child: Consumer<SettingsProvider>(
+                builder: (context, provider, child) => Card(
+                  color: items[index].purchased && provider.colorPurchased ? Colors.green[100] : null, // TODO: Choose better color
+                  child: ListTile(
+                    leading: SizedBox(
+                      width: 80,
+                      height: 100,
+                      child: items[index].image != "" && File(items[index].image).existsSync() ? Image.file(File(items[index].image)) : const Icon(Icons.image),
+                    ),
+                    title: Text(items[index].name),
+                    subtitle: Text(categories[items[index].category]!),
+                    trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}${provider.currency}'),
                   ),
                 ),
               ),

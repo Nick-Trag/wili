@@ -88,6 +88,26 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 ),
               ),
               const Divider(height: 0),
+              Consumer<SettingsProvider>(
+                builder: (context, provider, child) => InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: ListTile(
+                      title: const Text("Change color of purchased items"),
+                      trailing: Switch(
+                        value: provider.colorPurchased,
+                        onChanged: (value) {
+                          provider.toggleColoring();
+                        },
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    provider.toggleColoring();
+                  },
+                ),
+              ),
+              const Divider(height: 0),
               InkWell(
                 child: const ListTile(
                   title: Text('Edit categories'),
