@@ -129,7 +129,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                               ),
                             ),
                             const Divider(height: 0),
-                            IntrinsicHeight( // Possible TODO: Extract this into another widget
+                            IntrinsicHeight( // Possible TODO: Extract this into another widget. Also, intrinsic height is an expensive widget. Find an alternative if possible
                               child: Row(
                                 children: [
                                   const Padding(
