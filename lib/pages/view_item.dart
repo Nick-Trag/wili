@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
@@ -112,22 +113,41 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                       child: Card(
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.abc),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(item.name),
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(Icons.abc),
                                   ),
-                                ),
-                              ],
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(item.name),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             const Divider(height: 0),
-                            Text(provider.categories[item.category]!),
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(Icons.category_outlined),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(provider.categories[item.category]!),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             const Divider(height: 0),
                             Consumer<SettingsProvider>(
                               builder: (context, settingsProvider, child) => Text('${intl.NumberFormat('0.00').format(item.price)}${settingsProvider.currency}'),
