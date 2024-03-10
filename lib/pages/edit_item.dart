@@ -164,7 +164,10 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
                     keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
-                    initialValue: widget.item.price.toStringAsFixed(2),
+                    initialValue: widget.item.price != 0 ? widget.item.price.toStringAsFixed(2) : "",
+                    decoration: InputDecoration(
+                      hintText: widget.item.price.toStringAsFixed(2),
+                    ),
                     inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
                       TextInputFormatter.withFunction(

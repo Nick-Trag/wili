@@ -8,6 +8,7 @@ import 'package:wili/providers/item_provider.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wili/providers/settings_provider.dart';
+import 'package:wili/widgets/item_property_row.dart';
 
 
 class ViewItemWidget extends StatefulWidget {
@@ -111,125 +112,53 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                       child: Card(
                         child: Column(
                           children: [
-                            IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.abc),
-                                  ),
-                                  const VerticalDivider(),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(item.name),
-                                    ),
-                                  ),
-                                ],
+                            ItemPropertyRowWidget(icon: const Icon(Icons.abc, semanticLabel: "Name"), text: Text(item.name)),
+                            const Divider(height: 0),
+                            ItemPropertyRowWidget(icon: const Icon(Icons.category_outlined, semanticLabel: "Category"), text: Text(provider.categories[item.category]!)),
+                            const Divider(height: 0),
+                            ItemPropertyRowWidget(
+                              icon: const Icon(Icons.euro, semanticLabel: "Price"),
+                              text: Consumer<SettingsProvider>(
+                                builder: (context, settingsProvider, child) => Text('${intl.NumberFormat('0.00').format(item.price)}${settingsProvider.currency}'),
                               ),
                             ),
                             const Divider(height: 0),
-                            IntrinsicHeight( // Possible TODO: Extract this into another widget. Also, intrinsic height is an expensive widget. Find an alternative if possible
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.category_outlined),
-                                  ),
-                                  const VerticalDivider(),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(provider.categories[item.category]!),
-                                    ),
-                                  ),
-                                ],
+                            ItemPropertyRowWidget(icon: const Icon(Icons.note_outlined, semanticLabel: "Note"), text: Text(item.note)),
+                            const Divider(height: 0),
+                            ItemPropertyRowWidget(icon: const Icon(Icons.numbers, semanticLabel: "Quantity"), text: Text(item.quantity.toString())),
+                            const Divider(height: 0),
+                            ItemPropertyRowWidget(
+                              icon: const Icon(Icons.link, semanticLabel: "Link"),
+                              text: InkWell(
+                                child: Text(
+                                  item.link,
+                                ),
+                                onTap: () {
+                                  Uri link;
+                                  try {
+                                    link = Uri.parse(item.link);
+                                  }
+                                  on FormatException {
+                                    return;
+                                  }
+                                  if (link.isScheme('http') || link.isScheme('https')) {
+                                    // Could also use canLaunch(link), but it returns a future, and I don't think I want to make this function async and await the result for no reason
+                                    // Also, everything has already been checked when the link was added. So the check is superfluous as well
+                                    launchUrl(link);
+                                  }
+                                },
                               ),
                             ),
                             const Divider(height: 0),
-                            IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.euro),
-                                  ),
-                                  const VerticalDivider(),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Consumer<SettingsProvider>(
-                                        builder: (context, settingsProvider, child) => Text('${intl.NumberFormat('0.00').format(item.price)}${settingsProvider.currency}'),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Divider(height: 0),
-                            IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.note_outlined),
-                                  ),
-                                  const VerticalDivider(),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(item.note),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Divider(height: 0),
-                            IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.numbers),
-                                  ),
-                                  const VerticalDivider(),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(item.quantity.toString()),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Divider(height: 0),
-                            InkWell(
-                              child: Text(
-                                item.link, // TODO: Make it look like a URL
-                              ),
-                              onTap: () {
-                                Uri link;
-                                try {
-                                  link = Uri.parse(item.link);
-                                }
-                                on FormatException {
-                                  return;
-                                }
-                                if (link.isScheme('http') || link.isScheme('https')) {
-                                  // Could also use canLaunch(link), but it returns a future, and I don't think I want to make this function async and await the result for no reason
-                                  // Also, everything has already been checked when the link was added. So the check is superfluous as well
-                                  launchUrl(link);
-                                }
-                              },
-                            ),
-                            const Divider(height: 0),
-                            Text(item.purchased ? "Purchased" : "Not purchased"),
+                            item.purchased ?
+                            const ItemPropertyRowWidget(icon: Icon(Icons.check_circle_outline, semanticLabel: "Purchased"), text: Text("Purchased")) :
+                            const ItemPropertyRowWidget(icon: Icon(Icons.cancel_outlined, semanticLabel: "Not purchased"), text: Text("Not purchased")),
                           ],
                         ),
                       ),
                     ),
                   ),
-                ], // TODO: Make it look good
+                ],
               );
             },
           ),
