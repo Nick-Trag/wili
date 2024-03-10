@@ -210,6 +210,7 @@ class ItemProvider extends ChangeNotifier {
     List<String> usedImages = allItems.map((item) => item.image).toList();
     for (FileSystemEntity file in files) {
       if (!usedImages.contains(file.path)) {
+        // TODO: Test this more and then delete the print
         print('${file.path} marked for deletion');
         file.delete();
       }
