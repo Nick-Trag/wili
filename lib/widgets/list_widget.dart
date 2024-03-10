@@ -45,7 +45,7 @@ class ListWidget extends StatelessWidget {
               child: Card(
                 child: ListTile(
                   leading: SizedBox(
-                    width: 100,
+                    width: 80,
                     height: 100,
                     child: items[index].image != "" ? Image.file(File(items[index].image)) : const Icon(Icons.image),
                   ),

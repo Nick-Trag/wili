@@ -67,7 +67,10 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   builder: (context, provider, child) => Column(
                     children: [
                       Center(
-                        child: provider.currentItem != null && provider.currentItem!.image != "" ? Image.file(File(provider.currentItem!.image)) : const Icon(Icons.image),
+                        child: provider.currentItem != null && provider.currentItem!.image != "" ? Image.file(File(provider.currentItem!.image)) : const Padding(
+                          padding: EdgeInsets.only(top: 25.0),
+                          child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
