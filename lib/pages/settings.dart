@@ -47,6 +47,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         content: Form(
                           key: _formKey,
                           child: TextFormField(
+                            autofocus: true,
                             // initialValue: provider.currency,
                             decoration: InputDecoration(
                               hintText: provider.currency,

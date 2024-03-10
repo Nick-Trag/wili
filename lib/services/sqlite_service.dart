@@ -44,14 +44,14 @@ class SQLiteService {
         await database.insert(
           'Categories',
           {
-            'name': 'Hobby',
+            'name': 'Hobbies',
           }
         );
         await database.insert(
           'Categories',
           {
-            'name': 'Misc.',
-          }
+            'name': 'Other',
+          } // TODO: Add emojis and select which categories I want as default
         );
       },
       version: 1,

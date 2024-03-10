@@ -62,6 +62,7 @@ class CategoriesWidget extends StatelessWidget {
                                     content: Form(
                                       key: _formKey,
                                       child: TextFormField(
+                                        autofocus: true,
                                         // initialValue: provider.categories[categoryId]!,
                                         decoration: InputDecoration(
                                           hintText: provider.categories[categoryId]!,
@@ -203,6 +204,7 @@ class CategoriesWidget extends StatelessWidget {
               content: Form(
                 key: _formKey,
                 child: TextFormField(
+                  autofocus: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter a name";
