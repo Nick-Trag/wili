@@ -44,7 +44,7 @@ class ListWidget extends StatelessWidget {
             child: GestureDetector(
               child: Consumer<SettingsProvider>(
                 builder: (context, provider, child) => Card(
-                  color: items[index].purchased && provider.colorPurchased ? Colors.green[100] : null, // TODO: Choose better color
+                  color: items[index].purchased && provider.colorPurchased ? const Color.fromRGBO(221, 227, 237, 0.7) : null, // TODO: Choose better color
                   child: ListTile(
                     leading: SizedBox(
                       width: 80,
