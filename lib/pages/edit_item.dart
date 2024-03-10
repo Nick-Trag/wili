@@ -67,59 +67,53 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Consumer<ItemProvider>(
-                  builder: (context, provider, child) => Column(
-                    children: [
-                      Center(
-                        child: item.image != "" && File(item.image).existsSync() ? Image.file(File(item.image)) : const Padding(
-                          padding: EdgeInsets.only(top: 25.0),
-                          child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            tooltip: "Change image",
-                            onPressed: () async {
-                              final ImagePicker picker = ImagePicker();
-                              final XFile? image = await picker.pickImage(
-                                source: ImageSource.gallery,
-                                maxHeight: 500,
-                                maxWidth: 500,
-                              ); // Later TODO: Cropping
-
-                              if (image != null) {
-                                final String path = (await getApplicationDocumentsDirectory()).path;
-                                // String extension = image.name.split('.').last;
-                                Directory directory = Directory(join(path, 'item_images'));
-                                if (!directory.existsSync()) {
-                                  directory.createSync();
-                                }
-                                final File newImage = File(image.path).renameSync(join(directory.path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
-                                // If I do do it, cache kinda fucks me. Hmm...
-                                setState(() {
-                                  item.image = newImage.path;
-                                });
-                                // provider.updateImage(item.id, image);
-                              }
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.hide_image_outlined),
-                            tooltip: "Clear image",
-                            onPressed: () {
-                              setState(() {
-                                item.image = '';
-                              });
-                              // provider.clearImage(item.id);
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
+                Center(
+                  child: item.image != "" && File(item.image).existsSync() ? Image.file(File(item.image)) : const Padding(
+                    padding: EdgeInsets.only(top: 25.0),
+                    child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      tooltip: "Change image",
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? image = await picker.pickImage(
+                          source: ImageSource.gallery,
+                          maxHeight: 500,
+                          maxWidth: 500,
+                        ); // Later TODO: Cropping
+
+                        if (image != null) {
+                          final String path = (await getApplicationDocumentsDirectory()).path;
+                          // String extension = image.name.split('.').last;
+                          Directory directory = Directory(join(path, 'item_images'));
+                          if (!directory.existsSync()) {
+                            directory.createSync();
+                          }
+                          final File newImage = File(image.path).renameSync(join(directory.path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
+                          // If I do do it, cache kinda fucks me. Hmm...
+                          setState(() {
+                            item.image = newImage.path;
+                          });
+                          // provider.updateImage(item.id, image);
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.hide_image_outlined),
+                      tooltip: "Clear image",
+                      onPressed: () {
+                        setState(() {
+                          item.image = '';
+                        });
+                        // provider.clearImage(item.id);
+                      },
+                    ),
+                  ],
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
