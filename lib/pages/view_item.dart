@@ -130,7 +130,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             const Divider(height: 0),
                             ItemPropertyRowWidget(icon: const Icon(Icons.numbers, semanticLabel: "Quantity"), text: Text(item.quantity.toString())),
                             const Divider(height: 0),
-                            ItemPropertyRowWidget(
+                            ItemPropertyRowWidget( // TODO: Link only on the actual text
                               icon: const Icon(Icons.link, semanticLabel: "Link"),
                               text: InkWell(
                                 child: Text(

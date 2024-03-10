@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/services/sqlite_service.dart';
 
@@ -127,8 +131,6 @@ class ItemProvider extends ChangeNotifier {
   //   final File newImage = File(image.path).renameSync(join(path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
   //   // If I do do it, cache kinda fucks me. Hmm...
   //
-  //   // TODO: When deleting an item OR A CASCADING CATEGORY, I need to delete saved images.
-  //   // Perhaps, to save me the trouble of cache etc., I can mass clear unused images on open or on close. It will be async, so no impact on performance either
   //   await _sqlite.updateImage(id, newImage.path);
   //
   //   await getAllItems();
@@ -195,5 +197,22 @@ class ItemProvider extends ChangeNotifier {
     await getAllItems();
 
     notifyListeners();
+  }
+
+  Future<void> clearUnusedImages() async {
+    final String path = (await getApplicationDocumentsDirectory()).path;
+    Directory directory = Directory(join(path, 'item_images'));
+    if (!directory.existsSync()) {
+      return;
+    }
+    List<WishlistItem> allItems = await _sqlite.getAllItems();
+    List<FileSystemEntity> files = directory.listSync();
+    List<String> usedImages = allItems.map((item) => item.image).toList();
+    for (FileSystemEntity file in files) {
+      if (!usedImages.contains(file.path)) {
+        print('${file.path} marked for deletion');
+        file.delete();
+      }
+    }
   }
 }

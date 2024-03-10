@@ -93,7 +93,11 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                               if (image != null) {
                                 final String path = (await getApplicationDocumentsDirectory()).path;
                                 // String extension = image.name.split('.').last;
-                                final File newImage = File(image.path).renameSync(join(path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
+                                Directory directory = Directory(join(path, 'item_images'));
+                                if (!directory.existsSync()) {
+                                  directory.createSync();
+                                }
+                                final File newImage = File(image.path).renameSync(join(directory.path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
                                 // If I do do it, cache kinda fucks me. Hmm...
                                 setState(() {
                                   item.image = newImage.path;
