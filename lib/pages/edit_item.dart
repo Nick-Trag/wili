@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/categories.dart';
@@ -20,9 +22,11 @@ class EditItemWidget extends StatefulWidget {
 
 class _EditItemWidgetState extends State<EditItemWidget> {
   final _formKey = GlobalKey<FormState>();
+  late WishlistItem item;
 
   @override
   void initState() {
+    item = widget.item;
     super.initState();
   }
 
@@ -32,7 +36,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     return Scaffold(
       appBar: AppBar( // Might delete the app bar and the title on this page, will see
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.item.name != "" ? widget.item.name : "Add a new item"),
+        title: Text(item.name != "" ? item.name : "Add a new item"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -42,11 +46,11 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             tooltip: "Save item",
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                if (widget.item.id != -1) {
-                  Provider.of<ItemProvider>(context, listen: false).updateItem(widget.item);
+                if (item.id != -1) {
+                  Provider.of<ItemProvider>(context, listen: false).updateItem(item);
                 }
                 else {
-                  Provider.of<ItemProvider>(context, listen: false).addItem(widget.item);
+                  Provider.of<ItemProvider>(context, listen: false).addItem(item);
                 }
 
                 Navigator.of(context).pop();
@@ -65,9 +69,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
               children: [
                 Consumer<ItemProvider>(
                   builder: (context, provider, child) => Column(
-                    children: [ // TODO TODO TODO: URGENT BUG. Image will need to be submitted along with everything else
+                    children: [
                       Center(
-                        child: provider.currentItem != null && provider.currentItem!.image != "" && File(provider.currentItem!.image).existsSync() ? Image.file(File(provider.currentItem!.image)) : const Padding(
+                        child: item.image != "" && File(item.image).existsSync() ? Image.file(File(item.image)) : const Padding(
                           padding: EdgeInsets.only(top: 25.0),
                           child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
                         ),
@@ -87,7 +91,14 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                               ); // Later TODO: Cropping
 
                               if (image != null) {
-                                provider.updateImage(widget.item.id, image);
+                                final String path = (await getApplicationDocumentsDirectory()).path;
+                                // String extension = image.name.split('.').last;
+                                final File newImage = File(image.path).renameSync(join(path, image.name)); // Moving the image to a permanent app storage // NOT DOING THIS ATM: and renaming it to $id.$extension
+                                // If I do do it, cache kinda fucks me. Hmm...
+                                setState(() {
+                                  item.image = newImage.path;
+                                });
+                                // provider.updateImage(item.id, image);
                               }
                             },
                           ),
@@ -95,7 +106,10 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                             icon: const Icon(Icons.hide_image_outlined),
                             tooltip: "Clear image",
                             onPressed: () {
-                              provider.clearImage(widget.item.id);
+                              setState(() {
+                                item.image = '';
+                              });
+                              // provider.clearImage(item.id);
                             },
                           ),
                         ],
@@ -110,7 +124,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: TextFormField(
-                    initialValue: widget.item.name,
+                    initialValue: item.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a name';
@@ -118,7 +132,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       return null;
                     },
                     onChanged: (value) {
-                      widget.item.name = value;
+                      item.name = value;
                     },
                   ),
                 ),
@@ -132,7 +146,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     children: [
                       Consumer<ItemProvider>(
                         builder: (context, provider, child) => DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
-                          value: widget.item.category,
+                          value: item.category,
                           items: provider.categories.map((int id, String name) {
                             return MapEntry<String, DropdownMenuItem<int>>(
                               name,
@@ -144,7 +158,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                           }).values.toList(),
                           onChanged: (int? value) {
                             setState(() {
-                              widget.item.category = value!;
+                              item.category = value!;
                             });
                           },
                         ),
@@ -167,9 +181,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
                     keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
-                    initialValue: widget.item.price != 0 ? widget.item.price.toStringAsFixed(2) : "",
+                    initialValue: item.price != 0 ? item.price.toStringAsFixed(2) : "",
                     decoration: InputDecoration(
-                      hintText: widget.item.price.toStringAsFixed(2),
+                      hintText: item.price.toStringAsFixed(2),
                     ),
                     inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
@@ -181,10 +195,10 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     ],
                     onChanged: (value) {
                       if (value == "") {
-                        widget.item.price = 0;
+                        item.price = 0;
                       }
                       else {
-                        widget.item.price = double.parse(value);
+                        item.price = double.parse(value);
                       }
                     },
                   ),
@@ -196,9 +210,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
-                    initialValue: widget.item.note,
+                    initialValue: item.note,
                     onChanged: (value) {
-                      widget.item.note = value;
+                      item.note = value;
                     },
                   ),
                 ),
@@ -210,16 +224,16 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
-                    initialValue: widget.item.quantity.toString(),
+                    initialValue: item.quantity.toString(),
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
                     ],
                     onChanged: (value) {
                       if (value == "") {
-                        widget.item.quantity = 1;
+                        item.quantity = 1;
                       }
                       else {
-                        widget.item.quantity = int.parse(value);
+                        item.quantity = int.parse(value);
                       }
                     },
                   ),
@@ -231,9 +245,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
-                    initialValue: widget.item.link,
+                    initialValue: item.link,
                     onChanged: (value) {
-                      widget.item.link = value;
+                      item.link = value;
                     },
                     validator: (value) {
                       String error = "Please enter a valid full URL or leave this field blank";
@@ -257,10 +271,10 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                   child: CheckboxListTile(
                     title: const Text("Purchased"),
-                    value: widget.item.purchased,
+                    value: item.purchased,
                     onChanged: (newValue) {
                       setState(() {
-                        widget.item.purchased = newValue!;
+                        item.purchased = newValue!;
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading, // leading checkbox
