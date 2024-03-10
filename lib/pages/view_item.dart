@@ -172,7 +172,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                                 children: [
                                   const Padding(
                                     padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.note),
+                                    child: Icon(Icons.note_outlined),
                                   ),
                                   const VerticalDivider(),
                                   Expanded(
