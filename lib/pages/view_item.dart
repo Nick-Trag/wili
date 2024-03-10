@@ -130,26 +130,31 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             const Divider(height: 0),
                             ItemPropertyRowWidget(icon: const Icon(Icons.numbers, semanticLabel: "Quantity"), text: Text(item.quantity.toString())),
                             const Divider(height: 0),
-                            ItemPropertyRowWidget( // TODO: Link only on the actual text
+                            ItemPropertyRowWidget(
                               icon: const Icon(Icons.link, semanticLabel: "Link"),
-                              text: InkWell(
-                                child: Text(
-                                  item.link,
-                                ),
-                                onTap: () {
-                                  Uri link;
-                                  try {
-                                    link = Uri.parse(item.link);
-                                  }
-                                  on FormatException {
-                                    return;
-                                  }
-                                  if (link.isScheme('http') || link.isScheme('https')) {
-                                    // Could also use canLaunch(link), but it returns a future, and I don't think I want to make this function async and await the result for no reason
-                                    // Also, everything has already been checked when the link was added. So the check is superfluous as well
-                                    launchUrl(link);
-                                  }
-                                },
+                              text: Row(
+                                children: [
+                                  InkWell(
+                                    child: Text(
+                                      item.link,
+                                    ),
+                                    onTap: () {
+                                      Uri link;
+                                      try {
+                                        link = Uri.parse(item.link);
+                                      }
+                                      on FormatException {
+                                        return;
+                                      }
+                                      if (link.isScheme('http') || link.isScheme('https')) {
+                                        // Could also use canLaunch(link), but it returns a future, and I don't think I want to make this function async and await the result for no reason
+                                        // Also, everything has already been checked when the link was added. So the check is superfluous as well
+                                        launchUrl(link);
+                                      }
+                                    },
+                                  ),
+                                  Expanded(child: Container()), // This makes the link only work on the text itself, by giving the rest of the space to this empty container
+                                ],
                               ),
                             ),
                             const Divider(height: 0),
