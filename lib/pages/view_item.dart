@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/edit_item.dart';
@@ -131,7 +129,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                               ),
                             ),
                             const Divider(height: 0),
-                            IntrinsicHeight(
+                            IntrinsicHeight( // Possible TODO: Extract this into another widget
                               child: Row(
                                 children: [
                                   const Padding(
@@ -149,13 +147,61 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                               ),
                             ),
                             const Divider(height: 0),
-                            Consumer<SettingsProvider>(
-                              builder: (context, settingsProvider, child) => Text('${intl.NumberFormat('0.00').format(item.price)}${settingsProvider.currency}'),
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(Icons.euro),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Consumer<SettingsProvider>(
+                                        builder: (context, settingsProvider, child) => Text('${intl.NumberFormat('0.00').format(item.price)}${settingsProvider.currency}'),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             const Divider(height: 0),
-                            Text(item.note),
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(Icons.note),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(item.note),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             const Divider(height: 0),
-                            Text(item.quantity.toString()),
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(Icons.numbers),
+                                  ),
+                                  const VerticalDivider(),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(item.quantity.toString()),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             const Divider(height: 0),
                             InkWell(
                               child: Text(
