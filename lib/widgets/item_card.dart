@@ -18,7 +18,7 @@ class ItemCardWidget extends StatelessWidget {
     return GestureDetector(
       child: Consumer<SettingsProvider>(
         builder: (context, provider, child) => Card(
-          color: item.purchased && provider.colorPurchased ? const Color.fromRGBO(221, 227, 237, 0.7) : null,
+          color: item.purchased && provider.colorPurchased ? Theme.of(context).colorScheme.onSecondary : null,
           child: ListTile(
             leading: SizedBox(
               width: 80,

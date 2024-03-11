@@ -36,7 +36,6 @@ class ListWidget extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (context, index) {
           if (Provider.of<SettingsProvider>(context).moveToBot && index != items.length - 1 && !items[index].purchased && items[index + 1].purchased) {
-            print("Got in here");
             return Column(
               children: [
                 Padding(

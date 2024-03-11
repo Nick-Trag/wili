@@ -22,8 +22,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue, onSecondary: Colors.lightBlue[50]),
           useMaterial3: true,
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue, brightness: Brightness.dark),
+          useMaterial3: true,
+          brightness: Brightness.dark,
         ),
         home: const LifecycleWatcher(child: HomePage(title: 'Wili Wishlist')),
       ),
