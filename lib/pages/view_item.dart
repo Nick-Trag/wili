@@ -34,10 +34,9 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title:
-          Consumer<ItemProvider>(
-            builder: (context, provider, child) => provider.currentItem != null ? Text(provider.currentItem!.name) : Text(widget.item.name)
-          ),
+        title: Consumer<ItemProvider>(
+          builder: (context, provider, child) => provider.currentItem != null ? Text(provider.currentItem!.name) : Text(widget.item.name)
+        ),
         centerTitle: true,
         actions: [
           IconButton(
