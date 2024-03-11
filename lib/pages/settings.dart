@@ -87,7 +87,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   },
                 ),
               ),
-              const Divider(height: 0), // Future TODO: Move purchased items to the bottom
+              const Divider(height: 0),
               Consumer<SettingsProvider>(
                 builder: (context, provider, child) => InkWell(
                   child: Padding(
@@ -104,6 +104,26 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   ),
                   onTap: () {
                     provider.toggleColoring();
+                  },
+                ),
+              ),
+              const Divider(height: 0),
+              Consumer<SettingsProvider>(
+                builder: (context, provider, child) => InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: ListTile(
+                      title: const Text("Move purchased items to the bottom"),
+                      trailing: Switch(
+                        value: provider.moveToBot,
+                        onChanged: (value) {
+                          provider.toggleMoveToBot();
+                        },
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    provider.toggleMoveToBot();
                   },
                 ),
               ),

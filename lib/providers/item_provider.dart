@@ -157,12 +157,12 @@ class ItemProvider extends ChangeNotifier {
 
   void sortItemsByName({bool ascending = true}) {
     if (ascending) {
-      items.sort((item1, item2) => item1.name.compareTo(item2.name));
+      items.sort((item1, item2) => item1.name.toLowerCase().compareTo(item2.name.toLowerCase()));
       _sort = Sort.nameAscending;
     }
     else {
       _sort = Sort.nameDescending;
-      items.sort((item1, item2) => item2.name.compareTo(item1.name));
+      items.sort((item1, item2) => item2.name.toLowerCase().compareTo(item1.name.toLowerCase()));
     }
 
     notifyListeners();
