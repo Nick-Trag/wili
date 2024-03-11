@@ -68,7 +68,15 @@ class _EditItemWidgetState extends State<EditItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: item.image != "" && File(item.image).existsSync() ? Image.file(File(item.image)) : const Padding(
+                  child:
+                  item.image != "" && File(item.image).existsSync() ?
+                  Container(
+                    constraints: const BoxConstraints(
+                      maxHeight: 500,
+                    ),
+                    child: Image.file(File(item.image)),
+                  ) :
+                  const Padding(
                     padding: EdgeInsets.only(top: 25.0),
                     child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
                   ),
@@ -77,14 +85,14 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit),
+                      icon: const Icon(Icons.add_photo_alternate),
                       tooltip: "Change image",
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
                         final XFile? image = await picker.pickImage(
                           source: ImageSource.gallery,
-                          maxHeight: 500,
-                          maxWidth: 500,
+                          maxHeight: 1000,
+                          maxWidth: 1000,
                         ); // Later TODO: Cropping
 
                         if (image != null) {

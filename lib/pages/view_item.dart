@@ -104,10 +104,20 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: item.image != ""  && File(item.image).existsSync() ? Image.file(File(item.image)) : const Padding(
-                    padding: EdgeInsets.only(top: 25.0),
-                    child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
-                  )),
+                  Center(
+                      child:
+                      item.image != ""  && File(item.image).existsSync() ?
+                      Container(
+                        constraints: const BoxConstraints(
+                          maxHeight: 500,
+                        ),
+                        child: Image.file(File(item.image)),
+                      ) :
+                      const Padding(
+                        padding: EdgeInsets.only(top: 25.0),
+                        child: Icon(Icons.image, size: 100, semanticLabel: "No image"),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(

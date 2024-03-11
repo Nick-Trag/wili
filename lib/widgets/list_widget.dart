@@ -48,10 +48,18 @@ class ListWidget extends StatelessWidget {
                   child: ListTile(
                     leading: SizedBox(
                       width: 80,
-                      height: 100,
-                      child: items[index].image != "" && File(items[index].image).existsSync() ? Image.file(File(items[index].image)) : const Icon(Icons.image),
+                      child:
+                      items[index].image != "" && File(items[index].image).existsSync() ?
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(3),
+                        child: Image.file(
+                          File(items[index].image),
+                          fit: BoxFit.cover,
+                        ),
+                      ) :
+                      const Icon(Icons.image),
                     ),
-                    title: Text(items[index].name),
+                    title: Text(items[index].name, maxLines: 1, overflow: TextOverflow.ellipsis),
                     subtitle: Text(categories[items[index].category]!),
                     trailing: Text('${intl.NumberFormat('0.00').format(items[index].price)}${provider.currency}'),
                   ),
