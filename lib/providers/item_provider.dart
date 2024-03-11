@@ -12,6 +12,7 @@ enum Sort {
   nameAscending,
   nameDescending,
   id,
+  idReverse,
 }
 
 // Later version TODO: Use the SQLiteService WAY LESS. Do updates locally instead of pulling everything from the db always
@@ -46,22 +47,6 @@ class ItemProvider extends ChangeNotifier {
   Future<void> getAllItems() async {
     _items = await _sqlite.getAllItems();
     _currentItem = null;
-
-    if (_filterId != -1) {
-      _items = _items.where((item) => item.category == _filterId).toList();
-    }
-
-    switch (_sort) {
-      case Sort.priceAscending:
-        sortItemsByPrice(ascending: true);
-      case Sort.priceDescending:
-        sortItemsByPrice(ascending: false);
-      case Sort.nameAscending:
-        sortItemsByName(ascending: true);
-      case Sort.nameDescending:
-        sortItemsByName(ascending: false);
-      case Sort.id:
-    }
   }
 
   Future<void> addItem(WishlistItem item) async {
@@ -154,37 +139,35 @@ class ItemProvider extends ChangeNotifier {
   //
   //   notifyListeners();
   // }
+  //
+  // void sortItemsByName({bool ascending = true}) {
+  //   if (ascending) {
+  //     _items.sort((item1, item2) => item1.name.toLowerCase().compareTo(item2.name.toLowerCase()));
+  //     _sort = Sort.nameAscending;
+  //   }
+  //   else {
+  //     _sort = Sort.nameDescending;
+  //     _items.sort((item1, item2) => item2.name.toLowerCase().compareTo(item1.name.toLowerCase()));
+  //   }
+  //
+  //   notifyListeners();
+  // }
+  //
+  // void sortItemsByPrice({bool ascending = true}) {
+  //   if (ascending) {
+  //     _items.sort((item1, item2) => item1.price.compareTo(item2.price));
+  //     _sort = Sort.priceAscending;
+  //   }
+  //   else {
+  //     _sort = Sort.priceDescending;
+  //     _items.sort((item1, item2) => item2.price.compareTo(item1.price));
+  //   }
+  //
+  //   notifyListeners();
+  // }
 
-  void sortItemsByName({bool ascending = true}) {
-    if (ascending) {
-      items.sort((item1, item2) => item1.name.toLowerCase().compareTo(item2.name.toLowerCase()));
-      _sort = Sort.nameAscending;
-    }
-    else {
-      _sort = Sort.nameDescending;
-      items.sort((item1, item2) => item2.name.toLowerCase().compareTo(item1.name.toLowerCase()));
-    }
-
-    notifyListeners();
-  }
-
-  void sortItemsByPrice({bool ascending = true}) {
-    if (ascending) {
-      items.sort((item1, item2) => item1.price.compareTo(item2.price));
-      _sort = Sort.priceAscending;
-    }
-    else {
-      _sort = Sort.priceDescending;
-      items.sort((item1, item2) => item2.price.compareTo(item1.price));
-    }
-
-    notifyListeners();
-  }
-
-  Future<void> sortItems(Sort sorting) async {
+  Future<void> setSort(Sort sorting) async {
     _sort = sorting;
-
-    await getAllItems();
 
     notifyListeners();
   }
@@ -193,8 +176,6 @@ class ItemProvider extends ChangeNotifier {
     if (categoryId == -1 || _categories.containsKey(categoryId)) {
       _filterId = categoryId;
     }
-
-    await getAllItems();
 
     notifyListeners();
   }

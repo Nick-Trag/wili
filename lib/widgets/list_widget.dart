@@ -38,14 +38,11 @@ class ListWidget extends StatelessWidget {
     else {
       return Consumer<SettingsProvider>(
         builder: (context, settingsProvider, child) {
-          if (settingsProvider.moveToBot) {
-            items.sort((item1, item2) => item1.purchased == item2.purchased ? 0 : (item1.purchased ? 1 : -1));
-          } // TODO: Going back to this page after turning this off keeps the sort until it is refreshed
           // TODO: When it is on, add a divider after the last purchased item
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
-              return Padding(
+              return Padding( // TODO: Put this into its own file and widget
                 // The last item gets considerably more padding on the bottom, in order for the floating action button to not hide any item's price
                 padding: index == items.length - 1 ? const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 55.0): const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                 child: GestureDetector(

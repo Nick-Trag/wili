@@ -66,101 +66,133 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Consumer<ItemProvider>(
-              builder: (context, provider, child) => Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 4.0),
-                            child: Icon(
-                              Icons.filter_alt_outlined,
-                              semanticLabel: "Filter items by category",
+              builder: (context, provider, child) {
+                List<WishlistItem> sortedItems = List<WishlistItem>.from(provider.items);
+
+                if (provider.filterId != -1) {
+                  sortedItems = sortedItems.where((item) => item.category == provider.filterId).toList();
+                }
+
+                switch (provider.sort) {
+                  case Sort.priceAscending:
+                    sortItemsByPrice(sortedItems, ascending: true);
+                  case Sort.priceDescending:
+                    sortItemsByPrice(sortedItems, ascending: false);
+                  case Sort.nameAscending:
+                    sortItemsByName(sortedItems, ascending: true);
+                  case Sort.nameDescending:
+                    sortItemsByName(sortedItems, ascending: false);
+                  case Sort.idReverse:
+                    sortItemsById(sortedItems, ascending: false);
+                  case Sort.id:
+                }
+
+                bool moveToBot = Provider.of<SettingsProvider>(context).moveToBot;
+
+                if (moveToBot) {
+                  sortedItems.sort((item1, item2) => item1.purchased == item2.purchased ? 0 : (item1.purchased ? 1 : -1));
+                }
+
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(right: 4.0),
+                              child: Icon(
+                                Icons.filter_alt_outlined,
+                                semanticLabel: "Filter items by category",
+                              ),
                             ),
-                          ),
-                          Consumer<ItemProvider>(
-                            builder: (context, provider, child) => DropdownButton<int>(
-                              value: provider.filterId,
+                            Consumer<ItemProvider>(
+                              builder: (context, provider, child) => DropdownButton<int>(
+                                value: provider.filterId,
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: -1,
+                                    child: Text("All categories"),
+                                  )
+                                ] + provider.categories.map(
+                                        (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
+                                        name,
+                                        DropdownMenuItem<int>(
+                                          value: id,
+                                          child: Text(name),
+                                        )
+                                    )
+                                ).values.toList(),
+                                onChanged: (value) {
+                                  if (value != null) {
+                                    filterCategory = value;
+                                    provider.setFilter(filterCategory);
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(right: 4.0),
+                              child: Icon(
+                                Icons.sort,
+                                semanticLabel: "Sort items",
+                              ),
+                            ),
+                            DropdownButton<Sort>(
+                              value: sort,
                               items: [
                                 const DropdownMenuItem(
-                                  value: -1,
-                                  child: Text("All categories"),
-                                )
-                              ] + provider.categories.map(
-                                      (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
-                                      name,
-                                      DropdownMenuItem<int>(
-                                        value: id,
-                                        child: Text(name),
-                                      )
-                                  )
-                              ).values.toList(),
+                                  value: Sort.id,
+                                  child: Text("Oldest first"),
+                                ),
+                                const DropdownMenuItem(
+                                  value: Sort.idReverse,
+                                  child: Text("Newest first"),
+                                ),
+                                const DropdownMenuItem(
+                                  value: Sort.nameAscending,
+                                  child: Text("A-Z"),
+                                ),
+                                const DropdownMenuItem(
+                                  value: Sort.nameDescending,
+                                  child: Text("Z-A"),
+                                ),
+                                DropdownMenuItem(
+                                  value: Sort.priceAscending,
+                                  child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
+                                ),
+                                DropdownMenuItem(
+                                  value: Sort.priceDescending,
+                                  child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
+                                ),
+                              ],
                               onChanged: (value) {
                                 if (value != null) {
-                                  filterCategory = value;
-                                  provider.setFilter(filterCategory);
+                                  sort = value;
+                                  Provider.of<ItemProvider>(context, listen: false).setSort(sort);
                                 }
                               },
                             ),
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 4.0),
-                            child: Icon(
-                              Icons.sort,
-                              semanticLabel: "Sort items",
-                            ),
-                          ),
-                          DropdownButton<Sort>(
-                            value: sort,
-                            items: [
-                              const DropdownMenuItem(
-                                value: Sort.id,
-                                child: Text("Default"),
-                              ),
-                              const DropdownMenuItem(
-                                value: Sort.nameAscending,
-                                child: Text("A-Z"),
-                              ),
-                              const DropdownMenuItem(
-                                value: Sort.nameDescending,
-                                child: Text("Z-A"),
-                              ),
-                              DropdownMenuItem(
-                                value: Sort.priceAscending,
-                                child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
-                              ),
-                              DropdownMenuItem(
-                                value: Sort.priceDescending,
-                                child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              if (value != null) {
-                                sort = value;
-                                Provider.of<ItemProvider>(context, listen: false).sortItems(sort);
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: ListWidget(
-                      items: provider.items,
-                      categories: provider.categories,
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
+                    Expanded(
+                      child: ListWidget(
+                        items: sortedItems,
+                        categories: provider.categories,
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           }
           else if (snapshot.hasError) { // Should never happen
@@ -205,5 +237,32 @@ class _HomePageState extends State<HomePage> {
         }
       ),
     );
+  }
+
+  void sortItemsByPrice(List<WishlistItem> items, {bool ascending = true}) {
+    if (ascending) {
+      items.sort((item1, item2) => item1.price.compareTo(item2.price));
+    }
+    else {
+      items.sort((item1, item2) => item2.price.compareTo(item1.price));
+    }
+  }
+
+  void sortItemsByName(List<WishlistItem> items, {bool ascending = true}) {
+    if (ascending) {
+      items.sort((item1, item2) => item1.name.toLowerCase().compareTo(item2.name.toLowerCase()));
+    }
+    else {
+      items.sort((item1, item2) => item2.name.toLowerCase().compareTo(item1.name.toLowerCase()));
+    }
+  }
+
+  void sortItemsById(List<WishlistItem> items, {bool ascending = true}) {
+    if (ascending) {
+      items.sort((item1, item2) => item1.id.compareTo(item2.id));
+    }
+    else {
+      items.sort((item1, item2) => item2.id.compareTo(item1.id));
+    }
   }
 }
