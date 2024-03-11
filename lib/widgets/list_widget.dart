@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
@@ -20,13 +21,13 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return Column(
+      return const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.not_interested),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 100),
-            child: const Text(
+          Icon(Icons.not_interested),
+          SizedBox(
+            width: 200,
+            child: Text(
               "No items wished for yet. Use the plus button to add an item.",
               textAlign: TextAlign.center,
             ),
