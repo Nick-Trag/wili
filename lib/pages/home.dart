@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
               child: SizedBox(
                 width: 60,
                 height: 60,
-                child: SpinKitFadingCircle(color: Theme.of(context).colorScheme.secondary,),
+                child: SpinKitFadingCircle(color: Theme.of(context).colorScheme.primary),
               ),
             );
           }
