@@ -22,8 +22,8 @@ class ItemPropertyRowWidget extends StatelessWidget {
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-            decoration: const BoxDecoration(
-              border: Border(left: BorderSide(color: Colors.black12)),
+            decoration: BoxDecoration(
+              border: Border(left: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
             ),
             child: text,
           ),
