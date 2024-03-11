@@ -87,7 +87,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   },
                 ),
               ),
-              const Divider(height: 0),
+              const Divider(height: 0), // Future TODO: Move purchased items to the bottom
               Consumer<SettingsProvider>(
                 builder: (context, provider, child) => InkWell(
                   child: Padding(
