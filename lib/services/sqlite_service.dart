@@ -30,6 +30,12 @@ class SQLiteService {
         ")");
         // Insert some default categories
         await database.insert(
+            'Categories',
+            {
+              'name': '🛋️ Home',
+            }
+        );
+        await database.insert(
           'Categories',
           {
             'name': '💻 Tech',
