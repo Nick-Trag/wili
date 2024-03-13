@@ -17,7 +17,7 @@ class CategoriesWidget extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Categories'),
         centerTitle: true,
-      ),
+      ), // TODO: Re-order categories
       body: Consumer<ItemProvider>(
         builder: (context, provider, child) {
           if (provider.categories.isEmpty) { // This should never be the case
