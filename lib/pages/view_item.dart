@@ -131,7 +131,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             ItemPropertyRowWidget(
                               icon: const Icon(Icons.euro, semanticLabel: "Price"),
                               text: Consumer<SettingsProvider>(
-                                builder: (context, settingsProvider, child) => Text('${intl.NumberFormat('0.00').format(item.price)}${settingsProvider.currency}'),
+                                builder: (context, settingsProvider, child) => Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${settingsProvider.currency}'),
                               ),
                             ),
                             const Divider(height: 0),

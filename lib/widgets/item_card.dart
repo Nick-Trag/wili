@@ -35,7 +35,7 @@ class ItemCardWidget extends StatelessWidget {
             ),
             title: Text(item.name, maxLines: 1, overflow: TextOverflow.ellipsis),
             subtitle: Text(categoryName),
-            trailing: Text('${intl.NumberFormat('0.00').format(item.price)}${provider.currency}'),
+            trailing: Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${provider.currency}'),
           ),
         ),
       ),
