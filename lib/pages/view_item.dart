@@ -86,7 +86,8 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
             ),
             tooltip: "Edit item",
             onPressed: () {
-              WishlistItem item = Provider.of<ItemProvider>(context, listen: false).currentItem ?? widget.item;
+              WishlistItem? currentItem = Provider.of<ItemProvider>(context, listen: false).currentItem;
+              WishlistItem item = currentItem != null ? WishlistItem.from(currentItem): widget.item;
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => EditItemWidget(item: item))
               );
@@ -99,7 +100,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
         child: SingleChildScrollView(
           child: Consumer<ItemProvider>(
             builder: (context, provider, child) {
-              WishlistItem item = provider.currentItem ?? widget.item;
+              WishlistItem item = provider.currentItem != null ? WishlistItem.from(provider.currentItem!) : widget.item;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

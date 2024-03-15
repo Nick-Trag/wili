@@ -21,6 +21,17 @@ class WishlistItem {
     this.image = ""}
   );
 
+  WishlistItem.from(WishlistItem item) :
+    name = item.name,
+    category = item.category,
+    id = item.id,
+    price = item.price,
+    purchased = item.purchased,
+    note = item.note,
+    quantity = item.quantity,
+    link = item.link,
+    image = item.image;
+
   // Do not return the ID, as we do not want it to change, other than by the DBMS itself.
   Map<String, dynamic> toMap() {
     return {

@@ -30,7 +30,6 @@ class _EditItemWidgetState extends State<EditItemWidget> {
     super.initState();
   }
 
-  // TODO: Going back after an edit keeps the edited values, even though they have not been saved in the database
   @override
   Widget build(BuildContext context) {
     return Scaffold(
