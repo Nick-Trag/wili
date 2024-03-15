@@ -18,8 +18,8 @@ class WishlistItem {
     this.note = "",
     this.quantity = 1,
     this.link = "",
-    this.image = ""}
-  );
+    this.image = "",
+  });
 
   WishlistItem.from(WishlistItem item) :
     name = item.name,
