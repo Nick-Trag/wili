@@ -1,4 +1,4 @@
-package com.example.wili;
+package csd.nikos.wili;
 
 import io.flutter.embedding.android.FlutterActivity;
 
