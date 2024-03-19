@@ -139,32 +139,39 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 },
               ),
               const Divider(height: 0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 16.0, 0, 0),
+                child: Text("Theme"),
+              ),
               Row(
                 children: [
                   Expanded(
                     child: InkWell(
                       child: const ListTile(
+                        leading: Icon(Icons.light_mode, semanticLabel: "Light mode",),
+                        title: Text("Light"),
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      child: const ListTile(
+                        leading: Icon(Icons.dark_mode, semanticLabel: "Dark mode",),
+                        title: Text('Dark'),
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      child: const ListTile(
+                        leading: Icon(Icons.phone_android, semanticLabel: "System default",),
                         title: Text("System"),
-                      ),
-                      onTap: () {
-
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      child: const ListTile(
-                        title: Text('Light'),
-                      ),
-                      onTap: () {
-
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      child: const ListTile(
-                        title: Text("Dark"),
                       ),
                       onTap: () {
 
@@ -173,6 +180,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   ),
                 ],
               ),
+              const Divider(height: 0),
             ], // TODO: Manual dark mode toggle
           ),
           Container(
