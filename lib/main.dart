@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           brightness: Brightness.dark,
         ),
+        themeMode: ThemeMode.system,
         home: const LifecycleWatcher(child: HomePage(title: 'Wili Wishlist')),
       ),
     );
