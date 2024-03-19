@@ -170,7 +170,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   Expanded(
                     child: InkWell(
                       child: const ListTile(
-                        leading: Icon(Icons.phone_android, semanticLabel: "System default",),
+                        leading: Icon(Icons.phone_android, semanticLabel: "Default system theme",),
                         title: Text("System"),
                       ),
                       onTap: () {
