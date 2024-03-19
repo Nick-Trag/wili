@@ -69,7 +69,7 @@ class SettingsProvider extends ChangeNotifier {
   Future<void> initThemeMode() async {
     final settings = await SharedPreferences.getInstance();
     int? themeModeIndex = settings.getInt('themeMode');
-    _themeMode = themeModeIndex != null ? ThemeMode.values[settings.getInt('themeMode')!] : ThemeMode.system;
+    _themeMode = themeModeIndex != null ? ThemeMode.values[themeModeIndex] : ThemeMode.system;
   }
 
   Future<void> setThemeMode(ThemeMode newMode) async {
