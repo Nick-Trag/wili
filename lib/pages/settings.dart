@@ -139,6 +139,40 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 },
               ),
               const Divider(height: 0),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      child: const ListTile(
+                        title: Text("System"),
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      child: const ListTile(
+                        title: Text('Light'),
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      child: const ListTile(
+                        title: Text("Dark"),
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ], // TODO: Manual dark mode toggle
           ),
           Container(
