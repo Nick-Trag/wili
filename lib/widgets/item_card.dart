@@ -34,8 +34,8 @@ class ItemCardWidget extends StatelessWidget {
               const Icon(Icons.image),
             ),
             title: Text(item.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-            subtitle: Text(categoryName),
-            trailing: Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${provider.currency}'),
+            subtitle: Text(categoryName, maxLines: 1, overflow: TextOverflow.ellipsis),
+            trailing: Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${provider.currency}'), // Possible TODO: Format large numbers like 1.2M
           ),
         ),
       ),

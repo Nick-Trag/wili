@@ -71,7 +71,7 @@ class CategoriesWidget extends StatelessWidget {
                                           if (value == null) {
                                             return "Please enter a name";
                                           }
-                                          if (value.length > 25) {
+                                          if (value.length > 25) { // TODO: Maybe 15
                                             return "Category names can be up to 25 characters";
                                           }
                                           if (provider.categories.containsValue(value)) {
@@ -118,7 +118,7 @@ class CategoriesWidget extends StatelessWidget {
                                   //     content: const Center(
                                   //       child: Text(
                                   //         "Cannot delete category, as it is the only one left",
-                                  //         style: TextStyle(fontSize: 15),
+                                  //         style: TextStyle(fontSize: 25),
                                   //       ),
                                   //     ),
                                   //     duration: const Duration(seconds: 1, milliseconds: 500),

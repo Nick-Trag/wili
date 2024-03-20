@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (BuildContext context) => SettingsProvider()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Wili',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue, onSecondary: Colors.lightBlue[50]),
           useMaterial3: true,

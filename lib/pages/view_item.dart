@@ -144,7 +144,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                               icon: const Icon(Icons.link, semanticLabel: "Link"),
                               text: Row(
                                 children: [
-                                  InkWell(
+                                  InkWell( // TODO: This can overflow
                                     child: Text(
                                       item.link,
                                     ),
