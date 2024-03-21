@@ -135,6 +135,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a name';
                       }
+                      if (value.length > 1000) {
+                        return 'Name too long';
+                      }
                       return null;
                     },
                     onChanged: (value) {
@@ -246,10 +249,18 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField( // TODO: Expandable
+                  child: TextFormField(
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
                     initialValue: item.note,
                     onChanged: (value) {
                       item.note = value;
+                    },
+                    validator: (value) {
+                      if (value != null && value.length > 10000) {
+                        return 'Note too long';
+                      }
+                      return null;
                     },
                   ),
                 ),
@@ -310,6 +321,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         }
                         if (!link.isScheme('http') && !link.isScheme('https')) {
                           return error;
+                        }
+                        if (value.length > 1000) {
+                          return 'Link too long';
                         }
                       }
                       return null;
