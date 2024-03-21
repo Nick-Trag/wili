@@ -44,47 +44,51 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     onTap: () async {
                       await showDialog(
                         context: context,
-                        builder: (context) => AlertDialog( // TODO: Dialogs in landscape mode are kinda bad. Look into it
-                          title: const Text("Please type in the symbol or name of your currency"),
-                          content: Form(
-                            key: _formKey,
-                            child: TextFormField(
-                              autofocus: true,
-                              // initialValue: provider.currency,
-                              decoration: InputDecoration(
-                                hintText: provider.currency,
+                        builder: (context) => Center(
+                          child: SingleChildScrollView(
+                            child: AlertDialog(
+                              title: const Text("Please type in the symbol or name of your currency"),
+                              content: Form(
+                                key: _formKey,
+                                child: TextFormField(
+                                  autofocus: true,
+                                  // initialValue: provider.currency,
+                                  decoration: InputDecoration(
+                                    hintText: provider.currency,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.trim().length > 5) {
+                                      return "Please enter up to five characters";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    _currency = value;
+                                  },
+                                ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.trim().length > 5) {
-                                  return "Please enter up to five characters";
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                _currency = value;
-                              },
+                              actions: [
+                                TextButton(
+                                  child: const Text("Cancel"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text("OK"),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      String currency = _currency.trim();
+                                      if (currency.isNotEmpty) {
+                                        provider.setCurrency(currency);
+                                      }
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                          actions: [
-                            TextButton(
-                              child: const Text("Cancel"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text("OK"),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  String currency = _currency.trim();
-                                  if (currency.isNotEmpty) {
-                                    provider.setCurrency(currency);
-                                  }
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                            ),
-                          ],
                         ),
                       );
                     },

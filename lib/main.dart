@@ -37,7 +37,7 @@ class MyMaterialApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue, onSecondary: Colors.lightBlue[50]),
         useMaterial3: true,
         brightness: Brightness.light,
-        // Below code makes sure that animations complete in the background, when entering a new route, and don't show up when popping the route
+        // Below code makes sure that animations complete in the background when entering a new route, and don't show up when popping the route
         // Reference: https://github.com/flutter/flutter/issues/133889#issuecomment-1703807078
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -51,7 +51,7 @@ class MyMaterialApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue, brightness: Brightness.dark),
         useMaterial3: true,
         brightness: Brightness.dark,
-        // Below code makes sure that animations complete in the background, when entering a new route, and don't show up when popping the route
+        // Below code makes sure that animations complete in the background when entering a new route, and don't show up when popping the route
         // Reference: https://github.com/flutter/flutter/issues/133889#issuecomment-1703807078
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
