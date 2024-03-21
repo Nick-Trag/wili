@@ -152,40 +152,44 @@ class _HomePageState extends State<HomePage> {
                                   semanticLabel: "Sort items",
                                 ),
                               ),
-                              DropdownButton<Sort>(
-                                value: sort,
-                                items: [
-                                  const DropdownMenuItem(
-                                    value: Sort.id,
-                                    child: Text("Oldest first"),
-                                  ),
-                                  const DropdownMenuItem(
-                                    value: Sort.idReverse,
-                                    child: Text("Newest first"),
-                                  ),
-                                  const DropdownMenuItem(
-                                    value: Sort.nameAscending,
-                                    child: Text("A-Z"),
-                                  ),
-                                  const DropdownMenuItem(
-                                    value: Sort.nameDescending,
-                                    child: Text("Z-A"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: Sort.priceAscending,
-                                    child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: Sort.priceDescending,
-                                    child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    sort = value;
-                                    Provider.of<ItemProvider>(context, listen: false).setSort(sort);
-                                  }
-                                },
+                              FractionallySizedBox(
+                                widthFactor: 0.7,
+                                child: DropdownButton<Sort>(
+                                  isExpanded: true,
+                                  value: sort,
+                                  items: [
+                                    const DropdownMenuItem(
+                                      value: Sort.id,
+                                      child: Text("Oldest first", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: Sort.idReverse,
+                                      child: Text("Newest first", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: Sort.nameAscending,
+                                      child: Text("A-Z", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: Sort.nameDescending,
+                                      child: Text("Z-A", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: Sort.priceAscending,
+                                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬆', overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: Sort.priceDescending,
+                                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬇', overflow: TextOverflow.ellipsis,),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      sort = value;
+                                      Provider.of<ItemProvider>(context, listen: false).setSort(sort);
+                                    }
+                                  },
+                                ),
                               ),
                             ],
                           ),

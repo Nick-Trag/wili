@@ -153,7 +153,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         builder: (context, provider, child) => Expanded(
                           child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
                             isExpanded: true,
-                            value: item.category, // TODO: Can overflow here as well (if 25 Ws for example) Seems to be fixed. Tomorrow: Check if everything works always
+                            value: item.category,
                             items: provider.categories.map((int id, String name) {
                               return MapEntry<String, DropdownMenuItem<int>>(
                                 name,
