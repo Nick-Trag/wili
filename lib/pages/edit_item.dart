@@ -46,6 +46,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             tooltip: "Save item",
             onPressed: () {
               if (_formKey.currentState!.validate()) {
+                item.name = item.name.trim();
+                item.note = item.note.trim();
+                item.link = item.link.trim();
                 if (item.id != -1) {
                   Provider.of<ItemProvider>(context, listen: false).updateItem(item);
                 }
@@ -220,7 +223,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                             }
                           },
                           validator: (value) {
-                            if (value != null && double.parse(value) >= 1000000000000) { // 1 trillion +
+                            if (value != null && value != "" && double.parse(value) >= 1000000000000) { // 1 trillion +
                               return "Price cannot be this high";
                             }
                             return null;
@@ -291,7 +294,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       if (value == null) {
                         return "Invalid value";
                       }
-                      if (double.parse(value) >= 1000000000) { // 1 billion +
+                      if (value != "" && int.parse(value) >= 1000000000) { // 1 billion +
                         return "Quantity can't be so high";
                       }
                       return null;
