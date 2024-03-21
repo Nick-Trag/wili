@@ -57,52 +57,58 @@ class CategoriesWidget extends StatelessWidget {
                                 String newName = "";
                                 await showDialog(
                                   context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text("Please type in the new name for this category"),
-                                    content: Form(
-                                      key: _formKey,
-                                      child: TextFormField(
-                                        autofocus: true,
-                                        // initialValue: provider.categories[categoryId]!,
-                                        decoration: InputDecoration(
-                                          hintText: provider.categories[categoryId]!,
+                                  builder: (context) => Center(
+                                    child: SingleChildScrollView(
+                                      child: AlertDialog(
+                                        title: const Text("Please type in the new name for this category"),
+                                        content: Form(
+                                          key: _formKey,
+                                          child: TextFormField(
+                                            autofocus: true,
+                                            // initialValue: provider.categories[categoryId]!,
+                                            decoration: InputDecoration(
+                                              hintText: provider.categories[categoryId]!,
+                                            ),
+                                            validator: (value) {
+                                              if (value == null) {
+                                                return "Please enter a name";
+                                              }
+                                              String newValue = value.trim();
+                                              if (newValue.length > 25) {
+                                                return "Category names can be up to 25 characters";
+                                              }
+                                              if (provider.categories.containsValue(newValue)) {
+                                                return "Category already exists";
+                                              }
+                                              return null;
+                                            },
+                                            onChanged: (value) {
+                                              newName = value;
+                                            },
+                                          ),
                                         ),
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return "Please enter a name";
-                                          }
-                                          if (value.length > 25) {
-                                            return "Category names can be up to 25 characters";
-                                          }
-                                          if (provider.categories.containsValue(value)) {
-                                            return "Category already exists";
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (value) {
-                                          newName = value;
-                                        },
+                                        actions: [
+                                          TextButton(
+                                            child: const Text("Cancel"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: const Text("OK"),
+                                            onPressed: () {
+                                              if (_formKey.currentState!.validate()) {
+                                                newName = newName.trim();
+                                                if (newName.isNotEmpty) {
+                                                  provider.updateCategory(categoryId, newName);
+                                                }
+                                                Navigator.of(context).pop();
+                                              }
+                                            },
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        child: const Text("Cancel"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: const Text("OK"),
-                                        onPressed: () {
-                                          if (_formKey.currentState!.validate()) {
-                                            if (newName.isNotEmpty) {
-                                              provider.updateCategory(categoryId, newName);
-                                            }
-                                            Navigator.of(context).pop();
-                                          }
-                                        },
-                                      ),
-                                    ],
                                   ),
                                 );
                               },
@@ -118,7 +124,7 @@ class CategoriesWidget extends StatelessWidget {
                                   //     content: const Center(
                                   //       child: Text(
                                   //         "Cannot delete category, as it is the only one left",
-                                  //         style: TextStyle(fontSize: 15),
+                                  //         style: TextStyle(fontSize: 25),
                                   //       ),
                                   //     ),
                                   //     duration: const Duration(seconds: 1, milliseconds: 500),
@@ -199,46 +205,54 @@ class CategoriesWidget extends StatelessWidget {
           String name = "";
           await showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              title: const Text("Please enter a name for this category"),
-              content: Form(
-                key: _formKey,
-                child: TextFormField(
-                  autofocus: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter a name";
-                    }
-                    if (value.length > 25) {
-                      return "Category names can be up to 25 characters";
-                    }
-                    if (Provider.of<ItemProvider>(context, listen: false).categories.containsValue(value)) {
-                      return "Category already exists";
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    name = value;
-                  },
+            builder: (context) => Center(
+              child: SingleChildScrollView(
+                child: AlertDialog(
+                  title: const Text("Please enter a name for this category"),
+                  content: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      autofocus: true,
+                      validator: (value) {
+                        if (value == null) {
+                          return "Please enter a name";
+                        }
+                        String newValue = value.trim();
+                        if (newValue.isEmpty) {
+                          return "Please enter a name";
+                        }
+                        if (newValue.length > 25) {
+                          return "Category names can be up to 25 characters";
+                        }
+                        if (Provider.of<ItemProvider>(context, listen: false).categories.containsValue(newValue)) {
+                          return "Category already exists";
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        name = value;
+                      },
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: const Text("Cancel"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          Provider.of<ItemProvider>(context, listen: false).addCategory(name.trim());
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
-              actions: [
-                TextButton(
-                  child: const Text("Cancel"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: const Text("OK"),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Provider.of<ItemProvider>(context, listen: false).addCategory(name);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ],
             ),
           );
         },

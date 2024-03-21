@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/categories.dart';
 import 'package:wili/providers/item_provider.dart';
+import 'package:wili/providers/settings_provider.dart';
 
 class EditItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -45,6 +46,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
             tooltip: "Save item",
             onPressed: () {
               if (_formKey.currentState!.validate()) {
+                item.name = item.name.trim();
+                item.note = item.note.trim();
+                item.link = item.link.trim();
                 if (item.id != -1) {
                   Provider.of<ItemProvider>(context, listen: false).updateItem(item);
                 }
@@ -134,6 +138,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a name';
                       }
+                      if (value.length > 1000) {
+                        return 'Name too long';
+                      }
                       return null;
                     },
                     onChanged: (value) {
@@ -150,30 +157,35 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   child: Row(
                     children: [
                       Consumer<ItemProvider>(
-                        builder: (context, provider, child) => DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
-                          value: item.category,
-                          items: provider.categories.map((int id, String name) {
-                            return MapEntry<String, DropdownMenuItem<int>>(
-                              name,
-                              DropdownMenuItem<int>(
-                                value: id,
-                                child: Text(name),
-                              )
-                            );
-                          }).values.toList(),
-                          onChanged: (int? value) {
-                            setState(() {
-                              item.category = value!;
-                            });
-                          },
+                        builder: (context, provider, child) => Expanded(
+                          child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
+                            isExpanded: true,
+                            value: item.category,
+                            items: provider.categories.map((int id, String name) {
+                              return MapEntry<String, DropdownMenuItem<int>>(
+                                name,
+                                DropdownMenuItem<int>(
+                                  value: id,
+                                  child: Text(name, overflow: TextOverflow.ellipsis),
+                                )
+                              );
+                            }).values.toList(),
+                            onChanged: (int? value) {
+                              setState(() {
+                                item.category = value!;
+                              });
+                            },
+                          ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.settings_outlined, size: 22),
-                        tooltip: "Edit categories",
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget(allowDelete: false)));
-                        },
+                      Flexible(
+                        child: IconButton(
+                          icon: const Icon(Icons.settings_outlined, size: 22),
+                          tooltip: "Edit categories",
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget(allowDelete: false)));
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -184,28 +196,54 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
-                    initialValue: item.price != 0 ? item.price.toString() : "",
-                    decoration: InputDecoration(
-                      hintText: item.price.toString(),
-                    ),
-                    inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
-                      TextInputFormatter.withFunction(
-                          (oldValue, newValue) => newValue.copyWith(
-                            text: newValue.text.replaceAll(',', '.'),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: TextFormField(
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
+                          initialValue: item.price != 0 ? item.price.toString() : "",
+                          decoration: InputDecoration(
+                            hintText: 0.toStringAsFixed(2), //item.price.toStringAsFixed(2),
+                          ),
+                          inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
+                            TextInputFormatter.withFunction(
+                              (oldValue, newValue) => newValue.copyWith(
+                                text: newValue.text.replaceAll(',', '.'),
+                              ),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            if (value == "") {
+                              item.price = 0;
+                            }
+                            else {
+                              item.price = double.parse(value);
+                            }
+                          },
+                          validator: (value) {
+                            if (value != null && value != "" && double.parse(value) >= 1000000000000) { // 1 trillion +
+                              return "Price cannot be this high";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Consumer<SettingsProvider>(
+                            builder: (context, settingsProvider, child) => Text(
+                              settingsProvider.currency,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            )
+                          ),
                         ),
                       ),
                     ],
-                    onChanged: (value) {
-                      if (value == "") {
-                        item.price = 0;
-                      }
-                      else {
-                        item.price = double.parse(value);
-                      }
-                    },
                   ),
                 ),
                 const Padding(
@@ -215,9 +253,17 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormField(
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
                     initialValue: item.note,
                     onChanged: (value) {
                       item.note = value;
+                    },
+                    validator: (value) {
+                      if (value != null && value.length > 10000) {
+                        return 'Note too long';
+                      }
+                      return null;
                     },
                   ),
                 ),
@@ -230,6 +276,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     initialValue: item.quantity.toString(),
+                    decoration: const InputDecoration(
+                      hintText: '1',
+                    ),
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
                     ],
@@ -240,6 +289,15 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       else {
                         item.quantity = int.parse(value);
                       }
+                    },
+                    validator: (value) { // Currently allows 0. Only because why not?
+                      if (value == null) {
+                        return "Invalid value";
+                      }
+                      if (value != "" && int.parse(value) >= 1000000000) { // 1 billion +
+                        return "Quantity can't be so high";
+                      }
+                      return null;
                     },
                   ),
                 ),
@@ -266,6 +324,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         }
                         if (!link.isScheme('http') && !link.isScheme('https')) {
                           return error;
+                        }
+                        if (value.length > 1000) {
+                          return 'Link too long';
                         }
                       }
                       return null;

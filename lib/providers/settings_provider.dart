@@ -6,6 +6,7 @@ class SettingsProvider extends ChangeNotifier {
     getCurrency();
     initColoring();
     initMoveToBot();
+    initThemeMode();
   }
 
   String _currency = "";
@@ -14,12 +15,15 @@ class SettingsProvider extends ChangeNotifier {
 
   bool _moveToBot = false;
 
+  ThemeMode _themeMode = ThemeMode.system;
+
   String get currency => _currency;
 
   bool get colorPurchased => _colorPurchased;
 
   bool get moveToBot => _moveToBot;
 
+  ThemeMode get themeMode => _themeMode;
 
   Future<void> getCurrency() async {
     final settings = await SharedPreferences.getInstance();
@@ -58,6 +62,20 @@ class SettingsProvider extends ChangeNotifier {
     final settings = await SharedPreferences.getInstance();
     settings.setBool('moveToBot', !_moveToBot);
     _moveToBot = !_moveToBot;
+
+    notifyListeners();
+  }
+
+  Future<void> initThemeMode() async {
+    final settings = await SharedPreferences.getInstance();
+    int? themeModeIndex = settings.getInt('themeMode');
+    _themeMode = themeModeIndex != null ? ThemeMode.values[themeModeIndex] : ThemeMode.system;
+  }
+
+  Future<void> setThemeMode(ThemeMode newMode) async {
+    final settings = await SharedPreferences.getInstance();
+    settings.setInt('themeMode', newMode.index);
+    _themeMode = newMode;
 
     notifyListeners();
   }

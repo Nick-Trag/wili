@@ -98,89 +98,101 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: 4.0),
-                              child: Icon(
-                                Icons.filter_alt_outlined,
-                                semanticLabel: "Filter items by category",
+                        Flexible(
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(right: 4.0),
+                                child: Icon(
+                                  Icons.filter_alt_outlined,
+                                  semanticLabel: "Filter items by category",
+                                ),
                               ),
-                            ),
-                            Consumer<ItemProvider>(
-                              builder: (context, provider, child) => DropdownButton<int>(
-                                value: provider.filterId,
-                                items: [
-                                  const DropdownMenuItem(
-                                    value: -1,
-                                    child: Text("All categories"),
-                                  )
-                                ] + provider.categories.map(
-                                        (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
+                              Consumer<ItemProvider>(
+                                builder: (context, provider, child) => FractionallySizedBox(
+                                  widthFactor: 0.8,
+                                  child: DropdownButton<int>(
+                                    isExpanded: true,
+                                    value: provider.filterId,
+                                    items: [
+                                      const DropdownMenuItem(
+                                        value: -1,
+                                        child: Text("All categories", overflow: TextOverflow.ellipsis),
+                                      )
+                                    ] + provider.categories.map(
+                                      (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
                                         name,
                                         DropdownMenuItem<int>(
                                           value: id,
-                                          child: Text(name),
+                                          child: Text(name, overflow: TextOverflow.ellipsis),
                                         )
-                                    )
-                                ).values.toList(),
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    filterCategory = value;
-                                    provider.setFilter(filterCategory);
-                                  }
-                                },
+                                      )
+                                    ).values.toList(),
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        filterCategory = value;
+                                        provider.setFilter(filterCategory);
+                                      }
+                                    },
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: 4.0),
-                              child: Icon(
-                                Icons.sort,
-                                semanticLabel: "Sort items",
+                        Flexible(
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(right: 4.0),
+                                child: Icon(
+                                  Icons.sort,
+                                  semanticLabel: "Sort items",
+                                ),
                               ),
-                            ),
-                            DropdownButton<Sort>(
-                              value: sort,
-                              items: [
-                                const DropdownMenuItem(
-                                  value: Sort.id,
-                                  child: Text("Oldest first"),
+                              FractionallySizedBox(
+                                widthFactor: 0.7,
+                                child: DropdownButton<Sort>(
+                                  isExpanded: true,
+                                  value: sort,
+                                  items: [
+                                    const DropdownMenuItem(
+                                      value: Sort.id,
+                                      child: Text("Oldest first", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: Sort.idReverse,
+                                      child: Text("Newest first", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: Sort.nameAscending,
+                                      child: Text("A-Z", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: Sort.nameDescending,
+                                      child: Text("Z-A", overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: Sort.priceAscending,
+                                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬆', overflow: TextOverflow.ellipsis,),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: Sort.priceDescending,
+                                      child: Text('${Provider.of<SettingsProvider>(context).currency}⬇', overflow: TextOverflow.ellipsis,),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      sort = value;
+                                      Provider.of<ItemProvider>(context, listen: false).setSort(sort);
+                                    }
+                                  },
                                 ),
-                                const DropdownMenuItem(
-                                  value: Sort.idReverse,
-                                  child: Text("Newest first"),
-                                ),
-                                const DropdownMenuItem(
-                                  value: Sort.nameAscending,
-                                  child: Text("A-Z"),
-                                ),
-                                const DropdownMenuItem(
-                                  value: Sort.nameDescending,
-                                  child: Text("Z-A"),
-                                ),
-                                DropdownMenuItem(
-                                  value: Sort.priceAscending,
-                                  child: Text('${Provider.of<SettingsProvider>(context).currency}⬆'),
-                                ),
-                                DropdownMenuItem(
-                                  value: Sort.priceDescending,
-                                  child: Text('${Provider.of<SettingsProvider>(context).currency}⬇'),
-                                ),
-                              ],
-                              onChanged: (value) {
-                                if (value != null) {
-                                  sort = value;
-                                  Provider.of<ItemProvider>(context, listen: false).setSort(sort);
-                                }
-                              },
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
