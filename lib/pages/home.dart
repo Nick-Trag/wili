@@ -117,13 +117,13 @@ class _HomePageState extends State<HomePage> {
                                     child: Text("All categories"),
                                   )
                                 ] + provider.categories.map(
-                                        (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
-                                        name,
-                                        DropdownMenuItem<int>(
-                                          value: id,
-                                          child: Text(name),
-                                        )
+                                  (int id, String name) => MapEntry<String, DropdownMenuItem<int>>(
+                                    name,
+                                    DropdownMenuItem<int>(
+                                      value: id,
+                                      child: Text(name),
                                     )
+                                  )
                                 ).values.toList(),
                                 onChanged: (value) {
                                   if (value != null) {
