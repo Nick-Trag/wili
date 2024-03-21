@@ -193,8 +193,8 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
                       TextInputFormatter.withFunction(
-                          (oldValue, newValue) => newValue.copyWith(
-                            text: newValue.text.replaceAll(',', '.'),
+                        (oldValue, newValue) => newValue.copyWith(
+                          text: newValue.text.replaceAll(',', '.'),
                         ),
                       ),
                     ],
@@ -205,6 +205,12 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       else {
                         item.price = double.parse(value);
                       }
+                    },
+                    validator: (value) {
+                      if (value != null && double.parse(value) >= 1000000000000) { // 1 trillion +
+                        return "Price cannot be this high";
+                      }
+                      return null;
                     },
                   ),
                 ),
@@ -230,6 +236,9 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     initialValue: item.quantity.toString(),
+                    decoration: const InputDecoration(
+                      hintText: '1',
+                    ),
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // only allow ints
                     ],
@@ -240,6 +249,15 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       else {
                         item.quantity = int.parse(value);
                       }
+                    },
+                    validator: (value) { // Currently allows 0. Only because why not?
+                      if (value == null) {
+                        return "Invalid value";
+                      }
+                      if (double.parse(value) >= 1000000000) { // 1 billion +
+                        return "Quantity can't be so high";
+                      }
+                      return null;
                     },
                   ),
                 ),
