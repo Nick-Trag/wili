@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/categories.dart';
 import 'package:wili/providers/item_provider.dart';
+import 'package:wili/providers/settings_provider.dart';
 
 class EditItemWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -187,36 +188,56 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
                   child: Text("Price:"),
                 ),
-                Padding( // TODO: Currency
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
-                    initialValue: item.price != 0 ? item.price.toString() : "",
-                    decoration: InputDecoration(
-                      hintText: 0.toStringAsFixed(2), //item.price.toStringAsFixed(2),
-                    ),
-                    inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
-                      TextInputFormatter.withFunction(
-                        (oldValue, newValue) => newValue.copyWith(
-                          text: newValue.text.replaceAll(',', '.'),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: TextFormField(
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true), // Set the keyboard to the number board, while allowing decimals
+                          initialValue: item.price != 0 ? item.price.toString() : "",
+                          decoration: InputDecoration(
+                            hintText: 0.toStringAsFixed(2), //item.price.toStringAsFixed(2),
+                          ),
+                          inputFormatters: <TextInputFormatter>[ //Accept only numbers, either integers or decimals (even from someone pasting it into the field)
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]?[0-9]*')), // Reference: https://www.flutterclutter.dev/flutter/tutorials/how-to-create-a-number-input/2021/86522/
+                            TextInputFormatter.withFunction(
+                              (oldValue, newValue) => newValue.copyWith(
+                                text: newValue.text.replaceAll(',', '.'),
+                              ),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            if (value == "") {
+                              item.price = 0;
+                            }
+                            else {
+                              item.price = double.parse(value);
+                            }
+                          },
+                          validator: (value) {
+                            if (value != null && double.parse(value) >= 1000000000000) { // 1 trillion +
+                              return "Price cannot be this high";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Consumer<SettingsProvider>(
+                            builder: (context, settingsProvider, child) => Text(
+                              settingsProvider.currency,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            )
+                          ),
                         ),
                       ),
                     ],
-                    onChanged: (value) {
-                      if (value == "") {
-                        item.price = 0;
-                      }
-                      else {
-                        item.price = double.parse(value);
-                      }
-                    },
-                    validator: (value) {
-                      if (value != null && double.parse(value) >= 1000000000000) { // 1 trillion +
-                        return "Price cannot be this high";
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 const Padding(
@@ -225,7 +246,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextFormField(
+                  child: TextFormField( // TODO: Expandable
                     initialValue: item.note,
                     onChanged: (value) {
                       item.note = value;
