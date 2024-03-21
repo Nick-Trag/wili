@@ -71,7 +71,7 @@ class CategoriesWidget extends StatelessWidget {
                                           if (value == null) {
                                             return "Please enter a name";
                                           }
-                                          if (value.length > 25) { // TODO: Maybe 15
+                                          if (value.length > 25) {
                                             return "Category names can be up to 25 characters";
                                           }
                                           if (provider.categories.containsValue(value)) {

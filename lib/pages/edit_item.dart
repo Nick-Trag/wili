@@ -150,30 +150,35 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                   child: Row(
                     children: [
                       Consumer<ItemProvider>(
-                        builder: (context, provider, child) => DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
-                          value: item.category,
-                          items: provider.categories.map((int id, String name) {
-                            return MapEntry<String, DropdownMenuItem<int>>(
-                              name,
-                              DropdownMenuItem<int>(
-                                value: id,
-                                child: Text(name),
-                              )
-                            );
-                          }).values.toList(),
-                          onChanged: (int? value) {
-                            setState(() {
-                              item.category = value!;
-                            });
-                          },
+                        builder: (context, provider, child) => Expanded(
+                          child: DropdownButton<int>( // Reference: https://stackoverflow.com/a/58153394/7400287
+                            isExpanded: true,
+                            value: item.category, // TODO: Can overflow here as well (if 25 Ws for example) Seems to be fixed. Tomorrow: Check if everything works always
+                            items: provider.categories.map((int id, String name) {
+                              return MapEntry<String, DropdownMenuItem<int>>(
+                                name,
+                                DropdownMenuItem<int>(
+                                  value: id,
+                                  child: Text(name, overflow: TextOverflow.ellipsis),
+                                )
+                              );
+                            }).values.toList(),
+                            onChanged: (int? value) {
+                              setState(() {
+                                item.category = value!;
+                              });
+                            },
+                          ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.settings_outlined, size: 22),
-                        tooltip: "Edit categories",
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget(allowDelete: false)));
-                        },
+                      Flexible(
+                        child: IconButton(
+                          icon: const Icon(Icons.settings_outlined, size: 22),
+                          tooltip: "Edit categories",
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesWidget(allowDelete: false)));
+                          },
+                        ),
                       ),
                     ],
                   ),
