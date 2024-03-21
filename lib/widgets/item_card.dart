@@ -36,9 +36,9 @@ class ItemCardWidget extends StatelessWidget {
             title: Text(item.name, maxLines: 1, overflow: TextOverflow.ellipsis),
             subtitle: Text(categoryName, maxLines: 1, overflow: TextOverflow.ellipsis),
             trailing:
-            item.price < 10000 ?
-            Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${provider.currency}') :
-            Text('${intl.NumberFormat.compact().format(item.price)}${provider.currency}'),
+              item.price < 10000 ?
+              Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${provider.currency}') :
+              Text('${intl.NumberFormat.compact().format(item.price)} ${provider.currency}'),
           ),
         ),
       ),

@@ -53,7 +53,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               hintText: provider.currency,
                             ),
                             validator: (value) {
-                              if (value == null || value.length > 5) {
+                              if (value == null || value.trim().length > 5) {
                                 return "Please enter up to five characters";
                               }
                               return null;
@@ -74,8 +74,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: const Text("OK"),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                if (_currency.isNotEmpty) {
-                                  provider.setCurrency(_currency);
+                                String currency = _currency.trim();
+                                if (currency.isNotEmpty) {
+                                  provider.setCurrency(currency);
                                 }
                                 Navigator.of(context).pop();
                               }
