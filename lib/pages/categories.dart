@@ -73,10 +73,11 @@ class CategoriesWidget extends StatelessWidget {
                                               if (value == null) {
                                                 return "Please enter a name";
                                               }
-                                              if (value.length > 25) {
+                                              String newValue = value.trim();
+                                              if (newValue.length > 25) {
                                                 return "Category names can be up to 25 characters";
                                               }
-                                              if (provider.categories.containsValue(value)) {
+                                              if (provider.categories.containsValue(newValue)) {
                                                 return "Category already exists";
                                               }
                                               return null;
@@ -97,6 +98,7 @@ class CategoriesWidget extends StatelessWidget {
                                             child: const Text("OK"),
                                             onPressed: () {
                                               if (_formKey.currentState!.validate()) {
+                                                newName = newName.trim();
                                                 if (newName.isNotEmpty) {
                                                   provider.updateCategory(categoryId, newName);
                                                 }
@@ -212,13 +214,17 @@ class CategoriesWidget extends StatelessWidget {
                     child: TextFormField(
                       autofocus: true,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null) {
                           return "Please enter a name";
                         }
-                        if (value.length > 25) {
+                        String newValue = value.trim();
+                        if (newValue.isEmpty) {
+                          return "Please enter a name";
+                        }
+                        if (newValue.length > 25) {
                           return "Category names can be up to 25 characters";
                         }
-                        if (Provider.of<ItemProvider>(context, listen: false).categories.containsValue(value)) {
+                        if (Provider.of<ItemProvider>(context, listen: false).categories.containsValue(newValue)) {
                           return "Category already exists";
                         }
                         return null;
@@ -239,7 +245,7 @@ class CategoriesWidget extends StatelessWidget {
                       child: const Text("OK"),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Provider.of<ItemProvider>(context, listen: false).addCategory(name);
+                          Provider.of<ItemProvider>(context, listen: false).addCategory(name.trim());
                           Navigator.of(context).pop();
                         }
                       },
