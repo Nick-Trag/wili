@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wili/pages/categories.dart';
+import 'package:wili/pages/dark_mode_settings.dart';
 import 'package:wili/providers/settings_provider.dart';
 
 class SettingsWidget extends StatefulWidget {
@@ -29,10 +30,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         title: const Text("Settings"),
         centerTitle: true,
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 40.0),
+          Expanded(
             child: ListView(
               children: <Widget>[
                 Consumer<SettingsProvider>(
@@ -44,7 +44,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     onTap: () async {
                       await showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
+                        builder: (context) => AlertDialog( // TODO: Dialogs in landscape mode are kinda bad. Look into it
                           title: const Text("Please type in the symbol or name of your currency"),
                           content: Form(
                             key: _formKey,
@@ -142,40 +142,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   },
                 ),
                 const Divider(height: 0),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 0, 0),
-                  child: Text("Theme"),
-                ),
-                Column(
-                  children: [
-                    InkWell(
-                      child: const ListTile(
-                        leading: Icon(Icons.light_mode, semanticLabel: "Light mode",),
-                        title: Text("Light"),
-                      ),
-                      onTap: () {
-                        Provider.of<SettingsProvider>(context, listen: false).setThemeMode(ThemeMode.light);
-                      },
-                    ),
-                    InkWell(
-                      child: const ListTile(
-                        leading: Icon(Icons.dark_mode, semanticLabel: "Dark mode",),
-                        title: Text('Dark'),
-                      ),
-                      onTap: () {
-                        Provider.of<SettingsProvider>(context, listen: false).setThemeMode(ThemeMode.dark);
-                      },
-                    ),
-                    InkWell(
-                      child: const ListTile(
-                        leading: Icon(Icons.phone_android, semanticLabel: "Default system theme",),
-                        title: Text("System"),
-                      ),
-                      onTap: () {
-                        Provider.of<SettingsProvider>(context, listen: false).setThemeMode(ThemeMode.system);
-                      },
-                    ),
-                  ],
+                InkWell(
+                  child: const ListTile(
+                    title: Text('App theme'),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DarkModeSettingsWidget()));
+                  },
                 ),
                 const Divider(height: 0),
               ], // TODO: Manual dark mode toggle
