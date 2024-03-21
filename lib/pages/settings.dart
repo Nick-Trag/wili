@@ -151,7 +151,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   },
                 ),
                 const Divider(height: 0),
-              ], // TODO: Manual dark mode toggle
+              ],
             ),
           ),
           Container(

@@ -19,7 +19,7 @@ class DarkModeSettingsWidget extends StatelessWidget {
           children: [
             const Padding(
               padding: EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 4.0),
-              child: Text("Select a theme for Wili"), // TODO: Prettier
+              child: Text("Select a theme for Wili"),
             ),
             InkWell(
               child: ListTile(
