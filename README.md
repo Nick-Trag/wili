@@ -1,20 +1,9 @@
 # wili
 
-Wishlist app
+Wishlist app created using Flutter. Allows users to add items they would like to purchase, with all their info such as price, name, description, an image, etc.
+Users can also mark items as purchased and move them out of the way. Items can be filtered by category and sorted by name, price, or date added. Also supports dark mode,
+and the users can customize the currency used, as well as the categories.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-Useful resources for development:
+## Useful resources for development:
 
 https://stackoverflow.com/a/18280430/7400287
