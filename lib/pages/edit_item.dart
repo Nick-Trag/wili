@@ -192,7 +192,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                  child: Text("Price:"),
+                  child: Text("Price (for one):"),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -290,9 +290,12 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         item.quantity = int.parse(value);
                       }
                     },
-                    validator: (value) { // Currently allows 0. Only because why not?
+                    validator: (value) {
                       if (value == null) {
                         return "Invalid value";
+                      }
+                      if (int.parse(value) == 0) {
+                        return "Quantity cannot be 0";
                       }
                       if (value != "" && int.parse(value) >= 1000000000) { // 1 billion +
                         return "Quantity can't be so high";

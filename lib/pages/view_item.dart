@@ -129,7 +129,7 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             const Divider(height: 0),
                             ItemPropertyRowWidget(icon: const Icon(Icons.category_outlined, semanticLabel: "Category"), text: Text(provider.categories[item.category]!)),
                             const Divider(height: 0),
-                            ItemPropertyRowWidget(
+                            ItemPropertyRowWidget( // TODO: Investigate showing total price vs price per unit
                               icon: const Icon(Icons.euro, semanticLabel: "Price"),
                               text: Consumer<SettingsProvider>(
                                 builder: (context, settingsProvider, child) => Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${settingsProvider.currency}'),

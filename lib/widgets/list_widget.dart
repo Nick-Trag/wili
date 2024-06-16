@@ -31,7 +31,7 @@ class ListWidget extends StatelessWidget {
         ],
       );
     }
-    else {
+    else { // TODO: Add total prices (Perhaps total not purchased + total purchased) (take quantity into account)
       return ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
