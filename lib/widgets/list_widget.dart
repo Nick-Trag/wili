@@ -52,11 +52,9 @@ class ListWidget extends StatelessWidget {
                   child: Text("Price (not purchased): $notPurchasedPrice${Provider.of<SettingsProvider>(context).currency}", textAlign: TextAlign.left,),
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text("Total price: $totalPrice${Provider.of<SettingsProvider>(context).currency}", textAlign: TextAlign.right,),
-                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text("Total price: $totalPrice${Provider.of<SettingsProvider>(context).currency}", textAlign: TextAlign.right,),
               ),
             ],
           ),
