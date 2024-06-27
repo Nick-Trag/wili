@@ -253,10 +253,10 @@ class _HomePageState extends State<HomePage> {
 
   void sortItemsByPrice(List<WishlistItem> items, {bool ascending = true}) {
     if (ascending) {
-      items.sort((item1, item2) => item1.price.compareTo(item2.price));
+      items.sort((item1, item2) => (item1.price * item1.quantity).compareTo(item2.price * item2.quantity));
     }
     else {
-      items.sort((item1, item2) => item2.price.compareTo(item1.price));
+      items.sort((item1, item2) => (item2.price * item2.quantity).compareTo(item1.price * item1.quantity));
     }
   }
 
