@@ -192,7 +192,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                  child: Text("Price (for one):"),
+                  child: Text("Price (for one):"), // TODO: Is this the best label I have?
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -297,7 +297,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       if (int.parse(value) == 0) {
                         return "Quantity cannot be 0";
                       }
-                      if (value != "" && int.parse(value) >= 1000000000) { // 1 billion +
+                      if (value != "" && int.parse(value) >= 1000000) { // 1 million +
                         return "Quantity can't be so high";
                       }
                       return null;
@@ -349,7 +349,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     controlAffinity: ListTileControlAffinity.leading, // leading checkbox
                   ),
                 ),
-              ]
+              ],
             ),
           ),
         ),

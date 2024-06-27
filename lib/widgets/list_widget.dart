@@ -32,7 +32,7 @@ class ListWidget extends StatelessWidget {
         ],
       );
     }
-    else { // TODO: Add total prices (Perhaps total not purchased + total purchased) (take quantity into account)
+    else {
       double totalPrice = 0;
       double notPurchasedPrice = 0;
       for (WishlistItem item in items) {
@@ -45,20 +45,43 @@ class ListWidget extends StatelessWidget {
 
       return Column(
         children: [
-          Consumer<SettingsProvider>(
-            builder: (context, provider, row) => Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Not purchased: ${Utils.formatPrice(notPurchasedPrice)}${provider.currency}", textAlign: TextAlign.left,),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 3.0),
+            child: Consumer<SettingsProvider>(
+              builder: (context, provider, row) => Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: [
+                            const TextSpan(text: "Not purchased: "), // TODO: Show it like this?
+                            TextSpan(text: "${Utils.formatPrice(notPurchasedPrice)}${provider.currency}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                      // child: Text("Not purchased: ${Utils.formatPrice(notPurchasedPrice)}${provider.currency}", textAlign: TextAlign.left,),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text("Total price: ${Utils.formatPrice(totalPrice)}${provider.currency}", textAlign: TextAlign.right,),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: RichText(
+                      textAlign: TextAlign.right,
+                      text: TextSpan(
+                        style: DefaultTextStyle.of(context).style,
+                        children: [
+                          const TextSpan(text: "Total price: "),
+                          TextSpan(text: "${Utils.formatPrice(totalPrice)}${provider.currency}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    // child: Text("Total price: ${Utils.formatPrice(totalPrice)}${provider.currency}", textAlign: TextAlign.right,),
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(

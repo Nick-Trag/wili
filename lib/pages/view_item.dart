@@ -130,9 +130,12 @@ class _ViewItemWidgetState extends State<ViewItemWidget>{
                             ItemPropertyRowWidget(icon: const Icon(Icons.category_outlined, semanticLabel: "Category"), text: Text(provider.categories[item.category]!)),
                             const Divider(height: 0),
                             ItemPropertyRowWidget(
-                              icon: const Icon(Icons.euro, semanticLabel: "Price (for one)"),
+                              icon: const Icon(Icons.euro, semanticLabel: "Price"), // TODO: Show the price for one? Show the math?
                               text: Consumer<SettingsProvider>(
-                                builder: (context, settingsProvider, child) => Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${settingsProvider.currency}'),
+                                builder: (context, settingsProvider, child) =>
+                                  Text("${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price)}${settingsProvider.currency} "
+                                  "× ${item.quantity} = ${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.price * item.quantity)}"
+                                  "${settingsProvider.currency}"),
                               ),
                             ),
                             const Divider(height: 0),
