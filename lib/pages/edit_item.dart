@@ -223,7 +223,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                             }
                           },
                           validator: (value) {
-                            if (value != null && value != "" && double.parse(value) >= 1000000000000) { // 1 trillion +
+                            if (value != null && value != "" && (value.length >= 15 || double.parse(value) >= 1000000000000)) { // 1 trillion +
                               return "Price cannot be this high";
                             }
                             return null;
@@ -294,11 +294,11 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                       if (value == null) {
                         return "Invalid value";
                       }
-                      if (int.parse(value) == 0) {
-                        return "Quantity cannot be 0";
-                      }
-                      if (value != "" && int.parse(value) >= 1000000) { // 1 million +
+                      if (value.length >= 7) { // 1 million +
                         return "Quantity can't be so high";
+                      }
+                      if (value != "" && int.parse(value) == 0) {
+                        return "Quantity cannot be 0";
                       }
                       return null;
                     },
