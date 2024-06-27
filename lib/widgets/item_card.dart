@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/pages/view_item.dart';
 import 'package:wili/providers/settings_provider.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:wili/utils/utils.dart';
 
 class ItemCardWidget extends StatelessWidget {
   const ItemCardWidget({super.key, required this.item, required this.categoryName});
@@ -35,10 +35,7 @@ class ItemCardWidget extends StatelessWidget {
             ),
             title: Text(item.name, maxLines: 1, overflow: TextOverflow.ellipsis),
             subtitle: Text(categoryName, maxLines: 1, overflow: TextOverflow.ellipsis),
-            trailing:
-              item.quantity * item.price < 10000 ?
-              Text('${intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(item.quantity * item.price)}${provider.currency}') :
-              Text('${intl.NumberFormat.compact().format(item.quantity * item.price)} ${provider.currency}'),
+            trailing: Text('${Utils.formatPrice(item.quantity * item.price)}${provider.currency}'),
           ),
         ),
       ),
