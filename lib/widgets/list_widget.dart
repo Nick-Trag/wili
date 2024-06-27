@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:wili/classes/item.dart';
 import 'package:wili/providers/settings_provider.dart';
 import 'package:wili/widgets/item_card.dart';
+import 'package:intl/intl.dart' as intl;
+
 
 class ListWidget extends StatelessWidget {
   const ListWidget({
@@ -13,6 +15,11 @@ class ListWidget extends StatelessWidget {
 
   final List<WishlistItem> items;
   final Map<int, String> categories;
+
+  // TODO: Move this outside of this class and use it in other places as well
+  String formatPrice(double price) {
+    return price < 10000 ? intl.NumberFormat.decimalPatternDigits(decimalDigits: 2).format(price) : '${intl.NumberFormat.compact().format(price)} ';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +51,21 @@ class ListWidget extends StatelessWidget {
 
       return Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text("Price (not purchased): $notPurchasedPrice${Provider.of<SettingsProvider>(context).currency}", textAlign: TextAlign.left,),
+          Consumer<SettingsProvider>(
+            builder: (context, provider, row) => Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text("Not purchased: ${formatPrice(notPurchasedPrice)}${provider.currency}", textAlign: TextAlign.left,),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text("Total price: $totalPrice${Provider.of<SettingsProvider>(context).currency}", textAlign: TextAlign.right,),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text("Total price: ${formatPrice(totalPrice)}${provider.currency}", textAlign: TextAlign.right,),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView.builder(
