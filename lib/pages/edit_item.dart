@@ -223,8 +223,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                             }
                           },
                           validator: (value) {
-                            if (value != null && value != "" && (value.length >= 15 || double.parse(value) >= 1000000000000)) { // 1 trillion +
-                              return "Price cannot be this high";
+                            if (value != null && value != "") {
+                              if (value.split(".")[0].length >= 13) { // 1 trillion +
+                                return "Price cannot be this high";
+                              }
+                              if (value.length >= 15) {
+                                return "Price cannot be this long";
+                              }
                             }
                             return null;
                           },
