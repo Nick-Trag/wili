@@ -192,7 +192,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                  child: Text("Price (for one):"), // TODO: Is this the best label I have?
+                  child: Text("Price (per unit):"),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

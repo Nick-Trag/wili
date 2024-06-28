@@ -58,8 +58,11 @@ class ListWidget extends StatelessWidget {
                         text: TextSpan(
                           style: DefaultTextStyle.of(context).style,
                           children: [
-                            const TextSpan(text: "Not purchased: "), // TODO: Show it like this?
-                            TextSpan(text: "${Utils.formatPrice(notPurchasedPrice)}${provider.currency}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                            const TextSpan(text: "Not purchased: "),
+                            TextSpan(
+                              text: "${Utils.formatPrice(notPurchasedPrice)}${provider.currency}",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
                       ),
@@ -74,7 +77,10 @@ class ListWidget extends StatelessWidget {
                         style: DefaultTextStyle.of(context).style,
                         children: [
                           const TextSpan(text: "Total price: "),
-                          TextSpan(text: "${Utils.formatPrice(totalPrice)}${provider.currency}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(
+                            text: "${Utils.formatPrice(totalPrice)}${provider.currency}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
