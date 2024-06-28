@@ -192,7 +192,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 8, 0, 0),
-                  child: Text("Price:"),
+                  child: Text("Price (per unit):"),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -223,8 +223,13 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                             }
                           },
                           validator: (value) {
-                            if (value != null && value != "" && double.parse(value) >= 1000000000000) { // 1 trillion +
-                              return "Price cannot be this high";
+                            if (value != null && value != "") {
+                              if (value.split(".")[0].length >= 13) { // 1 trillion +
+                                return "Price cannot be this high";
+                              }
+                              if (value.length >= 15) {
+                                return "Price cannot be this long";
+                              }
                             }
                             return null;
                           },
@@ -290,12 +295,15 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                         item.quantity = int.parse(value);
                       }
                     },
-                    validator: (value) { // Currently allows 0. Only because why not?
+                    validator: (value) {
                       if (value == null) {
                         return "Invalid value";
                       }
-                      if (value != "" && int.parse(value) >= 1000000000) { // 1 billion +
+                      if (value.length >= 7) { // 1 million +
                         return "Quantity can't be so high";
+                      }
+                      if (value != "" && int.parse(value) == 0) {
+                        return "Quantity cannot be 0";
                       }
                       return null;
                     },
@@ -346,7 +354,7 @@ class _EditItemWidgetState extends State<EditItemWidget> {
                     controlAffinity: ListTileControlAffinity.leading, // leading checkbox
                   ),
                 ),
-              ]
+              ],
             ),
           ),
         ),
