@@ -14,92 +14,94 @@ class DarkModeSettingsWidget extends StatelessWidget {
         centerTitle: true,
       ),
       body: Consumer<SettingsProvider>(
-        builder: (context, provider, child) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 4.0),
-              child: Text("Select a theme for Wili"),
-            ),
-            InkWell(
-              child: ListTile(
-                leading: Radio(
-                  value: ThemeMode.light,
-                  groupValue: provider.themeMode,
-                  onChanged: (newMode) {
-                    if (newMode != null) {
-                      provider.setThemeMode(newMode);
-                    }
-                  },
-                ),
-                title: const Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.light_mode, semanticLabel: "Light mode"),
-                    ),
-                    Text("Light mode"),
-                  ],
-                ),
+        builder: (context, provider, child) => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 4.0),
+                child: Text("Select a theme for Wili"),
               ),
-              onTap: () {
-                provider.setThemeMode(ThemeMode.light);
-              },
-            ),
-            InkWell(
-              child: ListTile(
-                leading: Radio(
-                  value: ThemeMode.dark,
-                  groupValue: provider.themeMode,
-                  onChanged: (newMode) {
-                    if (newMode != null) {
-                      provider.setThemeMode(newMode);
-                    }
-                  },
+              InkWell(
+                child: ListTile(
+                  leading: Radio(
+                    value: ThemeMode.light,
+                    groupValue: provider.themeMode,
+                    onChanged: (newMode) {
+                      if (newMode != null) {
+                        provider.setThemeMode(newMode);
+                      }
+                    },
+                  ),
+                  title: const Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: Icon(Icons.light_mode, semanticLabel: "Light mode"),
+                      ),
+                      Text("Light mode"),
+                    ],
+                  ),
                 ),
-                title: const Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.dark_mode, semanticLabel: "Dark mode"),
-                    ),
-                    Text("Dark mode"),
-                  ],
-                ),
+                onTap: () {
+                  provider.setThemeMode(ThemeMode.light);
+                },
               ),
-              onTap: () {
-                provider.setThemeMode(ThemeMode.dark);
-              },
-            ),
-            InkWell(
-              child: ListTile(
-                leading: Radio(
-                  value: ThemeMode.system,
-                  groupValue: provider.themeMode,
-                  onChanged: (newMode) {
-                    if (newMode != null) {
-                      provider.setThemeMode(newMode);
-                    }
-                  },
+              InkWell(
+                child: ListTile(
+                  leading: Radio(
+                    value: ThemeMode.dark,
+                    groupValue: provider.themeMode,
+                    onChanged: (newMode) {
+                      if (newMode != null) {
+                        provider.setThemeMode(newMode);
+                      }
+                    },
+                  ),
+                  title: const Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: Icon(Icons.dark_mode, semanticLabel: "Dark mode"),
+                      ),
+                      Text("Dark mode"),
+                    ],
+                  ),
                 ),
-                title: const Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.phone_android, semanticLabel: "System default"),
-                    ),
-                    Text("System default"),
-                  ],
-                ),
+                onTap: () {
+                  provider.setThemeMode(ThemeMode.dark);
+                },
               ),
-              onTap: () {
-                provider.setThemeMode(ThemeMode.system);
-              },
-            ),
-          ],
+              InkWell(
+                child: ListTile(
+                  leading: Radio(
+                    value: ThemeMode.system,
+                    groupValue: provider.themeMode,
+                    onChanged: (newMode) {
+                      if (newMode != null) {
+                        provider.setThemeMode(newMode);
+                      }
+                    },
+                  ),
+                  title: const Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: Icon(Icons.phone_android, semanticLabel: "System default"),
+                      ),
+                      Text("System default"),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  provider.setThemeMode(ThemeMode.system);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
